@@ -20,5 +20,10 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
+      - name: Restore dependencies ⌚
+        run: dotnet restore
+        working-directory: src/MAS.API
+
       - name: Build app 🚀
-        run: dotnet build -c Release
+        run: dotnet build -c Release --no-restore
+        working-directory: src/MAS.API
