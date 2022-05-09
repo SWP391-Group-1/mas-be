@@ -20,8 +20,5 @@ jobs:
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      - name: Restore dependencies ⌚
-        run: dotnet restore
-
       - name: Build app 🚀
-        run: dotnet build -c Release --no-restore
+        run: dotnet build -c Release
