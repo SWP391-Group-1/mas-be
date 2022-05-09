@@ -27,3 +27,7 @@ jobs:
       - name: Build app 🚀
         run: dotnet build -c Release --no-restore
         working-directory: src/MAS.API
+
+      - name: Run automated tests 🧪
+        run: dotnet test -c Release --no-build
+        working-directory: tests/MAS.Core.Test
