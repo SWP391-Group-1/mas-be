@@ -15,7 +15,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0CA066D7
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS.Core.Test", "tests\MAS.Core.Test\MAS.Core.Test.csproj", "{4A3EB95C-F616-40C7-AC51-0644288F5A6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MAS.API.Test", "tests\MAS.API.Test\MAS.API.Test.csproj", "{B30F31CF-F903-4EA7-B7BA-255C6FB96C6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MAS.API.Test", "tests\MAS.API.Test\MAS.API.Test.csproj", "{B30F31CF-F903-4EA7-B7BA-255C6FB96C6B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{CDDA626F-203E-461F-A9A4-AB08E1885338}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
