@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>obj\Debug\net5.0\MAS.API.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1591,1572,1571,1573,1587,1570,1701,1702,</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1591,1572,1571,1573,1587,1570,1701,1702,</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,6 +36,12 @@
   <ItemGroup>
     <ProjectReference Include="..\MAS.Core\MAS.Core.csproj" />
     <ProjectReference Include="..\MAS.Infrastructure\MAS.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ServiceDescription.md">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
