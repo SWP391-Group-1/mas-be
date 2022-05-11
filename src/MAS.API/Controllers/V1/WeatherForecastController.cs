@@ -24,6 +24,10 @@ namespace MAS.API.Controllers.V1
             _logger = logger;
         }
 
+        /// <summary>
+        /// Weather forecast
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
