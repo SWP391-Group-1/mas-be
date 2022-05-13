@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using MAS.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -16,11 +18,10 @@ namespace MAS.API.Helpers
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            //services.AddDbContext<AppDbContext>
-            //(
-            //    // optionsAction: options => options.UseSqlServer(playTogetherDbConnectionString)
-            //    options => options.UseSqlServer(configuration.GetConnectionString("PlayTogetherDbConnection"))
-            //);
+            services.AddDbContext<AppDbContext>
+            (
+                options => options.UseSqlServer(configuration.GetConnectionString("MasDbConnection"))
+            );
 
             // Config for automapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

@@ -1,6 +1,7 @@
 using MAS.API.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using NLog;
@@ -32,16 +33,16 @@ namespace MAS.API
                 logger.Info($"{ApiConstants.FriendlyServiceName} starts running...");
                 var host = CreateHostBuilder(args).Build();
 
-                //using (var scope = host.Services.CreateScope()) {
-                //    var services = scope.ServiceProvider;
+                using (var scope = host.Services.CreateScope()) {
+                    var services = scope.ServiceProvider;
 
-                //    try {
-                //        SeedData.Initialize(services);
-                //    }
-                //    catch (Exception ex) {
-                //        logger.Error(ex, "An error occurred seeding the DB.");
-                //    }
-                //}
+                    try {
+                        SeedData.Initialize(services);
+                    }
+                    catch (Exception ex) {
+                        logger.Error(ex, "An error occurred seeding the DB.");
+                    }
+                }
 
                 host.Run();
                 logger.Info($"{ApiConstants.FriendlyServiceName} is stopped");
