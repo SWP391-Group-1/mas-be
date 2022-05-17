@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using MAS.Core.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace MAS.Infrastructure.Data
@@ -9,5 +10,7 @@ namespace MAS.Infrastructure.Data
         {
 
         }
+
+        public DbSet<MasUser> MasUsers { get; set; }
     }
 }

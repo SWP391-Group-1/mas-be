@@ -1,4 +1,6 @@
 ﻿using MAS.API.Helpers;
+using MAS.Core.Dtos.Incoming.Account;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -28,7 +30,11 @@ namespace MAS.API.Controllers.V1
         /// Weather forecast
         /// </summary>
         /// <returns></returns>
+        /// <remarks>
+        /// Roles Access: Admin
+        /// </remarks>
         [HttpGet]
+        [Authorize(Roles = RoleConstants.Admin)]
         public IEnumerable<WeatherForecast> Get()
         {
             var rng = new Random();

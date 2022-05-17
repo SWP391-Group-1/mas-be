@@ -1,4 +1,8 @@
-﻿using MAS.Infrastructure.Data;
+﻿using MAS.Core.Interfaces.Repositories.Account;
+using MAS.Core.Interfaces.Services.Account;
+using MAS.Core.Services.Account;
+using MAS.Infrastructure.Data;
+using MAS.Infrastructure.Repositories.Account;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,9 +30,12 @@ namespace MAS.API.Helpers
             // Config for automapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            // Config DI
+            // Config DI--------------------------------------------------------------------------------
 
-            // ---------------------------------------------------------
+            // Config for Authentication
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            // -----------------------------------------------------------------------------------------
             services.AddHttpClient();
             return services;
         }
