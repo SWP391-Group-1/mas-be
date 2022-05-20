@@ -1,4 +1,6 @@
-﻿namespace MAS.Core.Entities
+﻿using System.Collections.Generic;
+
+namespace MAS.Core.Entities
 {
     public class MasUser : BaseEntity
     {
@@ -9,5 +11,10 @@
         public string MeetUrl { get; set; }
         public bool? IsMentor { get; set; }
         public bool IsActive { get; set; }
+
+        public ICollection<Slot> Slots { get; set; }
+        public ICollection<Appointment> Appointments { get; set; }
+        //public Appointment Appointment { get; set; }
+        public ICollection<MentorSubject> MentorSubjects { get; set; }
     }
 }

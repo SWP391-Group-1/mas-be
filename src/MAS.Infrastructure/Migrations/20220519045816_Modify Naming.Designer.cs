@@ -4,6 +4,7 @@ using MAS.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAS.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220519045816_Modify Naming")]
+    partial class ModifyNaming
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,9 +34,6 @@ namespace MAS.Infrastructure.Migrations
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
-
-                    b.Property<string>("MentorId")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SlotId")
                         .HasColumnType("nvarchar(450)");

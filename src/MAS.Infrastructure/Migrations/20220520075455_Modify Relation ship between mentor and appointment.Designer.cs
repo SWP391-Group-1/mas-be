@@ -4,6 +4,7 @@ using MAS.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAS.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220520075455_Modify Relation ship between mentor and appointment")]
+    partial class ModifyRelationshipbetweenmentorandappointment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace MAS.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("MentorId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("SlotId")
                         .HasColumnType("nvarchar(450)");
@@ -46,6 +48,10 @@ namespace MAS.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MentorId")
+                        .IsUnique()
+                        .HasFilter("[MentorId] IS NOT NULL");
 
                     b.HasIndex("SlotId");
 
@@ -430,6 +436,10 @@ namespace MAS.Infrastructure.Migrations
 
             modelBuilder.Entity("MAS.Core.Entities.Appointment", b =>
                 {
+                    b.HasOne("MAS.Core.Entities.MasUser", "Mentor")
+                        .WithOne("Appointment")
+                        .HasForeignKey("MAS.Core.Entities.Appointment", "MentorId");
+
                     b.HasOne("MAS.Core.Entities.Slot", "Slot")
                         .WithMany()
                         .HasForeignKey("SlotId");
@@ -437,6 +447,8 @@ namespace MAS.Infrastructure.Migrations
                     b.HasOne("MAS.Core.Entities.MasUser", "Student")
                         .WithMany("Appointments")
                         .HasForeignKey("StudentId");
+
+                    b.Navigation("Mentor");
 
                     b.Navigation("Slot");
 
@@ -557,6 +569,8 @@ namespace MAS.Infrastructure.Migrations
 
             modelBuilder.Entity("MAS.Core.Entities.MasUser", b =>
                 {
+                    b.Navigation("Appointment");
+
                     b.Navigation("Appointments");
 
                     b.Navigation("MentorSubjects");
