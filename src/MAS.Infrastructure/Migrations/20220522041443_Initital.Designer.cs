@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAS.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220520075024_Add MentorId FK in Appointment")]
-    partial class AddMentorIdFKinAppointment
+    [Migration("20220522041443_Initital")]
+    partial class Initital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -36,7 +36,7 @@ namespace MAS.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("MentorId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SlotId")
                         .HasColumnType("nvarchar(450)");
@@ -48,10 +48,6 @@ namespace MAS.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MentorId")
-                        .IsUnique()
-                        .HasFilter("[MentorId] IS NOT NULL");
 
                     b.HasIndex("SlotId");
 
@@ -192,17 +188,14 @@ namespace MAS.Infrastructure.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DateInWeek")
-                        .HasColumnType("int");
-
-                    b.Property<long>("FinishTime")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime>("FinishTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MentorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<long>("StartTime")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
@@ -436,10 +429,6 @@ namespace MAS.Infrastructure.Migrations
 
             modelBuilder.Entity("MAS.Core.Entities.Appointment", b =>
                 {
-                    b.HasOne("MAS.Core.Entities.MasUser", "Mentor")
-                        .WithOne("Appointment")
-                        .HasForeignKey("MAS.Core.Entities.Appointment", "MentorId");
-
                     b.HasOne("MAS.Core.Entities.Slot", "Slot")
                         .WithMany()
                         .HasForeignKey("SlotId");
@@ -447,8 +436,6 @@ namespace MAS.Infrastructure.Migrations
                     b.HasOne("MAS.Core.Entities.MasUser", "Student")
                         .WithMany("Appointments")
                         .HasForeignKey("StudentId");
-
-                    b.Navigation("Mentor");
 
                     b.Navigation("Slot");
 
@@ -569,8 +556,6 @@ namespace MAS.Infrastructure.Migrations
 
             modelBuilder.Entity("MAS.Core.Entities.MasUser", b =>
                 {
-                    b.Navigation("Appointment");
-
                     b.Navigation("Appointments");
 
                     b.Navigation("MentorSubjects");

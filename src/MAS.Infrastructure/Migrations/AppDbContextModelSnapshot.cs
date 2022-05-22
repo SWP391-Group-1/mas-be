@@ -186,17 +186,14 @@ namespace MAS.Infrastructure.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DateInWeek")
-                        .HasColumnType("int");
-
-                    b.Property<long>("FinishTime")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime>("FinishTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("MentorId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<long>("StartTime")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
