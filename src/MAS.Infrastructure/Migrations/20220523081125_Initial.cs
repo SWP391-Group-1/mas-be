@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace MAS.Infrastructure.Migrations
 {
-    public partial class Initital : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -52,16 +52,16 @@ namespace MAS.Infrastructure.Migrations
                 name: "MasUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    IdentityId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Avatar = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MeetUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsMentor = table.Column<bool>(type: "bit", nullable: true),
+                    Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    IdentityId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Avatar = table.Column<string>(type: "nvarchar(MAX)", nullable: false),
+                    MeetUrl = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    IsMentor = table.Column<bool>(type: "bit", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -72,11 +72,11 @@ namespace MAS.Infrastructure.Migrations
                 name: "Subjects",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(200)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -193,12 +193,12 @@ namespace MAS.Infrastructure.Migrations
                 name: "Slots",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MentorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FinishTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    MentorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    FinishTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -207,19 +207,20 @@ namespace MAS.Infrastructure.Migrations
                         name: "FK_Slots_MasUsers_MentorId",
                         column: x => x.MentorId,
                         principalTable: "MasUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "MentorSubjects",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    MentorId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    SubjectId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    BriefInfo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    MentorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    SubjectId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    BriefInfo = table.Column<string>(type: "nvarchar(500)", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -228,25 +229,27 @@ namespace MAS.Infrastructure.Migrations
                         name: "FK_MentorSubjects_MasUsers_MentorId",
                         column: x => x.MentorId,
                         principalTable: "MasUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MentorSubjects_Subjects_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Appointments",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    StudentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    MentorId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SlotId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    StudentId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    MentorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    SlotId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     IsApproved = table.Column<bool>(type: "bit", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -255,24 +258,26 @@ namespace MAS.Infrastructure.Migrations
                         name: "FK_Appointments_MasUsers_StudentId",
                         column: x => x.StudentId,
                         principalTable: "MasUsers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Appointments_Slots_SlotId",
                         column: x => x.SlotId,
                         principalTable: "Slots",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateTable(
                 name: "AppointmentSubjects",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AppointmentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    SubjectId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    BriefProblem = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    AppointmentId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    SubjectId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    BriefProblem = table.Column<string>(type: "nvarchar(500)", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -281,24 +286,26 @@ namespace MAS.Infrastructure.Migrations
                         name: "FK_AppointmentSubjects_Appointments_AppointmentId",
                         column: x => x.AppointmentId,
                         principalTable: "Appointments",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AppointmentSubjects_Subjects_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Questions",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    AppointmentId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    SubjectId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    QuestionContent = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CreateDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true)
+                    Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    AppointmentId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    SubjectId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    QuestionContent = table.Column<string>(type: "nvarchar(500)", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -307,12 +314,14 @@ namespace MAS.Infrastructure.Migrations
                         name: "FK_Questions_Appointments_AppointmentId",
                         column: x => x.AppointmentId,
                         principalTable: "Appointments",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Questions_Subjects_SubjectId",
                         column: x => x.SubjectId,
                         principalTable: "Subjects",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

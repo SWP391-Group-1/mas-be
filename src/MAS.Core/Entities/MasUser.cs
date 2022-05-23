@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MAS.Core.Entities.Abtraction;
+using System.Collections.Generic;
 
 namespace MAS.Core.Entities
 {
@@ -14,7 +15,6 @@ namespace MAS.Core.Entities
 
         public ICollection<Slot> Slots { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
-        //public Appointment Appointment { get; set; }
         public ICollection<MentorSubject> MentorSubjects { get; set; }
     }
 }

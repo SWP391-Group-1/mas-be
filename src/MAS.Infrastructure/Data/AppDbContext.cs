@@ -1,4 +1,5 @@
 ﻿using MAS.Core.Entities;
+using MAS.Infrastructure.Data.Configuration;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,23 +23,13 @@ namespace MAS.Infrastructure.Data
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            //builder.Entity<Appointment>()
-            //    .HasOne<MasUser>(a => a.Student)
-            //    .WithMany(st => st.Appointments)
-            //    .HasForeignKey(st => st.StudentId);
-
-            //builder.Entity<Appointment>()
-            //    .HasOne<MasUser>(a => a.Mentor)
-            //    .WithOne(m => m.Appointment)
-            //    .HasForeignKey<Appointment>(a => a.MentorId);
-
-
-            //builder.Entity<Appointment>()
-            //   .HasOne<MasUser>(a => a.Mentor)
-            //   .WithMany(m => m.Appointments)
-            //   .HasForeignKey(a => a.MentorId);
-
+            builder.ApplyConfigurationsFromAssembly(typeof(MasUserConfiguration).Assembly);
+            builder.ApplyConfigurationsFromAssembly(typeof(SlotConfiguration).Assembly);
+            builder.ApplyConfigurationsFromAssembly(typeof(SubjectConfiguration).Assembly);
+            builder.ApplyConfigurationsFromAssembly(typeof(AppointmentConfiguration).Assembly);
+            builder.ApplyConfigurationsFromAssembly(typeof(AppointmentSubjectConfiguration).Assembly);
+            builder.ApplyConfigurationsFromAssembly(typeof(MentorSubjectConfiguration).Assembly);
+            builder.ApplyConfigurationsFromAssembly(typeof(QuestionConfiguration).Assembly);
         }
     }
 }

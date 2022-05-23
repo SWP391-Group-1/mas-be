@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using MAS.Core.Entities.Abtraction;
+using System.Collections.Generic;
 
 namespace MAS.Core.Entities
 {

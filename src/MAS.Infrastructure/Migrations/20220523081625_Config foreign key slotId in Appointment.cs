@@ -4,7 +4,7 @@
 
 namespace MAS.Infrastructure.Migrations
 {
-    public partial class Modifyslotaddcollectionappointmentinslot : Migration
+    public partial class ConfigforeignkeyslotIdinAppointment : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -1,4 +1,6 @@
-﻿namespace MAS.Core.Entities
+﻿using MAS.Core.Entities.Abtraction;
+
+namespace MAS.Core.Entities
 {
     public class Question : BaseEntity
     {
@@ -9,5 +11,6 @@
         public Subject Subject { get; set; }
 
         public string QuestionContent { get; set; }
+        public string Answer { get; set; }
     }
 }

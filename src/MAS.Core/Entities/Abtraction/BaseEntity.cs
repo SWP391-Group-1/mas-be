@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MAS.Core.Entities
+namespace MAS.Core.Entities.Abtraction
 {
     public abstract class BaseEntity
     {

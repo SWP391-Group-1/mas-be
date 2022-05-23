@@ -1,4 +1,6 @@
-﻿namespace MAS.Core.Entities
+﻿using MAS.Core.Entities.Abtraction;
+
+namespace MAS.Core.Entities
 {
     public class MentorSubject : BaseEntity
     {
