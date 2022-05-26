@@ -15,6 +15,7 @@ namespace MAS.Infrastructure.Data.Configuration
             builder.Property(x => x.IdentityId).HasColumnType("nvarchar(100)").IsRequired();
             builder.Property(x => x.Name).HasColumnType("nvarchar(100)").IsRequired();
             builder.Property(x => x.Email).HasColumnType("nvarchar(100)").IsRequired();
+            builder.Property(x => x.Introduce).HasColumnType("nvarchar(1000)").IsRequired(false);
             builder.Property(x => x.Avatar).HasColumnType("nvarchar(MAX)").IsRequired();
             builder.Property(x => x.MeetUrl).HasColumnType("nvarchar(200)").IsRequired(false);
             builder.Property(x => x.IsMentor).HasColumnType("bit").IsRequired();
