@@ -34,6 +34,7 @@ namespace MAS.API.Test.Controllers.V1
         {
             // Arrange
             var subjectsMock = _fixture.Create<PagedResult<SubjectResponse>>();
+            subjectsMock.Error = null;
             var subjectParamMock = _fixture.Create<SubjectParameters>();
             _subjectServiceMock.Setup(x => x.GetAllSubjectsAsync(subjectParamMock)).ReturnsAsync(subjectsMock);
 

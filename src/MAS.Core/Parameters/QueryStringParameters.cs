@@ -1,6 +1,6 @@
 ﻿namespace MAS.Core.Parameters
 {
-    public class QueryStringParameters
+    public abstract class QueryStringParameters
     {
         const int maxPageSize = 1000;
         public int PageNumber { get; set; } = 1;

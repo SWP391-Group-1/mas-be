@@ -34,9 +34,6 @@ namespace MAS.API.Controllers.V1
             [FromQuery] SubjectParameters param)
         {
             var response = await _subjectService.GetAllSubjectsAsync(param);
-            if (response.Content.Count == 0) {
-                return NotFound();
-            }
             return Ok(response);
         }
 
