@@ -12,13 +12,13 @@ namespace MAS.Core.Services.Subject
 {
     public class SubjectService : ISubjectService
     {
-        private readonly ISubjectRepository subjectRepository;
-        private readonly ILogger<SubjectService> logger;
+        private readonly ISubjectRepository _subjectRepository;
+        private readonly ILogger<SubjectService> _logger;
 
         public SubjectService(ISubjectRepository subjectRepository, ILogger<SubjectService> logger)
         {
-            this.logger = logger;
-            this.subjectRepository = subjectRepository;
+            _logger = logger;
+            _subjectRepository = subjectRepository;
 
         }
 
@@ -28,10 +28,10 @@ namespace MAS.Core.Services.Subject
                 if (request is null) {
                     throw new ArgumentNullException(nameof(request));
                 }
-                return await subjectRepository.CreateSubjectAsync(request);
+                return await _subjectRepository.CreateSubjectAsync(request);
             }
             catch (Exception ex) {
-                logger.LogError($"Error while trying to call CreateSubjectAsync in service class, Error Message: {ex}.");
+                _logger.LogError($"Error while trying to call CreateSubjectAsync in service class, Error Message: {ex}.");
                 throw;
             }
         }
@@ -42,10 +42,10 @@ namespace MAS.Core.Services.Subject
                 if (String.IsNullOrEmpty(subjectId) || String.IsNullOrWhiteSpace(subjectId)) {
                     throw new ArgumentNullException(nameof(subjectId));
                 }
-                return await subjectRepository.DeleteSubjectAsync(subjectId);
+                return await _subjectRepository.DeleteSubjectAsync(subjectId);
             }
             catch (Exception ex) {
-                logger.LogError($"Error while trying to call DeleteSubjectAsync in service class, Error Message: {ex}.");
+                _logger.LogError($"Error while trying to call DeleteSubjectAsync in service class, Error Message: {ex}.");
                 throw;
             }
         }
@@ -53,10 +53,10 @@ namespace MAS.Core.Services.Subject
         public async Task<PagedResult<SubjectResponse>> GetAllSubjectsAsync(SubjectParameters param)
         {
             try {
-                return await subjectRepository.GetAllSubjectsAsync(param);
+                return await _subjectRepository.GetAllSubjectsAsync(param);
             }
             catch (Exception ex) {
-                logger.LogError($"Error while trying to call GetAllSubjectsAsync in service class, Error Message: {ex}.");
+                _logger.LogError($"Error while trying to call GetAllSubjectsAsync in service class, Error Message: {ex}.");
                 throw;
             }
         }
@@ -67,10 +67,10 @@ namespace MAS.Core.Services.Subject
                 if (String.IsNullOrEmpty(subjectId) || String.IsNullOrWhiteSpace(subjectId)) {
                     throw new ArgumentNullException(nameof(subjectId));
                 }
-                return await subjectRepository.GetSubjectByIdAsync(subjectId);
+                return await _subjectRepository.GetSubjectByIdAsync(subjectId);
             }
             catch (Exception ex) {
-                logger.LogError($"Error while trying to call DeleteSubjectAsync in service class, Error Message: {ex}.");
+                _logger.LogError($"Error while trying to call DeleteSubjectAsync in service class, Error Message: {ex}.");
                 throw;
             }
         }
@@ -84,10 +84,10 @@ namespace MAS.Core.Services.Subject
                 if (request is null) {
                     throw new ArgumentNullException(nameof(request));
                 }
-                return await subjectRepository.UpdateSubjectAsync(subjectId, request);
+                return await _subjectRepository.UpdateSubjectAsync(subjectId, request);
             }
             catch (Exception ex) {
-                logger.LogError($"Error while trying to call UpdateSubjectAsync in service class, Error Message: {ex}.");
+                _logger.LogError($"Error while trying to call UpdateSubjectAsync in service class, Error Message: {ex}.");
                 throw;
             }
         }

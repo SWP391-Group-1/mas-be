@@ -1,5 +1,7 @@
 ﻿using MAS.Core.Dtos.Incoming.Account;
 using MAS.Core.Dtos.Incoming.Subject;
+using MAS.Core.Dtos.Outcoming.Generic;
+using MAS.Core.Dtos.Outcoming.Subject;
 using MAS.Core.Interfaces.Services.Subject;
 using MAS.Core.Parameters.Subject;
 using Microsoft.AspNetCore.Authorization;
@@ -12,11 +14,11 @@ namespace MAS.API.Controllers.V1
     [ApiVersion("1.0")]
     public class SubjectsController : BaseController
     {
-        private readonly ISubjectService subjectService;
+        private readonly ISubjectService _subjectService;
 
         public SubjectsController(ISubjectService subjectService)
         {
-            this.subjectService = subjectService;
+            _subjectService = subjectService;
         }
 
         /// <summary>
@@ -28,27 +30,13 @@ namespace MAS.API.Controllers.V1
         /// </remarks>
         [HttpGet]
         [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
-        public async Task<ActionResult> GetAllSubjects(
+        public async Task<ActionResult<PagedResult<SubjectResponse>>> GetAllSubjects(
             [FromQuery] SubjectParameters param)
         {
-            var response = await subjectService.GetAllSubjectsAsync(param);
-            if (!response.IsSuccess) {
-                if (response.Error.Code == 404) {
-                    return NotFound(response);
-                }
-                else {
-                    return BadRequest(response);
-                }
+            var response = await _subjectService.GetAllSubjectsAsync(param);
+            if (response.Content.Count == 0) {
+                return NotFound();
             }
-            var metaData = new {
-                response.TotalCount,
-                response.PageSize,
-                response.CurrentPage,
-                response.HasNext,
-                response.HasPrevious
-            };
-
-            Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metaData));
             return Ok(response);
         }
 
@@ -62,9 +50,9 @@ namespace MAS.API.Controllers.V1
         /// </remarks>
         [HttpGet("{subjectId}", Name = "GetSubjectById")]
         [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
-        public async Task<ActionResult> GetSubjectById(string subjectId)
+        public async Task<ActionResult<Result<SubjectResponse>>> GetSubjectById(string subjectId)
         {
-            var response = await subjectService.GetSubjectByIdAsync(subjectId);
+            var response = await _subjectService.GetSubjectByIdAsync(subjectId);
             if (!response.IsSuccess) {
                 if (response.Error.Code == 404) {
                     return NotFound(response);
@@ -86,12 +74,12 @@ namespace MAS.API.Controllers.V1
         /// </remarks>
         [HttpPost]
         [Authorize(Roles = RoleConstants.Admin)]
-        public async Task<ActionResult> CreateSubject(SubjectCreateRequest request)
+        public async Task<ActionResult<Result<SubjectResponse>>> CreateSubject(SubjectCreateRequest request)
         {
             if (!ModelState.IsValid) {
                 return BadRequest();
             }
-            var response = await subjectService.CreateSubjectAsync(request);
+            var response = await _subjectService.CreateSubjectAsync(request);
             if (!response.IsSuccess) {
                 if (response.Error.Code == 404) {
                     return NotFound(response);
@@ -119,7 +107,7 @@ namespace MAS.API.Controllers.V1
             if (!ModelState.IsValid) {
                 return BadRequest();
             }
-            var response = await subjectService.UpdateSubjectAsync(subjectId, request);
+            var response = await _subjectService.UpdateSubjectAsync(subjectId, request);
             if (!response.IsSuccess) {
                 if (response.Error.Code == 404) {
                     return NotFound(response);
@@ -143,7 +131,7 @@ namespace MAS.API.Controllers.V1
         [Authorize(Roles = RoleConstants.Admin)]
         public async Task<ActionResult> DeleteSubject(string subjectId)
         {
-            var response = await subjectService.DeleteSubjectAsync(subjectId);
+            var response = await _subjectService.DeleteSubjectAsync(subjectId);
             if (!response.IsSuccess) {
                 if (response.Error.Code == 404) {
                     return NotFound(response);

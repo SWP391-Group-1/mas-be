@@ -25,7 +25,7 @@ namespace MAS.Infrastructure.Repositories.Subject
         {
             var result = new Result<SubjectResponse>();
 
-            var existSubject = await context.Subjects.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim());
+            var existSubject = await _context.Subjects.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim());
             if (existSubject) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                          ErrorTypes.BadRequest,
@@ -33,11 +33,11 @@ namespace MAS.Infrastructure.Repositories.Subject
                 return result;
             }
 
-            var model = mapper.Map<Core.Entities.Subject>(request);
-            await context.Subjects.AddAsync(model);
+            var model = _mapper.Map<Core.Entities.Subject>(request);
+            await _context.Subjects.AddAsync(model);
 
-            if ((await context.SaveChangesAsync() >= 0)) {
-                var response = mapper.Map<SubjectResponse>(model);
+            if ((await _context.SaveChangesAsync() >= 0)) {
+                var response = _mapper.Map<SubjectResponse>(model);
                 result.Content = response;
                 return result;
             }
@@ -51,7 +51,7 @@ namespace MAS.Infrastructure.Repositories.Subject
         {
             var result = new Result<bool>();
 
-            var subject = await context.Subjects.FindAsync(subjectId);
+            var subject = await _context.Subjects.FindAsync(subjectId);
             if (subject == null) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                          ErrorTypes.NotFound,
@@ -59,10 +59,10 @@ namespace MAS.Infrastructure.Repositories.Subject
                 return result;
             }
 
-            var appSubjects = await context.AppointmentSubjects.Where(x => x.SubjectId == subjectId).ToListAsync();
+            var appSubjects = await _context.AppointmentSubjects.Where(x => x.SubjectId == subjectId).ToListAsync();
             if (appSubjects.Count > 0) {
-                context.AppointmentSubjects.RemoveRange(appSubjects);
-                if(await context.SaveChangesAsync() < 0) {
+                _context.AppointmentSubjects.RemoveRange(appSubjects);
+                if(await _context.SaveChangesAsync() < 0) {
                     result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else, 
                                                              ErrorTypes.SaveFail,
                                                              ErrorMessages.SaveFail);
@@ -70,10 +70,10 @@ namespace MAS.Infrastructure.Repositories.Subject
                 }
             }
 
-            var mentorSubjects = await context.MentorSubjects.Where(x => x.SubjectId == subjectId).ToListAsync();
+            var mentorSubjects = await _context.MentorSubjects.Where(x => x.SubjectId == subjectId).ToListAsync();
             if(mentorSubjects.Count > 0) {
-                context.MentorSubjects.RemoveRange(mentorSubjects);
-                if (await context.SaveChangesAsync() < 0) {
+                _context.MentorSubjects.RemoveRange(mentorSubjects);
+                if (await _context.SaveChangesAsync() < 0) {
                     result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
                                                              ErrorTypes.SaveFail,
                                                              ErrorMessages.SaveFail);
@@ -81,8 +81,8 @@ namespace MAS.Infrastructure.Repositories.Subject
                 }
             }
 
-            context.Subjects.Remove(subject);
-            if ((await context.SaveChangesAsync() >= 0)) {
+            _context.Subjects.Remove(subject);
+            if ((await _context.SaveChangesAsync() >= 0)) {
                 result.Content = true;
                 return result;
             }
@@ -94,13 +94,13 @@ namespace MAS.Infrastructure.Repositories.Subject
 
         public async Task<PagedResult<SubjectResponse>> GetAllSubjectsAsync(SubjectParameters param)
         {
-            var subjects = await context.Subjects.ToListAsync();
+            var subjects = await _context.Subjects.ToListAsync();
             var query = subjects.AsQueryable();
 
             FilterSubject(ref query, param.SearchString);
 
             subjects = query.ToList();
-            var response = mapper.Map<List<SubjectResponse>>(subjects);
+            var response = _mapper.Map<List<SubjectResponse>>(subjects);
             return PagedResult<SubjectResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
         }
 
@@ -124,7 +124,7 @@ namespace MAS.Infrastructure.Repositories.Subject
         {
             var result = new Result<SubjectResponse>();
             
-            var subject = await context.Subjects.FindAsync(subjectId);
+            var subject = await _context.Subjects.FindAsync(subjectId);
             if(subject == null) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                          ErrorTypes.NotFound,
@@ -132,7 +132,7 @@ namespace MAS.Infrastructure.Repositories.Subject
                 return result;
             }
 
-            var response = mapper.Map<SubjectResponse>(subject);
+            var response = _mapper.Map<SubjectResponse>(subject);
             result.Content = response;
             return result;
         }
@@ -141,7 +141,7 @@ namespace MAS.Infrastructure.Repositories.Subject
         {
             var result = new Result<bool>();
 
-            var subject = await context.Subjects.FindAsync(subjectId);
+            var subject = await _context.Subjects.FindAsync(subjectId);
             if (subject == null) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                          ErrorTypes.NotFound,
@@ -149,7 +149,7 @@ namespace MAS.Infrastructure.Repositories.Subject
                 return result;
             }
 
-            var existSubject = await context.Subjects.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim() 
+            var existSubject = await _context.Subjects.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim() 
                                                                     && x.Id != subjectId);
             if (existSubject) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
@@ -158,10 +158,10 @@ namespace MAS.Infrastructure.Repositories.Subject
                 return result;
             }
 
-            var model = mapper.Map(request, subject);
-            context.Subjects.Update(model);
+            var model = _mapper.Map(request, subject);
+            _context.Subjects.Update(model);
 
-            if (await context.SaveChangesAsync() >= 0) {
+            if (await _context.SaveChangesAsync() >= 0) {
                 result.Content = true;
                 return result;
             }
