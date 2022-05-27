@@ -83,9 +83,9 @@ namespace MAS.Infrastructure.Repositories.Account
                             IsActive = true
                         };
 
-                        await context.MasUsers.AddAsync(masUser);
+                        await _context.MasUsers.AddAsync(masUser);
 
-                        if (await context.SaveChangesAsync() >= 0) {
+                        if (await _context.SaveChangesAsync() >= 0) {
                             var token = await GenerateToken(user);
                             return new AuthenResult {
                                 Message = token[0],
@@ -98,7 +98,7 @@ namespace MAS.Infrastructure.Repositories.Account
             else {
                 await userManager.AddLoginAsync(user, info);
 
-                var appUser = await context.MasUsers.FirstOrDefaultAsync(x => x.IdentityId == user.Id);
+                var appUser = await _context.MasUsers.FirstOrDefaultAsync(x => x.IdentityId == user.Id);
 
                 if (appUser is null) {
                     return new AuthenResult {

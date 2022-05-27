@@ -24,9 +24,4 @@
     <ProjectReference Include="..\MAS.Core\MAS.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Helpers\" />
-    <Folder Include="Profiles\" />
-  </ItemGroup>
-
 </Project>

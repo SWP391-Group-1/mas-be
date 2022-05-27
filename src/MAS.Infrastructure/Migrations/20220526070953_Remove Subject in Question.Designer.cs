@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAS.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220523084732_Add Answer in Question")]
-    partial class AddAnswerinQuestion
+    [Migration("20220526070953_Remove Subject in Question")]
+    partial class RemoveSubjectinQuestion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -111,6 +111,9 @@ namespace MAS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Introduce")
+                        .HasColumnType("nvarchar(1000)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -184,18 +187,12 @@ namespace MAS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("SubjectId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppointmentId");
-
-                    b.HasIndex("SubjectId");
 
                     b.ToTable("Questions");
                 });
@@ -514,15 +511,7 @@ namespace MAS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MAS.Core.Entities.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Appointment");
-
-                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("MAS.Core.Entities.Slot", b =>

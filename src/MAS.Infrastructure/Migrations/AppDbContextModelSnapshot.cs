@@ -109,6 +109,9 @@ namespace MAS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Introduce")
+                        .HasColumnType("nvarchar(1000)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -182,18 +185,12 @@ namespace MAS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("SubjectId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AppointmentId");
-
-                    b.HasIndex("SubjectId");
 
                     b.ToTable("Questions");
                 });
@@ -512,15 +509,7 @@ namespace MAS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MAS.Core.Entities.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Appointment");
-
-                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("MAS.Core.Entities.Slot", b =>

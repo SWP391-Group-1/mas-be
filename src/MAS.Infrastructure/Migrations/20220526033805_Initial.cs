@@ -57,6 +57,7 @@ namespace MAS.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Avatar = table.Column<string>(type: "nvarchar(MAX)", nullable: false),
+                    Introduce = table.Column<string>(type: "nvarchar(1000)", nullable: true),
                     MeetUrl = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     IsMentor = table.Column<bool>(type: "bit", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
@@ -304,6 +305,7 @@ namespace MAS.Infrastructure.Migrations
                     AppointmentId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     SubjectId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     QuestionContent = table.Column<string>(type: "nvarchar(500)", nullable: false),
+                    Answer = table.Column<string>(type: "nvarchar(MAX)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },

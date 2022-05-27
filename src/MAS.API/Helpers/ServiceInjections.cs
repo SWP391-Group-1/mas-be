@@ -1,8 +1,12 @@
 ﻿using MAS.Core.Interfaces.Repositories.Account;
+using MAS.Core.Interfaces.Repositories.Subject;
 using MAS.Core.Interfaces.Services.Account;
+using MAS.Core.Interfaces.Services.Subject;
 using MAS.Core.Services.Account;
+using MAS.Core.Services.Subject;
 using MAS.Infrastructure.Data;
 using MAS.Infrastructure.Repositories.Account;
+using MAS.Infrastructure.Repositories.Subject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,6 +39,10 @@ namespace MAS.API.Helpers
             // Config for Authentication
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<IAccountRepository, AccountRepository>();
+
+            // Config for Subject
+            services.AddScoped<ISubjectService, SubjectService>();
+            services.AddScoped<ISubjectRepository, SubjectRepository>();
             // -----------------------------------------------------------------------------------------
             services.AddHttpClient();
             return services;

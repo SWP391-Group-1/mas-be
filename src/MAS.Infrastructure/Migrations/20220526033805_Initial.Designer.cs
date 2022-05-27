@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAS.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220523081625_Config foreign key slotId in Appointment")]
-    partial class ConfigforeignkeyslotIdinAppointment
+    [Migration("20220526033805_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -111,6 +111,9 @@ namespace MAS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("Introduce")
+                        .HasColumnType("nvarchar(1000)");
+
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
@@ -169,6 +172,9 @@ namespace MAS.Infrastructure.Migrations
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Answer")
+                        .HasColumnType("nvarchar(MAX)");
 
                     b.Property<string>("AppointmentId")
                         .IsRequired()
