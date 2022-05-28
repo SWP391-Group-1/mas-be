@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MAS.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220526033805_Initial")]
+    [Migration("20220528005322_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,8 +32,18 @@ namespace MAS.Infrastructure.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime");
 
-                    b.Property<bool>("IsApproved")
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("FinishTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<bool>("IsApprove")
                         .HasColumnType("bit");
+
+                    b.Property<string>("MentorDescription")
+                        .HasColumnType("nvarchar(1000)");
 
                     b.Property<string>("MentorId")
                         .IsRequired()
@@ -43,18 +53,17 @@ namespace MAS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("StudentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
+                    b.Property<DateTime?>("StartTime")
+                        .HasColumnType("datetime");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SlotId");
+                    b.HasIndex("CreatorId");
 
-                    b.HasIndex("StudentId");
+                    b.HasIndex("SlotId");
 
                     b.ToTable("Appointments");
                 });
@@ -91,6 +100,29 @@ namespace MAS.Infrastructure.Migrations
                     b.ToTable("AppointmentSubjects");
                 });
 
+            modelBuilder.Entity("MAS.Core.Entities.Major", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Majors");
+                });
+
             modelBuilder.Entity("MAS.Core.Entities.MasUser", b =>
                 {
                     b.Property<string>("Id")
@@ -118,7 +150,6 @@ namespace MAS.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool?>("IsMentor")
-                        .IsRequired()
                         .HasColumnType("bit");
 
                     b.Property<string>("MeetUrl")
@@ -127,6 +158,15 @@ namespace MAS.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("NumOfAppointment")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumOfRate")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Rate")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime");
@@ -183,13 +223,13 @@ namespace MAS.Infrastructure.Migrations
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime");
 
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("QuestionContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("SubjectId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime");
@@ -198,9 +238,53 @@ namespace MAS.Infrastructure.Migrations
 
                     b.HasIndex("AppointmentId");
 
-                    b.HasIndex("SubjectId");
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("Questions");
+                });
+
+            modelBuilder.Entity("MAS.Core.Entities.Rating", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("AppointmentId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("CreatorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsApprove")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MentorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<int>("Vote")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId");
+
+                    b.HasIndex("MentorId");
+
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("MAS.Core.Entities.Slot", b =>
@@ -242,6 +326,10 @@ namespace MAS.Infrastructure.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(1000)");
 
+                    b.Property<string>("MajorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)");
@@ -250,6 +338,8 @@ namespace MAS.Infrastructure.Migrations
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MajorId");
 
                     b.ToTable("Subjects");
                 });
@@ -454,21 +544,21 @@ namespace MAS.Infrastructure.Migrations
 
             modelBuilder.Entity("MAS.Core.Entities.Appointment", b =>
                 {
+                    b.HasOne("MAS.Core.Entities.MasUser", "Creator")
+                        .WithMany("Appointments")
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MAS.Core.Entities.Slot", "Slot")
                         .WithMany("Appointments")
                         .HasForeignKey("SlotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MAS.Core.Entities.MasUser", "Student")
-                        .WithMany("Appointments")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Creator");
 
                     b.Navigation("Slot");
-
-                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("MAS.Core.Entities.AppointmentSubject", b =>
@@ -517,15 +607,34 @@ namespace MAS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MAS.Core.Entities.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("SubjectId")
+                    b.HasOne("MAS.Core.Entities.MasUser", "Creator")
+                        .WithMany("Questions")
+                        .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Appointment");
 
-                    b.Navigation("Subject");
+                    b.Navigation("Creator");
+                });
+
+            modelBuilder.Entity("MAS.Core.Entities.Rating", b =>
+                {
+                    b.HasOne("MAS.Core.Entities.Appointment", "Appointment")
+                        .WithMany("Ratings")
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MAS.Core.Entities.MasUser", "Mentor")
+                        .WithMany("Ratings")
+                        .HasForeignKey("MentorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Appointment");
+
+                    b.Navigation("Mentor");
                 });
 
             modelBuilder.Entity("MAS.Core.Entities.Slot", b =>
@@ -537,6 +646,17 @@ namespace MAS.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Mentor");
+                });
+
+            modelBuilder.Entity("MAS.Core.Entities.Subject", b =>
+                {
+                    b.HasOne("MAS.Core.Entities.Major", "Major")
+                        .WithMany("Subjects")
+                        .HasForeignKey("MajorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Major");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -595,6 +715,13 @@ namespace MAS.Infrastructure.Migrations
                     b.Navigation("AppointmentSubjects");
 
                     b.Navigation("Questions");
+
+                    b.Navigation("Ratings");
+                });
+
+            modelBuilder.Entity("MAS.Core.Entities.Major", b =>
+                {
+                    b.Navigation("Subjects");
                 });
 
             modelBuilder.Entity("MAS.Core.Entities.MasUser", b =>
@@ -602,6 +729,10 @@ namespace MAS.Infrastructure.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("MentorSubjects");
+
+                    b.Navigation("Questions");
+
+                    b.Navigation("Ratings");
 
                     b.Navigation("Slots");
                 });

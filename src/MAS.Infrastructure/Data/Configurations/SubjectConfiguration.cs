@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MAS.Infrastructure.Data.Configuration
+namespace MAS.Infrastructure.Data.Configurations
 {
     internal class SubjectConfiguration : IEntityTypeConfiguration<Subject>
     {
@@ -12,6 +12,7 @@ namespace MAS.Infrastructure.Data.Configuration
             builder.Property(x => x.Id).HasColumnType("nvarchar(100)");
             builder.Property(x => x.CreateDate).HasColumnType("datetime").IsRequired();
             builder.Property(x => x.UpdateDate).HasColumnType("datetime").IsRequired(false);
+            builder.Property(x => x.MajorId).HasColumnType("nvarchar(100)").IsRequired();
             builder.Property(x => x.Title).HasColumnType("nvarchar(200)").IsRequired();
             builder.Property(x => x.Description).HasColumnType("nvarchar(1000)").IsRequired(false);
         }
