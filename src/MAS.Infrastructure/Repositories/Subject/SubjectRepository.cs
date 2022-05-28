@@ -25,6 +25,14 @@ namespace MAS.Infrastructure.Repositories.Subject
         {
             var result = new Result<SubjectResponse>();
 
+            var major = await _context.Majors.FindAsync(request.MajorId);
+            if (major == null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.NotFound + $"this Major in System.");
+                return result;
+            }
+
             var existSubject = await _context.Subjects.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim());
             if (existSubject) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
@@ -62,8 +70,8 @@ namespace MAS.Infrastructure.Repositories.Subject
             var appSubjects = await _context.AppointmentSubjects.Where(x => x.SubjectId == subjectId).ToListAsync();
             if (appSubjects.Count > 0) {
                 _context.AppointmentSubjects.RemoveRange(appSubjects);
-                if(await _context.SaveChangesAsync() < 0) {
-                    result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else, 
+                if (await _context.SaveChangesAsync() < 0) {
+                    result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
                                                              ErrorTypes.SaveFail,
                                                              ErrorMessages.SaveFail);
                     return result;
@@ -71,7 +79,7 @@ namespace MAS.Infrastructure.Repositories.Subject
             }
 
             var mentorSubjects = await _context.MentorSubjects.Where(x => x.SubjectId == subjectId).ToListAsync();
-            if(mentorSubjects.Count > 0) {
+            if (mentorSubjects.Count > 0) {
                 _context.MentorSubjects.RemoveRange(mentorSubjects);
                 if (await _context.SaveChangesAsync() < 0) {
                     result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
@@ -98,22 +106,45 @@ namespace MAS.Infrastructure.Repositories.Subject
             var query = subjects.AsQueryable();
 
             FilterSubject(ref query, param.SearchString);
+            FilterSubjectByMajor(ref query, param.MajorId);
+            SortResultsAscOrDesc(ref query, param.SortAsc);
 
             subjects = query.ToList();
             var response = _mapper.Map<List<SubjectResponse>>(subjects);
             return PagedResult<SubjectResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
         }
 
+        private void SortResultsAscOrDesc(ref IQueryable<Core.Entities.Subject> query, bool? sortAsc)
+        {
+            if(sortAsc is null) {
+                return;
+            }
+            if(sortAsc is true) {
+                query = query.OrderBy(x => x.Title);
+            }
+            else {
+                query = query.OrderByDescending(x => x.Title);
+            }
+        }
+
+        private void FilterSubjectByMajor(ref IQueryable<Core.Entities.Subject> query, string majorId)
+        {
+            if (String.IsNullOrEmpty(majorId) || String.IsNullOrWhiteSpace(majorId)) {
+                return;
+            }
+            query = query.Where(x => x.MajorId == majorId);
+        }
+
         private void FilterSubject(
             ref IQueryable<Core.Entities.Subject> query,
             string searchString)
         {
-            if(!query.Any()
+            if (!query.Any()
                || String.IsNullOrEmpty(searchString)
                || String.IsNullOrWhiteSpace(searchString)) {
                 return;
             }
-            query = query.Where(x => 
+            query = query.Where(x =>
                                     (x.Title + " " + x.Description)
                                     .ToLower()
                                     .Contains(searchString.ToLower())
@@ -123,9 +154,9 @@ namespace MAS.Infrastructure.Repositories.Subject
         public async Task<Result<SubjectResponse>> GetSubjectByIdAsync(string subjectId)
         {
             var result = new Result<SubjectResponse>();
-            
+
             var subject = await _context.Subjects.FindAsync(subjectId);
-            if(subject == null) {
+            if (subject == null) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                          ErrorTypes.NotFound,
                                                          ErrorMessages.NotFound + "subject.");
@@ -149,7 +180,15 @@ namespace MAS.Infrastructure.Repositories.Subject
                 return result;
             }
 
-            var existSubject = await _context.Subjects.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim() 
+            var major = await _context.Majors.FindAsync(request.MajorId);
+            if (major == null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.NotFound + $"this Major in System.");
+                return result;
+            }
+
+            var existSubject = await _context.Subjects.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
                                                                     && x.Id != subjectId);
             if (existSubject) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,

@@ -31,7 +31,7 @@
 > - ``GET /api/mas/v1/subjects ``  
 >   ***Description***: Get all Subjects   
 >   ***Role Access***: Admin, User  
->   ***Extension***: Paging, Filter by search string.
+>   ***Extension***: Paging, Filter by search string, major (major ID), sort by title ASC or DESC.  
 >
 > - ``POST /api/mas/v1/subjects/ ``  
 >   ***Description***: Create a Subject   
