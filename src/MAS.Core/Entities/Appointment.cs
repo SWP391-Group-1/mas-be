@@ -1,12 +1,13 @@
 ﻿using MAS.Core.Entities.Abtraction;
+using System;
 using System.Collections.Generic;
 
 namespace MAS.Core.Entities
 {
     public class Appointment : BaseEntity
     {
-        public string StudentId { get; set; }
-        public MasUser Student { get; set; }
+        public string CreatorId { get; set; }
+        public MasUser Creator { get; set; }
 
         public string MentorId { get; set; }
 
@@ -15,8 +16,13 @@ namespace MAS.Core.Entities
 
         public ICollection<AppointmentSubject> AppointmentSubjects { get; set; }
         public ICollection<Question> Questions { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
 
-        public bool IsApproved { get; set; }
+        public bool IsApprove { get; set; }
 
+        public DateTime? StartTime { get; set; }
+
+        public string MentorDescription { get; set; }
+        public DateTime? FinishTime { get; set; }
     }
 }

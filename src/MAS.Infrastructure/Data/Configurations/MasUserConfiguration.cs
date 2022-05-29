@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MAS.Infrastructure.Data.Configuration
+namespace MAS.Infrastructure.Data.Configurations
 {
     public class MasUserConfiguration : IEntityTypeConfiguration<MasUser>
     {
@@ -17,8 +17,11 @@ namespace MAS.Infrastructure.Data.Configuration
             builder.Property(x => x.Email).HasColumnType("nvarchar(100)").IsRequired();
             builder.Property(x => x.Introduce).HasColumnType("nvarchar(1000)").IsRequired(false);
             builder.Property(x => x.Avatar).HasColumnType("nvarchar(MAX)").IsRequired();
+            builder.Property(x => x.Rate).HasColumnType("float").IsRequired();
+            builder.Property(x => x.NumOfRate).HasColumnType("int").IsRequired();
+            builder.Property(x => x.NumOfAppointment).HasColumnType("int").IsRequired();
+            builder.Property(x => x.IsMentor).HasColumnType("bit").IsRequired(false);
             builder.Property(x => x.MeetUrl).HasColumnType("nvarchar(200)").IsRequired(false);
-            builder.Property(x => x.IsMentor).HasColumnType("bit").IsRequired();
             builder.Property(x => x.IsActive).HasColumnType("bit").IsRequired();
         }
     }

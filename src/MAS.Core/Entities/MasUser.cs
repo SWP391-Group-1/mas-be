@@ -10,12 +10,20 @@ namespace MAS.Core.Entities
         public string Email { get; set; }
         public string Avatar { get; set; }
         public string Introduce { get; set; }
-        public string MeetUrl { get; set; }
+
+        public float Rate { get; set; }
+        public int NumOfRate { get; set; }
+        public int NumOfAppointment { get; set; }
+
         public bool? IsMentor { get; set; }
+        public string MeetUrl { get; set; }
+
         public bool IsActive { get; set; }
 
         public ICollection<Slot> Slots { get; set; }
         public ICollection<Appointment> Appointments { get; set; }
         public ICollection<MentorSubject> MentorSubjects { get; set; }
+        public ICollection<Question> Questions { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
     }
 }

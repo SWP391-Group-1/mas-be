@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace MAS.Infrastructure.Data.Configuration
+namespace MAS.Infrastructure.Data.Configurations
 {
     public class AppointmentSubjectConfiguration : IEntityTypeConfiguration<AppointmentSubject>
     {

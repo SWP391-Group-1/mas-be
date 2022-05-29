@@ -49,28 +49,7 @@ namespace MAS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "MasUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    IdentityId = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    Avatar = table.Column<string>(type: "nvarchar(MAX)", nullable: false),
-                    Introduce = table.Column<string>(type: "nvarchar(1000)", nullable: true),
-                    MeetUrl = table.Column<string>(type: "nvarchar(200)", nullable: true),
-                    IsMentor = table.Column<bool>(type: "bit", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MasUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Subjects",
+                name: "Majors",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
@@ -81,7 +60,31 @@ namespace MAS.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Subjects", x => x.Id);
+                    table.PrimaryKey("PK_Majors", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MasUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    IdentityId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Avatar = table.Column<string>(type: "nvarchar(MAX)", nullable: false),
+                    Introduce = table.Column<string>(type: "nvarchar(1000)", nullable: true),
+                    Rate = table.Column<double>(type: "float", nullable: false),
+                    NumOfRate = table.Column<int>(type: "int", nullable: false),
+                    NumOfAppointment = table.Column<int>(type: "int", nullable: false),
+                    IsMentor = table.Column<bool>(type: "bit", nullable: true),
+                    MeetUrl = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MasUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,6 +194,28 @@ namespace MAS.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Subjects",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    MajorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(200)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(1000)", nullable: true),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subjects", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subjects_Majors_MajorId",
+                        column: x => x.MajorId,
+                        principalTable: "Majors",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Slots",
                 columns: table => new
                 {
@@ -245,10 +270,13 @@ namespace MAS.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    StudentId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    CreatorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     MentorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     SlotId = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    IsApproved = table.Column<bool>(type: "bit", nullable: false),
+                    IsApprove = table.Column<bool>(type: "bit", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime", nullable: true),
+                    MentorDescription = table.Column<string>(type: "nvarchar(1000)", nullable: true),
+                    FinishTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
@@ -256,8 +284,8 @@ namespace MAS.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Appointments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Appointments_MasUsers_StudentId",
-                        column: x => x.StudentId,
+                        name: "FK_Appointments_MasUsers_CreatorId",
+                        column: x => x.CreatorId,
                         principalTable: "MasUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -303,7 +331,7 @@ namespace MAS.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     AppointmentId = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                    SubjectId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    CreatorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     QuestionContent = table.Column<string>(type: "nvarchar(500)", nullable: false),
                     Answer = table.Column<string>(type: "nvarchar(MAX)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -317,24 +345,56 @@ namespace MAS.Infrastructure.Migrations
                         column: x => x.AppointmentId,
                         principalTable: "Appointments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.NoAction);
                     table.ForeignKey(
-                        name: "FK_Questions_Subjects_SubjectId",
-                        column: x => x.SubjectId,
-                        principalTable: "Subjects",
+                        name: "FK_Questions_MasUsers_CreatorId",
+                        column: x => x.CreatorId,
+                        principalTable: "MasUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ratings",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    AppointmentId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    CreatorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    MentorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                    Vote = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(500)", nullable: true),
+                    IsApprove = table.Column<bool>(type: "bit", nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ratings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Ratings_Appointments_AppointmentId",
+                        column: x => x.AppointmentId,
+                        principalTable: "Appointments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction);
+                    table.ForeignKey(
+                        name: "FK_Ratings_MasUsers_MentorId",
+                        column: x => x.MentorId,
+                        principalTable: "MasUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Appointments_CreatorId",
+                table: "Appointments",
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Appointments_SlotId",
                 table: "Appointments",
                 column: "SlotId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Appointments_StudentId",
-                table: "Appointments",
-                column: "StudentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_AppointmentSubjects_AppointmentId",
@@ -401,14 +461,29 @@ namespace MAS.Infrastructure.Migrations
                 column: "AppointmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Questions_SubjectId",
+                name: "IX_Questions_CreatorId",
                 table: "Questions",
-                column: "SubjectId");
+                column: "CreatorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ratings_AppointmentId",
+                table: "Ratings",
+                column: "AppointmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ratings_MentorId",
+                table: "Ratings",
+                column: "MentorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Slots_MentorId",
                 table: "Slots",
                 column: "MentorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subjects_MajorId",
+                table: "Subjects",
+                column: "MajorId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -438,16 +513,22 @@ namespace MAS.Infrastructure.Migrations
                 name: "Questions");
 
             migrationBuilder.DropTable(
+                name: "Ratings");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
+                name: "Subjects");
+
+            migrationBuilder.DropTable(
                 name: "Appointments");
 
             migrationBuilder.DropTable(
-                name: "Subjects");
+                name: "Majors");
 
             migrationBuilder.DropTable(
                 name: "Slots");
