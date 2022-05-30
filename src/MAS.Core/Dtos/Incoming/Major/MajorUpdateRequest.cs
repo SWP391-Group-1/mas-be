@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MAS.Core.Dtos.Incoming.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace MAS.Core.Dtos.Incoming.Major
 {
-    public class MajorUpdateRequest
+    public class MajorUpdateRequest : BaseUpdateRequest
     {
         [Required]
         [MaxLength(200)]

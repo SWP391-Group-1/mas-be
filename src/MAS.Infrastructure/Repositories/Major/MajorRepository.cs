@@ -34,7 +34,6 @@ namespace MAS.Infrastructure.Repositories.Major
             }
 
             var model = _mapper.Map<Core.Entities.Major>(request);
-            model.CreateDate = DateTime.Now;
             await _context.Majors.AddAsync(model);
             if ((await _context.SaveChangesAsync() >= 0)) {
                 var response = _mapper.Map<MajorResponse>(model);
