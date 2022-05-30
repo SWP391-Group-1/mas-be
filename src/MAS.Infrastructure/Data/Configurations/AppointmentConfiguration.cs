@@ -16,12 +16,12 @@ namespace MAS.Infrastructure.Data.Configurations
             builder.Property(x => x.MentorId).HasColumnType("nvarchar(100)").IsRequired();
             builder.Property(x => x.SlotId).HasColumnType("nvarchar(100)").IsRequired();
             builder.Property(x => x.IsApprove).HasColumnType("bit").IsRequired();
-            //builder.HasOne(a => a.Slot)
-            //    .WithMany(s => s.Appointments)
-            //    .HasForeignKey(a => a.SlotId);
-            builder.HasOne(a => a.Creator)
+            builder.HasOne(a => a.Slot)
                 .WithMany(s => s.Appointments)
-                .HasForeignKey(a => a.CreatorId);
+                .HasForeignKey(a => a.SlotId);
+            //builder.HasOne(a => a.Creator)
+            //    .WithMany(s => s.Appointments)
+            //    .HasForeignKey(a => a.CreatorId);
             builder.Property(x => x.StartTime).HasColumnType("datetime").IsRequired(false);
             builder.Property(x => x.FinishTime).HasColumnType("datetime").IsRequired(false);
             builder.Property(x => x.MentorDescription).HasColumnType("nvarchar(1000)").IsRequired(false);

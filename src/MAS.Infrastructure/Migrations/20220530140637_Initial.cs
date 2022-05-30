@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -11,19 +11,22 @@ namespace MAS.Infrastructure.Migrations
         {
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "AspNetUsers",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -40,26 +43,30 @@ namespace MAS.Infrastructure.Migrations
                     LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Majors",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(200)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1000)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_Majors", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "MasUsers",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     IdentityId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", nullable: false),
@@ -75,20 +82,23 @@ namespace MAS.Infrastructure.Migrations
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_MasUsers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
@@ -100,14 +110,16 @@ namespace MAS.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserClaims",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AspNetUserClaims_AspNetUsers_UserId",
@@ -119,13 +131,15 @@ namespace MAS.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserLogins",
-                columns: table => new {
+                columns: table => new
+                {
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                     table.ForeignKey(
                         name: "FK_AspNetUserLogins_AspNetUsers_UserId",
@@ -137,11 +151,13 @@ namespace MAS.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserRoles",
-                columns: table => new {
+                columns: table => new
+                {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
                     table.ForeignKey(
                         name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
@@ -159,13 +175,15 @@ namespace MAS.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "AspNetUserTokens",
-                columns: table => new {
+                columns: table => new
+                {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
                     table.ForeignKey(
                         name: "FK_AspNetUserTokens_AspNetUsers_UserId",
@@ -177,7 +195,8 @@ namespace MAS.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Subjects",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     MajorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(200)", nullable: false),
@@ -185,7 +204,8 @@ namespace MAS.Infrastructure.Migrations
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_Subjects", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Subjects_Majors_MajorId",
@@ -197,7 +217,8 @@ namespace MAS.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Slots",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     MentorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -205,7 +226,8 @@ namespace MAS.Infrastructure.Migrations
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_Slots", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Slots_MasUsers_MentorId",
@@ -217,7 +239,8 @@ namespace MAS.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "MentorSubjects",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     MentorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     SubjectId = table.Column<string>(type: "nvarchar(100)", nullable: false),
@@ -225,7 +248,8 @@ namespace MAS.Infrastructure.Migrations
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_MentorSubjects", x => x.Id);
                     table.ForeignKey(
                         name: "FK_MentorSubjects_MasUsers_MentorId",
@@ -243,7 +267,8 @@ namespace MAS.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Appointments",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     MentorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
@@ -252,28 +277,30 @@ namespace MAS.Infrastructure.Migrations
                     StartTime = table.Column<DateTime>(type: "datetime", nullable: true),
                     MentorDescription = table.Column<string>(type: "nvarchar(1000)", nullable: true),
                     FinishTime = table.Column<DateTime>(type: "datetime", nullable: true),
+                    MasUserId = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_Appointments", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Appointments_MasUsers_CreatorId",
-                        column: x => x.CreatorId,
+                        name: "FK_Appointments_MasUsers_MasUserId",
+                        column: x => x.MasUserId,
                         principalTable: "MasUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Appointments_Slots_SlotId",
                         column: x => x.SlotId,
                         principalTable: "Slots",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
                 name: "AppointmentSubjects",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     AppointmentId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     SubjectId = table.Column<string>(type: "nvarchar(100)", nullable: false),
@@ -281,7 +308,8 @@ namespace MAS.Infrastructure.Migrations
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_AppointmentSubjects", x => x.Id);
                     table.ForeignKey(
                         name: "FK_AppointmentSubjects_Appointments_AppointmentId",
@@ -299,34 +327,37 @@ namespace MAS.Infrastructure.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Questions",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     AppointmentId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     QuestionContent = table.Column<string>(type: "nvarchar(500)", nullable: false),
                     Answer = table.Column<string>(type: "nvarchar(MAX)", nullable: true),
+                    MasUserId = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_Questions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Questions_Appointments_AppointmentId",
                         column: x => x.AppointmentId,
                         principalTable: "Appointments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Questions_MasUsers_CreatorId",
-                        column: x => x.CreatorId,
-                        principalTable: "MasUsers",
-                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Questions_MasUsers_MasUserId",
+                        column: x => x.MasUserId,
+                        principalTable: "MasUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
                 name: "Ratings",
-                columns: table => new {
+                columns: table => new
+                {
                     Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     AppointmentId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                     CreatorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
@@ -335,29 +366,30 @@ namespace MAS.Infrastructure.Migrations
                     Comment = table.Column<string>(type: "nvarchar(500)", nullable: true),
                     IsApprove = table.Column<bool>(type: "bit", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    MasUserId = table.Column<string>(type: "nvarchar(100)", nullable: true),
                     CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
                 },
-                constraints: table => {
+                constraints: table =>
+                {
                     table.PrimaryKey("PK_Ratings", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Ratings_Appointments_AppointmentId",
                         column: x => x.AppointmentId,
                         principalTable: "Appointments",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_Ratings_MasUsers_MentorId",
-                        column: x => x.MentorId,
-                        principalTable: "MasUsers",
-                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ratings_MasUsers_MasUserId",
+                        column: x => x.MasUserId,
+                        principalTable: "MasUsers",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Appointments_CreatorId",
+                name: "IX_Appointments_MasUserId",
                 table: "Appointments",
-                column: "CreatorId");
+                column: "MasUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_SlotId",
@@ -429,9 +461,9 @@ namespace MAS.Infrastructure.Migrations
                 column: "AppointmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Questions_CreatorId",
+                name: "IX_Questions_MasUserId",
                 table: "Questions",
-                column: "CreatorId");
+                column: "MasUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Ratings_AppointmentId",
@@ -439,9 +471,9 @@ namespace MAS.Infrastructure.Migrations
                 column: "AppointmentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ratings_MentorId",
+                name: "IX_Ratings_MasUserId",
                 table: "Ratings",
-                column: "MentorId");
+                column: "MasUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Slots_MentorId",
