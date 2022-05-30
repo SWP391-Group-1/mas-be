@@ -12,7 +12,7 @@ namespace MAS.Core.Entities
         public string MentorId { get; set; }
 
         public string SlotId { get; set; }
-        public Slot Slot { get; set; }
+        //public Slot Slot { get; set; }
 
         public ICollection<AppointmentSubject> AppointmentSubjects { get; set; }
         public ICollection<Question> Questions { get; set; }

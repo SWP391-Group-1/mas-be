@@ -16,9 +16,9 @@ namespace MAS.Infrastructure.Data.Configurations
             builder.Property(x => x.CreatorId).HasColumnType("nvarchar(100)").IsRequired();
             builder.Property(x => x.QuestionContent).HasColumnType("nvarchar(500)").IsRequired();
             builder.Property(x => x.Answer).HasColumnType("nvarchar(MAX)").IsRequired(false);
-            builder.HasOne(q => q.Creator)
-                .WithMany(u => u.Questions)
-                .HasForeignKey(a => a.CreatorId);
+            //builder.HasOne(q => q.Creator)
+            //    .WithMany(u => u.Questions)
+            //    .HasForeignKey(a => a.CreatorId);
             builder.HasOne(q => q.Appointment)
                 .WithMany(u => u.Questions)
                 .HasForeignKey(a => a.AppointmentId);

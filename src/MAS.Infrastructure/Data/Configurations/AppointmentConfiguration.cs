@@ -16,9 +16,9 @@ namespace MAS.Infrastructure.Data.Configurations
             builder.Property(x => x.MentorId).HasColumnType("nvarchar(100)").IsRequired();
             builder.Property(x => x.SlotId).HasColumnType("nvarchar(100)").IsRequired();
             builder.Property(x => x.IsApprove).HasColumnType("bit").IsRequired();
-            builder.HasOne(a => a.Slot)
-                .WithMany(s => s.Appointments)
-                .HasForeignKey(a => a.SlotId);
+            //builder.HasOne(a => a.Slot)
+            //    .WithMany(s => s.Appointments)
+            //    .HasForeignKey(a => a.SlotId);
             builder.HasOne(a => a.Creator)
                 .WithMany(s => s.Appointments)
                 .HasForeignKey(a => a.CreatorId);
