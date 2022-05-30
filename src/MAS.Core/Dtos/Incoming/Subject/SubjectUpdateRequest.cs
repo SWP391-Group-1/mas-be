@@ -6,6 +6,10 @@ namespace MAS.Core.Dtos.Incoming.Subject
     public class SubjectUpdateRequest : BaseUpdateRequest
     {
         [Required]
+        [MaxLength(100)]
+        public string MajorId { get; set; }
+
+        [Required]
         [MaxLength(200)]
         public string Title { get; set; }
 
