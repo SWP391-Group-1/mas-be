@@ -5,6 +5,7 @@
 - <a href="#table-of-contents" target="_self">Table Of Contents</a> <br>
 - <a href="#weather" target="_self">Weather Forecast</a> <br>
 - <a href="#account" target="_self">Account</a> <br>
+- <a href="#major" target="_self">Major</a> <br>
 - <a href="#subject" target="_self">Subject</a> <br>
 - <a href="#api" target="_self">MAS API</a> <br>
 
@@ -24,6 +25,30 @@
 >
 > - ``POST /api/mas/v1/accounts/register-admin ``  
 >   ***Description***: Register Admin Account   
+>
+
+<h2 id="major">Major  <a href="#table-of-contents" target="_self">🔙</a></h2>   
+
+> - ``GET /api/mas/v1/majors ``  
+>   ***Description***: Get all Majors   
+>   ***Role Access***: Admin, User  
+>   ***Extension***: Paging, Filter by search string.
+>
+> - ``POST /api/mas/v1/majors/ ``  
+>   ***Description***: Create a Major   
+>   ***Role Access***: Admin  
+>
+> - ``GET /api/mas/v1/majors/{majorId} ``  
+>   ***Description***: Get Major by Id   
+>   ***Role Access***: Admin, User  
+>
+> - ``PUT /api/mas/v1/majors/{majorId} ``  
+>   ***Description***: Update Major   
+>   ***Role Access***: Admin  
+>
+> - ``DELETE /api/mas/v1/majors/{majorId} ``  
+>   ***Description***: Delete Major by Id   
+>   ***Role Access***: Admin  
 >
 
 <h2 id="subject">Subject  <a href="#table-of-contents" target="_self">🔙</a></h2>   
