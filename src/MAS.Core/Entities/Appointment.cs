@@ -7,7 +7,7 @@ namespace MAS.Core.Entities
     public class Appointment : BaseEntity
     {
         public string CreatorId { get; set; }
-        public MasUser Creator { get; set; }
+        //public MasUser Creator { get; set; }
 
         public string MentorId { get; set; }
 

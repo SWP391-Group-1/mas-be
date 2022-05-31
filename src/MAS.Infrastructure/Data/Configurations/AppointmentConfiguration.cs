@@ -19,9 +19,9 @@ namespace MAS.Infrastructure.Data.Configurations
             builder.HasOne(a => a.Slot)
                 .WithMany(s => s.Appointments)
                 .HasForeignKey(a => a.SlotId);
-            builder.HasOne(a => a.Creator)
-                .WithMany(s => s.Appointments)
-                .HasForeignKey(a => a.CreatorId);
+            //builder.HasOne(a => a.Creator)
+            //    .WithMany(s => s.Appointments)
+            //    .HasForeignKey(a => a.CreatorId);
             builder.Property(x => x.StartTime).HasColumnType("datetime").IsRequired(false);
             builder.Property(x => x.FinishTime).HasColumnType("datetime").IsRequired(false);
             builder.Property(x => x.MentorDescription).HasColumnType("nvarchar(1000)").IsRequired(false);

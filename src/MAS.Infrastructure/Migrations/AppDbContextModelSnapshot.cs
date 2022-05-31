@@ -40,6 +40,9 @@ namespace MAS.Infrastructure.Migrations
                     b.Property<bool>("IsApprove")
                         .HasColumnType("bit");
 
+                    b.Property<string>("MasUserId")
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("MentorDescription")
                         .HasColumnType("nvarchar(1000)");
 
@@ -59,7 +62,7 @@ namespace MAS.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorId");
+                    b.HasIndex("MasUserId");
 
                     b.HasIndex("SlotId");
 
@@ -225,6 +228,9 @@ namespace MAS.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("MasUserId")
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("QuestionContent")
                         .IsRequired()
                         .HasColumnType("nvarchar(500)");
@@ -236,7 +242,7 @@ namespace MAS.Infrastructure.Migrations
 
                     b.HasIndex("AppointmentId");
 
-                    b.HasIndex("CreatorId");
+                    b.HasIndex("MasUserId");
 
                     b.ToTable("Questions");
                 });
@@ -266,6 +272,9 @@ namespace MAS.Infrastructure.Migrations
                     b.Property<bool?>("IsApprove")
                         .HasColumnType("bit");
 
+                    b.Property<string>("MasUserId")
+                        .HasColumnType("nvarchar(100)");
+
                     b.Property<string>("MentorId")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
@@ -280,7 +289,7 @@ namespace MAS.Infrastructure.Migrations
 
                     b.HasIndex("AppointmentId");
 
-                    b.HasIndex("MentorId");
+                    b.HasIndex("MasUserId");
 
                     b.ToTable("Ratings");
                 });
@@ -542,19 +551,15 @@ namespace MAS.Infrastructure.Migrations
 
             modelBuilder.Entity("MAS.Core.Entities.Appointment", b =>
                 {
-                    b.HasOne("MAS.Core.Entities.MasUser", "Creator")
+                    b.HasOne("MAS.Core.Entities.MasUser", null)
                         .WithMany("Appointments")
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MasUserId");
 
                     b.HasOne("MAS.Core.Entities.Slot", "Slot")
                         .WithMany("Appointments")
                         .HasForeignKey("SlotId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Creator");
 
                     b.Navigation("Slot");
                 });
@@ -605,15 +610,11 @@ namespace MAS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MAS.Core.Entities.MasUser", "Creator")
+                    b.HasOne("MAS.Core.Entities.MasUser", null)
                         .WithMany("Questions")
-                        .HasForeignKey("CreatorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MasUserId");
 
                     b.Navigation("Appointment");
-
-                    b.Navigation("Creator");
                 });
 
             modelBuilder.Entity("MAS.Core.Entities.Rating", b =>
@@ -624,15 +625,11 @@ namespace MAS.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MAS.Core.Entities.MasUser", "Mentor")
+                    b.HasOne("MAS.Core.Entities.MasUser", null)
                         .WithMany("Ratings")
-                        .HasForeignKey("MentorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MasUserId");
 
                     b.Navigation("Appointment");
-
-                    b.Navigation("Mentor");
                 });
 
             modelBuilder.Entity("MAS.Core.Entities.Slot", b =>
