@@ -7,6 +7,7 @@
 - <a href="#account" target="_self">Account</a> <br>
 - <a href="#major" target="_self">Major</a> <br>
 - <a href="#subject" target="_self">Subject</a> <br>
+- <a href="#subjectMentor" target="_self">Subject of Mentor</a> <br>
 - <a href="#api" target="_self">MAS API</a> <br>
 
 <h2 id="weather">Weather Forecast <a href="#table-of-contents" target="_self">🔙</a></h2>
@@ -73,5 +74,25 @@
 > - ``DELETE /api/mas/v1/subjects/{subjectId} ``  
 >   ***Description***: Delete Subject by Id   
 >   ***Role Access***: Admin  
+>
+
+<h2 id="subjectMentor">Subject of Mentor  <a href="#table-of-contents" target="_self">🔙</a></h2>   
+
+> - ``GET /api/mas/v1/mentor-subjects/{mentorId} ``  
+>   ***Description***: Get all Subjects of a Mentor   
+>   ***Role Access***: Admin, User  
+>   ***Extension***: Paging  
+>
+> - ``POST /api/mas/v1/mentor-subjects/ ``  
+>   ***Description***: Register a Subject into Mentor Profile   
+>   ***Role Access***: User(Mentor)  
+>
+> - ``PUT /api/mas/v1/mentor-subjects/{subjectOfMentorId} ``  
+>   ***Description***: Update Subject Info of Mentor   
+>   ***Role Access***: User  
+>
+> - ``DELETE /api/mas/v1/mentor-subjects/{subjectOfMentorId} ``  
+>   ***Description***: Delete a Subject of Mentor  
+>   ***Role Access***: User  
 >
 <h2 id="api">MAS API  <a href="#table-of-contents" target="_self">🔙</a></h2>   

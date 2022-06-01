@@ -78,8 +78,15 @@ namespace MAS.Infrastructure.Repositories.Account
                             Name = payload["name"].ToString(),
                             Email = payload["email"].ToString(),
                             Avatar = payload["picture"].ToString(),
-                            MeetUrl = "",
+                            Introduce = "",
+
+                            Rate = 0,
+                            NumOfRate = 0,
+                            NumOfAppointment = 0,
+
                             IsMentor = null,
+                            MeetUrl = "",
+
                             IsActive = true
                         };
 
