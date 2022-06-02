@@ -61,7 +61,7 @@ namespace MAS.Core.Services.Subject
             }
         }
 
-        public async Task<Result<SubjectResponse>> GetSubjectByIdAsync(string subjectId)
+        public async Task<Result<SubjectDetailResponse>> GetSubjectByIdAsync(string subjectId)
         {
             try {
                 if (String.IsNullOrEmpty(subjectId) || String.IsNullOrWhiteSpace(subjectId)) {

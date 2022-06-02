@@ -47,7 +47,7 @@ namespace MAS.API.Controllers.V1
         /// </remarks>
         [HttpGet("{subjectId}", Name = "GetSubjectById")]
         [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
-        public async Task<ActionResult<Result<SubjectResponse>>> GetSubjectById(string subjectId)
+        public async Task<ActionResult<Result<SubjectDetailResponse>>> GetSubjectById(string subjectId)
         {
             var response = await _subjectService.GetSubjectByIdAsync(subjectId);
             if (!response.IsSuccess) {

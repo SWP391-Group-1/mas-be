@@ -19,46 +19,48 @@ content-type: {{contentType}}
 
 ###
 
-# Create major
-POST {{baseUrl}}/api/mas/v1/majors
+# Create subject
+POST {{baseUrl}}/api/mas/v1/subjects
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
 {
-  "title": "[SE] Software Engineer",
-  "description": "Bachelor Software Engineer"
+  "majorId": "31ae4799-4844-4a24-855d-02ee850decaa",
+  "title": "[SWP391] Software Application Development",
+  "description": "Train to build, development an application from scratch."
 }
 
 ###
 
-# Get all majors
-GET {{baseUrl}}/api/mas/v1/majors
+# Get all subjects
+GET {{baseUrl}}/api/mas/v1/subjects
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
 ###
 
-# Get a major by Id
-GET {{baseUrl}}/api/mas/v1/majors/ab7c985f-11f5-4353-bd7b-e4237309a015
+# Get a subject by Id
+GET {{baseUrl}}/api/mas/v1/subjects/31ae4799-4844-4a24-855d-02ee850decaa
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
 ###
 
-# Update a major by Id
-PUT {{baseUrl}}/api/mas/v1/majors/ab7c985f-11f5-4353-bd7b-e4237309a015
+# Update a subject by Id
+PUT {{baseUrl}}/api/mas/v1/subjects/31ae4799-4844-4a24-855d-02ee850decaa
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
 {
-  "title": "[SE] Software Engineer",
-  "description": "Receive Bachelor Software Engineer Degree after graduate. You will learn how to Develop a real System or Application during Study this major in FPT University."
+  "majorId": "string",
+  "title": "string",
+  "description": "string"
 }
 
 ###
 
-# Delete a major by Id
-DELETE {{baseUrl}}/api/mas/v1/majors/ab7c985f-11f5-4353-bd7b-e4237309a015
+# Delete a subject by Id
+DELETE {{baseUrl}}/api/mas/v1/subjects/31ae4799-4844-4a24-855d-02ee850decaa
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
