@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MAS.Core.Dtos.Incoming.Account;
 using MAS.Core.Dtos.Outcoming.Account;
-using MAS.Core.Entities;
 using MAS.Core.Interfaces.Repositories.Account;
 using MAS.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
@@ -72,7 +71,7 @@ namespace MAS.Infrastructure.Repositories.Account
                     await userManager.AddLoginAsync(user, info);
 
                     if (result.Succeeded) {
-                        var masUser = new MasUser {
+                        var masUser = new Core.Entities.MasUser {
                             Id = Guid.NewGuid().ToString(),
                             IdentityId = user.Id,
                             Name = payload["name"].ToString(),
@@ -303,7 +302,7 @@ namespace MAS.Infrastructure.Repositories.Account
                 ExpireDate = DateTime.Parse(token[1])
             };
         }
-        
+
         /// <summary>
         /// Check admin account.
         /// </summary>

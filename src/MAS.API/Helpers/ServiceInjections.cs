@@ -1,15 +1,19 @@
 ﻿using MAS.Core.Interfaces.Repositories.Account;
 using MAS.Core.Interfaces.Repositories.Major;
+using MAS.Core.Interfaces.Repositories.MasUser;
 using MAS.Core.Interfaces.Repositories.Subject;
 using MAS.Core.Interfaces.Services.Account;
 using MAS.Core.Interfaces.Services.Major;
+using MAS.Core.Interfaces.Services.MasUser;
 using MAS.Core.Interfaces.Services.Subject;
 using MAS.Core.Services.Account;
 using MAS.Core.Services.Major;
+using MAS.Core.Services.MasUser;
 using MAS.Core.Services.Subject;
 using MAS.Infrastructure.Data;
 using MAS.Infrastructure.Repositories.Account;
 using MAS.Infrastructure.Repositories.Major;
+using MAS.Infrastructure.Repositories.MasUser;
 using MAS.Infrastructure.Repositories.Subject;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -51,6 +55,10 @@ namespace MAS.API.Helpers
             // Config for Subject
             services.AddScoped<ISubjectService, SubjectService>();
             services.AddScoped<ISubjectRepository, SubjectRepository>();
+
+            // Config for MasUser
+            services.AddScoped<IMasUserService, MasUserService>();
+            services.AddScoped<IMasUserRepository, MasUserRepository>();
             // -----------------------------------------------------------------------------------------
             services.AddHttpClient();
             return services;
