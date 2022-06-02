@@ -83,9 +83,9 @@ namespace MAS.Core.Test.Services
 
             // Assert
             result.Should().NotBeNull();
-            result.Should().BeAssignableTo<Result<SubjectResponse>>();
+            result.Should().BeAssignableTo<Result<SubjectDetailResponse>>();
             result.Content.Should().NotBeNull();
-            result.Content.Should().BeAssignableTo<SubjectResponse>();
+            result.Content.Should().BeAssignableTo<SubjectDetailResponse>();
             _subjectRepositoryMock.Verify(x => x.GetSubjectByIdAsync(subjectId), Times.Once());
         }
 
@@ -103,7 +103,7 @@ namespace MAS.Core.Test.Services
 
             // Assert
             result.Should().NotBeNull();
-            result.Should().BeAssignableTo<Result<SubjectResponse>>();
+            result.Should().BeAssignableTo<Result<SubjectDetailResponse>>();
             result.Content.Should().BeNull();
             result.Error.Should().NotBeNull();
             _subjectRepositoryMock.Verify(x => x.GetSubjectByIdAsync(subjectId), Times.Once());
