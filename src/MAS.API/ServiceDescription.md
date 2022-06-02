@@ -81,24 +81,4 @@
 >   ***Description***: Delete Subject by Id   
 >   ***Role Access***: Admin  
 >
-
-<h2 id="subjectMentor">Subject of Mentor  <a href="#table-of-contents" target="_self">🔙</a></h2>   
-
-> - ``GET /api/mas/v1/mentor-subjects/{mentorId} ``  
->   ***Description***: Get all Subjects of a Mentor   
->   ***Role Access***: Admin, User  
->   ***Extension***: Paging  
->
-> - ``POST /api/mas/v1/mentor-subjects/ ``  
->   ***Description***: Register a Subject into Mentor Profile   
->   ***Role Access***: User(Mentor)  
->
-> - ``PUT /api/mas/v1/mentor-subjects/{subjectOfMentorId} ``  
->   ***Description***: Update Subject Info of Mentor   
->   ***Role Access***: User  
->
-> - ``DELETE /api/mas/v1/mentor-subjects/{subjectOfMentorId} ``  
->   ***Description***: Delete a Subject of Mentor  
->   ***Role Access***: User  
->
 <h2 id="api">MAS API  <a href="#table-of-contents" target="_self">🔙</a></h2>   
