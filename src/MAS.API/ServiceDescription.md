@@ -74,4 +74,33 @@
 >   ***Description***: Delete Subject by Id   
 >   ***Role Access***: Admin  
 >
+
+<h2 id="masUser">MasUser  <a href="#table-of-contents" target="_self">🔙</a></h2>   
+
+> - ``PUT /api/mas/v1/masuser/personal ``  
+>   ***Description***: Update personal info in profile  
+>   ***Role Access***: User  
+>
+> - ``GET /api/mas/v1/masuser/personal ``  
+>   ***Description***: Get own personal information   
+>   ***Role Access***: User  
+>
+> - ``GET /api/mas/v1/masuser/{userId} ``  
+>   ***Description***: Get a specific user info   
+>   ***Role Access***: Admin, User  
+>
+> - ``GET /api/mas/v1/masuser/mentors``  
+>   ***Description***: Get all mentors / Search mentors
+>   ***Role Access***: User  
+>   ***Extension***: Paging, Search by Name, filter by Subject
+>
+> - ``GET /api/mas/v1/masuser``  
+>   ***Description***: Get all users
+>   ***Role Access***: Admin
+>   ***Extension***: Paging, Search by Name, filter active account 
+>
+> - ``PUT /api/mas/v1/masuser/active/{userId} ``  
+>   ***Description***: Active or disable user 
+>   ***Role Access***: Admin  
+>
 <h2 id="api">MAS API  <a href="#table-of-contents" target="_self">🔙</a></h2>   

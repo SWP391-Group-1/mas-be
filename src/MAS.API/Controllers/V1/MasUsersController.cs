@@ -119,7 +119,7 @@ namespace MAS.API.Controllers.V1
         /// <remarks>
         /// Roles Access: User
         /// </remarks>
-        [HttpGet]
+        [HttpGet, Route("mentors")]
         [Authorize(Roles = RoleConstants.User)]
         public async Task<ActionResult> GetAllMentor([FromQuery] UserParameters param)
         {
@@ -155,7 +155,7 @@ namespace MAS.API.Controllers.V1
         /// <remarks>
         /// Roles Access: Admin
         /// </remarks>
-        [HttpGet, Route("users")]
+        [HttpGet]
         [Authorize(Roles = RoleConstants.Admin)]
         public async Task<ActionResult> GetAllUser([FromQuery] AdminUserParameters param)
         {
@@ -191,7 +191,7 @@ namespace MAS.API.Controllers.V1
         /// <remarks>
         /// Roles Access: Admin
         /// </remarks>
-        [HttpPut, Route("users/activate/{userId}")]
+        [HttpPut, Route("active/{userId}")]
         [Authorize(Roles = RoleConstants.Admin)]
         public async Task<ActionResult> ActiveUser(string userId, IsActiveChangeRequest request)
         {
