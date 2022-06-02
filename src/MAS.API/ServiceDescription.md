@@ -27,6 +27,12 @@
 > - ``POST /api/mas/v1/accounts/register-admin ``  
 >   ***Description***: Register Admin Account   
 >
+> - ``POST /api/mas/v1/accounts/login-user ``  
+>   ***Description***: Login User normal (For test)  
+>
+> - ``POST /api/mas/v1/accounts/register-user ``  
+>   ***Description***: Register User Account (For test)   
+>
 
 <h2 id="major">Major  <a href="#table-of-contents" target="_self">🔙</a></h2>   
 

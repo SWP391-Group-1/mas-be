@@ -87,7 +87,10 @@ namespace MAS.Infrastructure.Repositories.Account
                             IsMentor = null,
                             MeetUrl = "",
 
-                            IsActive = true
+                            IsActive = true,
+
+                            CreateDate = DateTime.UtcNow,
+                            UpdateDate = null
                         };
 
                         await _context.MasUsers.AddAsync(masUser);
@@ -310,7 +313,7 @@ namespace MAS.Infrastructure.Repositories.Account
                 ExpireDate = DateTime.Parse(token[1])
             };
         }
-        
+
         /// <summary>
         /// Check admin account.
         /// </summary>
@@ -328,6 +331,90 @@ namespace MAS.Infrastructure.Repositories.Account
             }
 
             return false;
+        }
+
+        public async Task<AuthenResult> RegisterUserAsync(RegisterUserRequest request)
+        {
+            if (await IsExistEmail(request.Email)) {
+                return new AuthenResult {
+                    Errors = new List<string>() { $"{request.Email} is already existed!" }
+                };
+            }
+
+            var identityUser = new IdentityUser() {
+                Email = request.Email,
+                UserName = request.Email
+            };
+
+            var result = await userManager.CreateAsync(identityUser, request.Password);
+            await SetRoleForUser(identityUser, RoleConstants.User);
+
+            if (result.Succeeded) {
+                var userEntityModel = _mapper.Map<MasUser>(request);
+                userEntityModel.Id = Guid.NewGuid().ToString();
+                userEntityModel.IdentityId = identityUser.Id;
+                userEntityModel.CreateDate = DateTime.UtcNow;
+                userEntityModel.UpdateDate = null;
+                userEntityModel.Avatar = "";
+
+                userEntityModel.Rate = 0;
+                userEntityModel.NumOfRate = 0;
+                userEntityModel.NumOfAppointment = 0;
+
+                userEntityModel.IsMentor = null;
+                userEntityModel.MeetUrl = "";
+
+                userEntityModel.IsActive = true;
+
+                await _context.MasUsers.AddAsync(userEntityModel);
+
+                if (await _context.SaveChangesAsync() >= 0) {
+                    return new AuthenResult {
+                        Message = "Create User Account Successfully!"
+                    };
+                }
+            }
+
+            return new AuthenResult {
+                Errors = result.Errors.Select(e => e.Description).ToList()
+            };
+        }
+
+        public async Task<AuthenResult> LoginUserAsync(LoginUserRequest request)
+        {
+            var user = await userManager.FindByEmailAsync(request.Email);
+            if (user is null) {
+                return new AuthenResult {
+                    Errors = new List<string>() { "Account is not register!" }
+                };
+            }
+
+            var appUser = await _context.MasUsers.FirstOrDefaultAsync(x => x.IdentityId == user.Id);
+            if (appUser is not null) {
+                if (appUser.IsActive != true) {
+                    return new AuthenResult {
+                        Errors = new List<string>() { $"Please contact FPT University for support!" }
+                    };
+                }
+            }
+            else {
+                return new AuthenResult {
+                    Errors = new List<string>() { "Not found your info!" }
+                };
+            }
+
+            var result = await userManager.CheckPasswordAsync(user, request.Password);
+            if (!result) {
+                return new AuthenResult {
+                    Errors = new List<string>() { "Wrong password!" }
+                };
+            }
+
+            var token = await GenerateToken(user);
+            return new AuthenResult {
+                Message = token[0],
+                ExpireDate = DateTime.Parse(token[1])
+            };
         }
     }
 }

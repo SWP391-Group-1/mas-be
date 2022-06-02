@@ -26,5 +26,19 @@ namespace MAS.Core.Interfaces.Services.Account
         /// <param name="request"></param>
         /// <returns></returns>
         Task<AuthenResult> LoginAdminAsync(LoginAdminRequest request);
+
+        /// <summary>
+        /// Register user account.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<AuthenResult> RegisterUserAsync(RegisterUserRequest request);
+
+        /// <summary>
+        /// Login user.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<AuthenResult> LoginUserAsync(LoginUserRequest request);
     }
 }
