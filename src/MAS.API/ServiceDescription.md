@@ -8,6 +8,7 @@
 - <a href="#major" target="_self">Major</a> <br>
 - <a href="#subject" target="_self">Subject</a> <br>
 - <a href="#subjectMentor" target="_self">Subject of Mentor</a> <br>
+- <a href="#user" target="_self">Users</a> <br>
 - <a href="#api" target="_self">MAS API</a> <br>
 
 <h2 id="weather">Weather Forecast <a href="#table-of-contents" target="_self">🔙</a></h2>
@@ -79,6 +80,54 @@
 >
 > - ``DELETE /api/mas/v1/subjects/{subjectId} ``  
 >   ***Description***: Delete Subject by Id   
+>   ***Role Access***: Admin  
+>
+
+<h2 id="subjectMentor">Subject of Mentor  <a href="#table-of-contents" target="_self">🔙</a></h2>   
+
+> - ``GET /api/mas/v1/mentor-subjects/{mentorId} ``  
+>   ***Description***: Get all Subjects of a Mentor   
+>   ***Role Access***: Admin, User  
+>   ***Extension***: Paging  
+>
+> - ``POST /api/mas/v1/mentor-subjects/ ``  
+>   ***Description***: Register a Subject into Mentor Profile   
+>   ***Role Access***: User(Mentor)  
+>
+> - ``PUT /api/mas/v1/mentor-subjects/{subjectOfMentorId} ``  
+>   ***Description***: Update Subject Info of Mentor   
+>   ***Role Access***: User  
+>
+> - ``DELETE /api/mas/v1/mentor-subjects/{subjectOfMentorId} ``  
+>   ***Description***: Delete a Subject of Mentor  
+>   ***Role Access***: User  
+
+<h2 id="user">User  <a href="#table-of-contents" target="_self">🔙</a></h2>   
+
+> - ``PUT /api/mas/v1/users/personal ``  
+>   ***Description***: Update personal info in profile  
+>   ***Role Access***: User  
+>
+> - ``GET /api/mas/v1/users/personal ``  
+>   ***Description***: Get own personal information   
+>   ***Role Access***: User  
+>
+> - ``GET /api/mas/v1/users/{userId} ``  
+>   ***Description***: Get a specific user info   
+>   ***Role Access***: Admin, User  
+>
+> - ``GET /api/mas/v1/users/mentors ``  
+>   ***Description***: Get all mentors / Search mentors	  
+>   ***Role Access***: User  
+>   ***Extension***: Paging, Search by Name, filter by Subject	
+>
+> - ``GET /api/mas/v1/users ``  
+>   ***Description***: Get all users  
+>   ***Role Access***: Admin  
+>   ***Extension***: Paging, Search by Name, filter active account 
+>
+> - ``PUT /api/mas/v1/users/active/{userId} ``  
+>   ***Description***: Active or disable user  
 >   ***Role Access***: Admin  
 >
 <h2 id="api">MAS API  <a href="#table-of-contents" target="_self">🔙</a></h2>   

@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 namespace MAS.API.Controllers.V1
 {
     [ApiVersion("1.0")]
-    public class MasUsersController : BaseController
+    public class UsersController : BaseController
     {
         private readonly IMasUserService _masUserService;
 
-        public MasUsersController(IMasUserService masUserService)
+        public UsersController(IMasUserService masUserService)
         {
             _masUserService = masUserService;
         }

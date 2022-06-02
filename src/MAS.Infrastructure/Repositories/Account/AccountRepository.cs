@@ -349,7 +349,7 @@ namespace MAS.Infrastructure.Repositories.Account
             await SetRoleForUser(identityUser, RoleConstants.User);
 
             if (result.Succeeded) {
-                var userEntityModel = _mapper.Map<MasUser>(request);
+                var userEntityModel = _mapper.Map<Core.Entities.MasUser>(request);
                 userEntityModel.Id = Guid.NewGuid().ToString();
                 userEntityModel.IdentityId = identityUser.Id;
                 userEntityModel.CreateDate = DateTime.UtcNow;
