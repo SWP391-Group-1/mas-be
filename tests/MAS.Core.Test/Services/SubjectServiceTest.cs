@@ -74,7 +74,7 @@ namespace MAS.Core.Test.Services
         {
             // Arrange
             var subjectId = _fixture.Create<string>();
-            var resultResponse = _fixture.Create<Result<SubjectResponse>>();
+            var resultResponse = _fixture.Create<Result<SubjectDetailResponse>>();
             resultResponse.Error = null;
             _subjectRepositoryMock.Setup(x => x.GetSubjectByIdAsync(subjectId)).ReturnsAsync(resultResponse);
 
@@ -94,7 +94,7 @@ namespace MAS.Core.Test.Services
         {
             // Arrange
             var subjectId = _fixture.Create<string>();
-            var resultResponse = _fixture.Create<Result<SubjectResponse>>();
+            var resultResponse = _fixture.Create<Result<SubjectDetailResponse>>();
             resultResponse.Content = null;
             _subjectRepositoryMock.Setup(x => x.GetSubjectByIdAsync(subjectId)).ReturnsAsync(resultResponse);
 
@@ -114,11 +114,11 @@ namespace MAS.Core.Test.Services
         {
             // Arrange
             string subjectId = null;
-            Result<SubjectResponse> resultResponse = null;
+            Result<SubjectDetailResponse> resultResponse = null;
             _subjectRepositoryMock.Setup(x => x.GetSubjectByIdAsync(subjectId)).ReturnsAsync(resultResponse);
 
             // Act
-            Func<Result<SubjectResponse>> result = () => _subjectService.GetSubjectByIdAsync(subjectId).Result;
+            Func<Result<SubjectDetailResponse>> result = () => _subjectService.GetSubjectByIdAsync(subjectId).Result;
 
             // Assert
             result.Should().Throw<ArgumentNullException>();
@@ -129,11 +129,11 @@ namespace MAS.Core.Test.Services
         {
             // Arrange
             string subjectId = string.Empty;
-            Result<SubjectResponse> resultResponse = null;
+            Result<SubjectDetailResponse> resultResponse = null;
             _subjectRepositoryMock.Setup(x => x.GetSubjectByIdAsync(subjectId)).ReturnsAsync(resultResponse);
 
             // Act
-            Func<Result<SubjectResponse>> result = () => _subjectService.GetSubjectByIdAsync(subjectId).Result;
+            Func<Result<SubjectDetailResponse>> result = () => _subjectService.GetSubjectByIdAsync(subjectId).Result;
 
             // Assert
             result.Should().Throw<ArgumentNullException>();
@@ -144,11 +144,11 @@ namespace MAS.Core.Test.Services
         {
             // Arrange
             string subjectId = " ";
-            Result<SubjectResponse> resultResponse = null;
+            Result<SubjectDetailResponse> resultResponse = null;
             _subjectRepositoryMock.Setup(x => x.GetSubjectByIdAsync(subjectId)).ReturnsAsync(resultResponse);
 
             // Act
-            Func<Result<SubjectResponse>> result = () => _subjectService.GetSubjectByIdAsync(subjectId).Result;
+            Func<Result<SubjectDetailResponse>> result = () => _subjectService.GetSubjectByIdAsync(subjectId).Result;
 
             // Assert
             result.Should().Throw<ArgumentNullException>();
