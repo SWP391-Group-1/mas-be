@@ -90,13 +90,13 @@
 >   ***Role Access***: Admin, User  
 >
 > - ``GET /api/mas/v1/masuser/mentors``  
->   ***Description***: Get all mentors / Search mentors
+>   ***Description***: Get all mentors / Search mentors	
 >   ***Role Access***: User  
->   ***Extension***: Paging, Search by Name, filter by Subject
+>   ***Extension***: Paging, Search by Name, filter by Subject	
 >
 > - ``GET /api/mas/v1/masuser``  
->   ***Description***: Get all users
->   ***Role Access***: Admin
+>   ***Description***: Get all users	
+>   ***Role Access***: Admin	
 >   ***Extension***: Paging, Search by Name, filter active account 
 >
 > - ``PUT /api/mas/v1/masuser/active/{userId} ``  
