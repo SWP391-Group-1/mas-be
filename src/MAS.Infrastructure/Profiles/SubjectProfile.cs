@@ -14,6 +14,7 @@ namespace MAS.Infrastructure.Profiles
             CreateMap<SubjectUpdateRequest, Subject>();
 
             CreateMap<Subject, SubjectResponse>();
+            CreateMap<Subject, SubjectDetailResponse>();
         }
     }
 }

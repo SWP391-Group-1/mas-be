@@ -53,6 +53,24 @@ namespace MAS.API.Controllers.V1
         }
 
         /// <summary>
+        /// Login user
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost, Route("login-user")]
+        public async Task<ActionResult<AuthenResult>> LoginUser(LoginUserRequest request)
+        {
+            if (!ModelState.IsValid) {
+                return BadRequest();
+            }
+            var response = await accountService.LoginUserAsync(request);
+            if (!response.Success) {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        /// <summary>
         /// Register admin account
         /// </summary>
         /// <param name="request"></param>
@@ -64,6 +82,24 @@ namespace MAS.API.Controllers.V1
                 return BadRequest();
             }
             var response = await accountService.RegisterAdminAsync(request);
+            if (!response.Success) {
+                return BadRequest(response);
+            }
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Register user account
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        [HttpPost, Route("register-user")]
+        public async Task<ActionResult<AuthenResult>> UserRegister(RegisterUserRequest request)
+        {
+            if (!ModelState.IsValid) {
+                return BadRequest();
+            }
+            var response = await accountService.RegisterUserAsync(request);
             if (!response.Success) {
                 return BadRequest(response);
             }

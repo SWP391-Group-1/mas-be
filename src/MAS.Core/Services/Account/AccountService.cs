@@ -38,6 +38,20 @@ namespace MAS.Core.Services.Account
             }
         }
 
+        public async Task<AuthenResult> LoginUserAsync(LoginUserRequest request)
+        {
+            try {
+                if (request is null) {
+                    throw new ArgumentNullException(nameof(request));
+                }
+                return await accountRepository.LoginUserAsync(request);
+            }
+            catch (Exception ex) {
+                logger.LogError($"Error while trying to call LoginUserAsync in service class, Error Message: {ex}.");
+                throw;
+            }
+        }
+
         /// <summary>
         /// Login with Google account service.
         /// </summary>
@@ -72,6 +86,20 @@ namespace MAS.Core.Services.Account
             }
             catch (Exception ex) {
                 logger.LogError($"Error while trying to call RegisterAdminAsync in service class, Error Message: {ex}.");
+                throw;
+            }
+        }
+
+        public async Task<AuthenResult> RegisterUserAsync(RegisterUserRequest request)
+        {
+            try {
+                if (request is null) {
+                    throw new ArgumentNullException(nameof(request));
+                }
+                return await accountRepository.RegisterUserAsync(request);
+            }
+            catch (Exception ex) {
+                logger.LogError($"Error while trying to call RegisterUserAsync in service class, Error Message: {ex}.");
                 throw;
             }
         }

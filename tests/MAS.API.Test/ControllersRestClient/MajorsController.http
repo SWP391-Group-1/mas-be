@@ -1,0 +1,65 @@
+@hostname = localhost
+@port = 5001
+@azurehost = mas-api.azurewebsites.net
+@lchost = {{hostname}}:{{port}}
+@host = {{azurehost}}
+@baseUrl = https://{{lchost}}
+@contentType = application/json
+@token = {{login.response.body.$.message}}
+@authToken = bearer {{token}}
+
+# @name login
+POST {{baseUrl}}/api/mas/v1/accounts/login-admin
+content-type: {{contentType}}
+
+{
+  "email": "admin@example.com",
+  "password": "Pa55w0rd!"
+}
+
+###
+
+# Create major
+POST {{baseUrl}}/api/mas/v1/majors
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+{
+  "title": "[SE] Software Engineer",
+  "description": "Bachelor Software Engineer"
+}
+
+###
+
+# Get all majors
+GET {{baseUrl}}/api/mas/v1/majors
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Get a major by Id
+GET {{baseUrl}}/api/mas/v1/majors/ab7c985f-11f5-4353-bd7b-e4237309a015
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Update a major by Id
+PUT {{baseUrl}}/api/mas/v1/majors/ab7c985f-11f5-4353-bd7b-e4237309a015
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+{
+  "title": "[SE] Software Engineer",
+  "description": "Receive Bachelor Software Engineer Degree after graduate. You will learn how to Develop a real System or Application during Study this major in FPT University."
+}
+
+###
+
+# Delete a major by Id
+DELETE {{baseUrl}}/api/mas/v1/majors/ab7c985f-11f5-4353-bd7b-e4237309a015
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###

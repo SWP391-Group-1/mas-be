@@ -10,7 +10,7 @@ namespace MAS.Core.Interfaces.Repositories.Subject
     {
         Task<Result<SubjectResponse>> CreateSubjectAsync(SubjectCreateRequest request);
         Task<PagedResult<SubjectResponse>> GetAllSubjectsAsync(SubjectParameters param);
-        Task<Result<SubjectResponse>> GetSubjectByIdAsync(string subjectId);
+        Task<Result<SubjectDetailResponse>> GetSubjectByIdAsync(string subjectId);
         Task<Result<bool>> DeleteSubjectAsync(string subjectId);
         Task<Result<bool>> UpdateSubjectAsync(string subjectId, SubjectUpdateRequest request);
     }

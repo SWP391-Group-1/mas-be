@@ -1,0 +1,50 @@
+﻿@hostname = localhost
+@port = 5001
+@azurehost = mas-api.azurewebsites.net
+@lchost = {{hostname}}:{{port}}
+@host = {{azurehost}}
+@baseUrl = https://{{lchost}}
+@contentType = application/json
+@token = {{loginAdmin.response.body.$.message}}
+@authToken = bearer {{token}}
+
+# @name login
+POST {{baseUrl}}/api/mas/v1/accounts/login-google
+content-type: {{contentType}}
+
+{
+  "providerName": "https://accounts.google.com",
+  "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg2MTY0OWU0NTAzMTUzODNmNmI5ZDUxMGI3Y2Q0ZTkyMjZjM2NkODgiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIyMzI3NjMxMDExODktdWIwNmU4OW9sZThhZjk2c3VkNXE4aTJ2MmQyMWUzdHUuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIyMzI3NjMxMDExODktNmJzazc2bTZ2cTNxcmtsdXF0ZWczcTAwYzlta3M4dGguYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDMzMTM3MDYxNTQ4ODcyNTYyNDMiLCJlbWFpbCI6Im1hbmgzMDA5MjAwMEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6Ik1hbmggTmd1eWVuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdqNXlsUUNjUnVZejZJSWp6OG43NkdJUzdVdVBVZjk0b2RhZjUtRE1RPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6Ik1hbmggTmd1eWVuIiwibG9jYWxlIjoidmkiLCJpYXQiOjE2NTExNTQwNjEsImV4cCI6MTY1MTE1NzY2MX0.FWFsbhyN4Ptl5XEJ5APLx2jEZJTj7fpVPFkbHrOMp2monh7psDTjXwYh1e_BF_4Y2RCFI4e90SikWaNfpXMWIJoYnMomXXv65L85lL0mVaBksQmEGYyBrSWXulqBSq2ri_bT9SN9_SJ7AW_0rCNKz8FLnOXc_LSwnWPTezWepKO9QUpPhtOBplIXDXSFpFVzz6YF5hEPtfjheVxCDl95ekHNVFPVjm0QaNstrkZhxe-S2WIDyM85IlVSik8ro2PD7QQJDjbSmBVxMefDrq7p"
+}
+
+###
+
+# @name loginAdmin
+POST {{baseUrl}}/api/mas/v1/accounts/login-admin
+content-type: {{contentType}}
+
+{
+  "email": "admin@example.com",
+  "password": "Pa55w0rd!"
+}
+
+###
+
+# Register admin
+POST {{baseUrl}}/api/mas/v1/accounts/register-admin
+content-type: {{contentType}}
+
+{
+  "email": "admin@example.com",
+  "password": "Pa55w0rd!",
+  "confirmPassword": "Pa55w0rd!"
+}
+
+###
+
+# Default weather forecast
+GET {{baseUrl}}/api/mas/v1/weather-forecast
+content-type: {{contentType}}
+Authorization: {{authToken}}
+
+###

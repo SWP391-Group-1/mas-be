@@ -151,9 +151,9 @@ namespace MAS.Infrastructure.Repositories.Subject
                                );
         }
 
-        public async Task<Result<SubjectResponse>> GetSubjectByIdAsync(string subjectId)
+        public async Task<Result<SubjectDetailResponse>> GetSubjectByIdAsync(string subjectId)
         {
-            var result = new Result<SubjectResponse>();
+            var result = new Result<SubjectDetailResponse>();
 
             var subject = await _context.Subjects.FindAsync(subjectId);
             if (subject == null) {
@@ -162,8 +162,8 @@ namespace MAS.Infrastructure.Repositories.Subject
                                                          ErrorMessages.NotFound + "subject.");
                 return result;
             }
-
-            var response = _mapper.Map<SubjectResponse>(subject);
+            await _context.Entry(subject).Reference(x => x.Major).LoadAsync();
+            var response = _mapper.Map<SubjectDetailResponse>(subject);
             result.Content = response;
             return result;
         }

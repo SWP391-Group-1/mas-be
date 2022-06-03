@@ -1,0 +1,67 @@
+@hostname = localhost
+@port = 5001
+@azurehost = mas-api.azurewebsites.net
+@lchost = {{hostname}}:{{port}}
+@host = {{azurehost}}
+@baseUrl = https://{{lchost}}
+@contentType = application/json
+@token = {{login.response.body.$.message}}
+@authToken = bearer {{token}}
+
+# @name login
+POST {{baseUrl}}/api/mas/v1/accounts/login-admin
+content-type: {{contentType}}
+
+{
+  "email": "admin@example.com",
+  "password": "Pa55w0rd!"
+}
+
+###
+
+# Create subject
+POST {{baseUrl}}/api/mas/v1/subjects
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+{
+  "majorId": "31ae4799-4844-4a24-855d-02ee850decaa",
+  "title": "[SWP391] Software Application Development",
+  "description": "Train to build, development an application from scratch."
+}
+
+###
+
+# Get all subjects
+GET {{baseUrl}}/api/mas/v1/subjects
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Get a subject by Id
+GET {{baseUrl}}/api/mas/v1/subjects/31ae4799-4844-4a24-855d-02ee850decaa
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Update a subject by Id
+PUT {{baseUrl}}/api/mas/v1/subjects/31ae4799-4844-4a24-855d-02ee850decaa
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+{
+  "majorId": "string",
+  "title": "string",
+  "description": "string"
+}
+
+###
+
+# Delete a subject by Id
+DELETE {{baseUrl}}/api/mas/v1/subjects/31ae4799-4844-4a24-855d-02ee850decaa
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
