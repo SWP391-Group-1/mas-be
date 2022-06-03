@@ -393,7 +393,7 @@ namespace MAS.Infrastructure.Repositories.MasUser
             var result = new Result<PersonalInfoResponse>();
             var loggedInUser = await _userManager.GetUserAsync(principal);
             if (loggedInUser is null) {
-                result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, ErrorMessages.NotAllowModify);
+                result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, ErrorMessages.NotFound);
                 return result;
             }
             var identityId = loggedInUser.Id;
