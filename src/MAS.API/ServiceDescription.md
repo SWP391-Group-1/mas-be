@@ -42,7 +42,7 @@
 >   ***Role Access***: Admin, User  
 >   ***Extension***: Paging, Filter by search string.
 >
-> - ``POST /api/mas/v1/majors/ ``  
+> - ``POST /api/mas/v1/majors ``  
 >   ***Description***: Create a Major   
 >   ***Role Access***: Admin  
 >
@@ -66,7 +66,7 @@
 >   ***Role Access***: Admin, User  
 >   ***Extension***: Paging, Filter by search string, major (major ID), sort by title ASC or DESC.  
 >
-> - ``POST /api/mas/v1/subjects/ ``  
+> - ``POST /api/mas/v1/subjects ``  
 >   ***Description***: Create a Subject   
 >   ***Role Access***: Admin  
 >
@@ -90,7 +90,7 @@
 >   ***Role Access***: Admin, User  
 >   ***Extension***: Paging  
 >
-> - ``POST /api/mas/v1/mentor-subjects/ ``  
+> - ``POST /api/mas/v1/mentor-subjects ``  
 >   ***Description***: Register a Subject into Mentor Profile   
 >   ***Role Access***: User(Mentor)  
 >
@@ -137,5 +137,29 @@
 > - ``PUT /api/mas/v1/users/accept-request ``  
 >   ***Description***: Accept/deny mentor request  
 >   ***Role Access***: Admin  
+>
+
+<h2 id="question">Question  <a href="#table-of-contents" target="_self">🔙</a></h2>   
+
+> - ``GET /api/mas/v1/questions/{appointmentId} ``  
+>   ***Description***: Get all Questions of specific appointment   
+>   ***Role Access***: Admin, User  
+>   ***Extension***: Paging 
+>
+> - ``POST /api/mas/v1/questions ``  
+>   ***Description***: Create a Question   
+>   ***Role Access***: User  
+>
+> - ``GET /api/mas/v1/questions/{questionId} ``  
+>   ***Description***: Get Question by Id   
+>   ***Role Access***: Admin, User  
+>
+> - ``PUT /api/mas/v1/questions/{questionId} ``  
+>   ***Description***: Answer Question   
+>   ***Role Access***: User  
+>
+> - ``DELETE /api/mas/v1/questions/{questionId} ``  
+>   ***Description***: Delete Question by Id   
+>   ***Role Access***: User  
 >
 <h2 id="api">MAS API  <a href="#table-of-contents" target="_self">🔙</a></h2>   
