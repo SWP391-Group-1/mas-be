@@ -1,0 +1,34 @@
+@hostname = localhost
+@port = 5001
+@azurehost = mas-api.azurewebsites.net
+@lchost = {{hostname}}:{{port}}
+@host = {{azurehost}}
+@baseUrl = https://{{lchost}}
+@contentType = application/json
+@token = {{login.response.body.$.message}}
+@authToken = bearer {{token}}
+
+# @name login
+POST {{baseUrl}}/api/mas/v1/accounts/login-user
+content-type: {{contentType}}
+
+{
+  "email": "user@fe.edu.vn",
+  "password": "Pa55w0rd!"
+}
+
+###
+
+# Get user profile
+GET {{baseUrl}}/api/mas/v1/users/personal
+content-type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Get user by Id
+GET {{baseUrl}}/api/mas/v1/users/81ca169e-626a-4bbd-a3e0-9d4bd4d6e843
+content-type: {{contentType}}
+Authorization: {{authToken}}
+
+###

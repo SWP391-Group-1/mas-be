@@ -71,28 +71,53 @@ namespace MAS.Infrastructure.Repositories.Account
                     await userManager.AddLoginAsync(user, info);
 
                     if (result.Succeeded) {
-                        var masUser = new Core.Entities.MasUser {
-                            Id = Guid.NewGuid().ToString(),
-                            IdentityId = user.Id,
-                            Name = payload["name"].ToString(),
-                            Email = payload["email"].ToString(),
-                            Avatar = payload["picture"].ToString(),
-                            Introduce = "",
+                        var isMentor = CheckIsMailMentor(payload["email"].ToString());
+                        if (isMentor) {
+                            var masUser = new Core.Entities.MasUser {
+                                Id = Guid.NewGuid().ToString(),
+                                IdentityId = user.Id,
+                                Name = payload["name"].ToString(),
+                                Email = payload["email"].ToString(),
+                                Avatar = payload["picture"].ToString(),
+                                Introduce = "",
 
-                            Rate = 0,
-                            NumOfRate = 0,
-                            NumOfAppointment = 0,
+                                Rate = 0,
+                                NumOfRate = 0,
+                                NumOfAppointment = 0,
 
-                            IsMentor = null,
-                            MeetUrl = "",
+                                IsMentor = true,
+                                MeetUrl = "",
 
-                            IsActive = true,
+                                IsActive = true,
 
-                            CreateDate = DateTime.UtcNow,
-                            UpdateDate = null
-                        };
+                                CreateDate = DateTime.UtcNow,
+                                UpdateDate = null
+                            };
+                            await _context.MasUsers.AddAsync(masUser);
+                        }
+                        else {
+                            var masUser = new Core.Entities.MasUser {
+                                Id = Guid.NewGuid().ToString(),
+                                IdentityId = user.Id,
+                                Name = payload["name"].ToString(),
+                                Email = payload["email"].ToString(),
+                                Avatar = payload["picture"].ToString(),
+                                Introduce = "",
 
-                        await _context.MasUsers.AddAsync(masUser);
+                                Rate = 0,
+                                NumOfRate = 0,
+                                NumOfAppointment = 0,
+
+                                IsMentor = null,
+                                MeetUrl = "",
+
+                                IsActive = true,
+
+                                CreateDate = DateTime.UtcNow,
+                                UpdateDate = null
+                            };
+                            await _context.MasUsers.AddAsync(masUser);
+                        }
 
                         if (await _context.SaveChangesAsync() >= 0) {
                             var token = await GenerateToken(user);
@@ -125,6 +150,15 @@ namespace MAS.Infrastructure.Repositories.Account
             return new AuthenResult {
                 Errors = new List<string>() { "Lỗi xác thực với Google!" }
             };
+        }
+
+        private bool CheckIsMailMentor(string v)
+        {
+            var strSplit = v.Split("@");
+            if (strSplit[1] == "fe.edu.vn") {
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -350,20 +384,38 @@ namespace MAS.Infrastructure.Repositories.Account
 
             if (result.Succeeded) {
                 var userEntityModel = _mapper.Map<Core.Entities.MasUser>(request);
-                userEntityModel.Id = Guid.NewGuid().ToString();
-                userEntityModel.IdentityId = identityUser.Id;
-                userEntityModel.CreateDate = DateTime.UtcNow;
-                userEntityModel.UpdateDate = null;
-                userEntityModel.Avatar = "";
+                if (CheckIsMailMentor(request.Email)) {
+                    userEntityModel.Id = Guid.NewGuid().ToString();
+                    userEntityModel.IdentityId = identityUser.Id;
+                    userEntityModel.CreateDate = DateTime.UtcNow;
+                    userEntityModel.UpdateDate = null;
+                    userEntityModel.Avatar = "";
 
-                userEntityModel.Rate = 0;
-                userEntityModel.NumOfRate = 0;
-                userEntityModel.NumOfAppointment = 0;
+                    userEntityModel.Rate = 0;
+                    userEntityModel.NumOfRate = 0;
+                    userEntityModel.NumOfAppointment = 0;
 
-                userEntityModel.IsMentor = null;
-                userEntityModel.MeetUrl = "";
+                    userEntityModel.IsMentor = true;
+                    userEntityModel.MeetUrl = "";
 
-                userEntityModel.IsActive = true;
+                    userEntityModel.IsActive = true;
+                }
+                else {
+                    userEntityModel.Id = Guid.NewGuid().ToString();
+                    userEntityModel.IdentityId = identityUser.Id;
+                    userEntityModel.CreateDate = DateTime.UtcNow;
+                    userEntityModel.UpdateDate = null;
+                    userEntityModel.Avatar = "";
+
+                    userEntityModel.Rate = 0;
+                    userEntityModel.NumOfRate = 0;
+                    userEntityModel.NumOfAppointment = 0;
+
+                    userEntityModel.IsMentor = null;
+                    userEntityModel.MeetUrl = "";
+
+                    userEntityModel.IsActive = true;
+                }
 
                 await _context.MasUsers.AddAsync(userEntityModel);
 

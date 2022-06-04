@@ -404,18 +404,11 @@ namespace MAS.Infrastructure.Repositories.MasUser
                 return result;
             }
 
-            // await _context.Entry(user).Collection(x => x.Slots).Query().OrderBy(x => x.DayInWeek).ThenBy(x => x.FromHour).LoadAsync();
-
-            //var rates = await _context.Ratings.Where(x => x.MentorId == user.Id).ToListAsync();
-
-            //user.NumOfRate = rates.Count();
-
             if (await _context.SaveChangesAsync() < 0) {
                 result.Error = Helpers.ErrorHelper.PopulateError(0, ErrorTypes.SaveFail, ErrorMessages.SaveFail);
 
                 return result;
             }
-
 
             var response = _mapper.Map<PersonalInfoResponse>(user);
             result.Content = response;

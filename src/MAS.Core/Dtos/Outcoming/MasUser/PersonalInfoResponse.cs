@@ -11,6 +11,7 @@
         public float Rate { get; set; }
         public int NumOfRate { get; set; }
         public int NumOfAppointment { get; set; }
+        public bool? IsMentor { get; set; }
         public bool IsActive { get; set; } = true;
 
         //public ICollection<SlotResponse> Slots { get; set; }
