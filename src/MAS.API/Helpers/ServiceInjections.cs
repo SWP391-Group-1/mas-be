@@ -73,8 +73,8 @@ namespace MAS.API.Helpers
             services.AddScoped<IMasUserRepository, MasUserRepository>();
 
             // Config for Email
-            services.AddTransient<IEmailService, EmailService>();
-            services.AddTransient<IEmailRepository, EmailRepository>();
+            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IEmailRepository, EmailRepository>();
             // -----------------------------------------------------------------------------------------
             services.AddHttpClient();
             return services;
