@@ -22,10 +22,10 @@ namespace MAS.API.Controllers.V1
         /// <param name="request"></param>
         /// <returns></returns>
         /// <remarks>
-        /// Roles Access: Admin
+        /// Roles Access: Admin, User
         /// </remarks>
         [HttpPost("send")]
-        [Authorize(Roles = RoleConstants.Admin)]
+        [Authorize(Roles = RoleConstants.User + "," + RoleConstants.Admin)]
         public async Task<ActionResult> Send(MailRequest request)
         {
             if (!ModelState.IsValid) {

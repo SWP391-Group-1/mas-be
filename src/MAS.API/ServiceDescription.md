@@ -136,6 +136,6 @@
 
 > - ``POST /api/mas/v1/email/send ``  
 >   ***Description***: Send email to a specific user    
->   ***Role Access***: Admin      
+>   ***Role Access***: Admin, User        
 >
 <h2 id="api">MAS API  <a href="#table-of-contents" target="_self">🔙</a></h2>   
