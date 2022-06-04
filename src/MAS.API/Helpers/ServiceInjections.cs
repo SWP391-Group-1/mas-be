@@ -1,20 +1,24 @@
 ﻿using MAS.Core.Interfaces.Repositories.Account;
+using MAS.Core.Interfaces.Repositories.Email;
 using MAS.Core.Interfaces.Repositories.Major;
 using MAS.Core.Interfaces.Repositories.MasUser;
 using MAS.Core.Interfaces.Repositories.MentorSubject;
 using MAS.Core.Interfaces.Repositories.Subject;
 using MAS.Core.Interfaces.Services.Account;
+using MAS.Core.Interfaces.Services.Email;
 using MAS.Core.Interfaces.Services.Major;
 using MAS.Core.Interfaces.Services.MasUser;
 using MAS.Core.Interfaces.Services.MentorSubject;
 using MAS.Core.Interfaces.Services.Subject;
 using MAS.Core.Services.Account;
+using MAS.Core.Services.Email;
 using MAS.Core.Services.Major;
 using MAS.Core.Services.MasUser;
 using MAS.Core.Services.MentorSubject;
 using MAS.Core.Services.Subject;
 using MAS.Infrastructure.Data;
 using MAS.Infrastructure.Repositories.Account;
+using MAS.Infrastructure.Repositories.Email;
 using MAS.Infrastructure.Repositories.Major;
 using MAS.Infrastructure.Repositories.MasUser;
 using MAS.Infrastructure.Repositories.MentorSubject;
@@ -67,6 +71,10 @@ namespace MAS.API.Helpers
             // Config for MasUser
             services.AddScoped<IMasUserService, MasUserService>();
             services.AddScoped<IMasUserRepository, MasUserRepository>();
+
+            // Config for Email
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IEmailRepository, EmailRepository>();
             // -----------------------------------------------------------------------------------------
             services.AddHttpClient();
             return services;

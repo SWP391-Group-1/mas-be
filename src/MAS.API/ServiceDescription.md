@@ -9,6 +9,7 @@
 - <a href="#subject" target="_self">Subject</a> <br>
 - <a href="#subjectMentor" target="_self">Subject of Mentor</a> <br>
 - <a href="#user" target="_self">Users</a> <br>
+- <a href="#email" target="_self">Email</a> <br>
 - <a href="#api" target="_self">MAS API</a> <br>
 
 <h2 id="weather">Weather Forecast <a href="#table-of-contents" target="_self">🔙</a></h2>
@@ -129,5 +130,12 @@
 > - ``PUT /api/mas/v1/users/active/{userId} ``  
 >   ***Description***: Active or disable user  
 >   ***Role Access***: Admin  
+>
+
+<h2 id="email">Email  <a href="#table-of-contents" target="_self">🔙</a></h2>  
+
+> - ``POST /api/mas/v1/email/send ``  
+>   ***Description***: Send email to a specific user    
+>   ***Role Access***: Admin      
 >
 <h2 id="api">MAS API  <a href="#table-of-contents" target="_self">🔙</a></h2>   
