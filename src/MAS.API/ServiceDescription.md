@@ -130,4 +130,12 @@
 >   ***Description***: Active or disable user  
 >   ***Role Access***: Admin  
 >
+> - ``PUT /api/mas/v1/users/mentor-request ``  
+>   ***Description***: Send mentor request  
+>   ***Role Access***: User  
+>
+> - ``PUT /api/mas/v1/users/accept-request ``  
+>   ***Description***: Accept/deny mentor request  
+>   ***Role Access***: Admin  
+>
 <h2 id="api">MAS API  <a href="#table-of-contents" target="_self">🔙</a></h2>   

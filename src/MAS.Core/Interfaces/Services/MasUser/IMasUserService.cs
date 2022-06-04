@@ -11,7 +11,8 @@ namespace MAS.Core.Interfaces.Services.MasUser
     {
         Task<Result<PersonalInfoResponse>> GetPersonalInfoByIdentityIdAsync(ClaimsPrincipal principal);
         Task<Result<bool>> UpdatePersonalInfoAsync(ClaimsPrincipal principal, UserPersonalInfoUpdateRequest request);
-        Task<Result<bool>> SendMentorRequest(ClaimsPrincipal principal, MentorRequest request);
+        Task<Result<bool>> SendMentorRequest(ClaimsPrincipal principal);
+        Task<Result<bool>> AcceptRequest(string userId, MentorRequest request);
 
         Task<Result<UserGetBasicInfoResponse>> GetUserBasicInfoByIdAsync(string userId);
         Task<PagedResult<UserSearchResponse>> GetAllMentorsAsync(ClaimsPrincipal principal, UserParameters param);

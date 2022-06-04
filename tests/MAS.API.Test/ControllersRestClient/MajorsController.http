@@ -1,4 +1,4 @@
-@hostname = localhost
+ @hostname = localhost
 @port = 5001
 @azurehost = mas-api.azurewebsites.net
 @lchost = {{hostname}}:{{port}}

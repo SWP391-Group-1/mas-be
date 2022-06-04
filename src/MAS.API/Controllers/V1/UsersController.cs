@@ -209,5 +209,56 @@ namespace MAS.API.Controllers.V1
             }
             return NoContent();
         }
+
+        /// <summary>
+        /// Send mentor request
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// Roles Access: User
+        /// </remarks>
+        [HttpPut, Route("mentor-request")]
+        [Authorize(Roles = RoleConstants.User)]
+        public async Task<ActionResult> MentorRequest()
+        {
+            var response = await _masUserService.SendMentorRequest(HttpContext.User);
+            if (!response.IsSuccess) {
+                if (response.Error.Code == 404) {
+                    return NotFound(response);
+                }
+                else {
+                    return BadRequest(response);
+                }
+            }
+            return NoContent();
+        }
+
+
+        /// <summary>
+        /// Accept mentor request
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// Roles Access: Admin
+        /// </remarks>
+        [HttpPut, Route("accept-request")]
+        [Authorize(Roles = RoleConstants.Admin)]
+        public async Task<ActionResult> AcceptRequest(string userId, MentorRequest request)
+        {
+            if (!ModelState.IsValid) {
+                return BadRequest();
+            }
+            var response = await _masUserService.AcceptRequest(userId, request);
+            if (!response.IsSuccess) {
+                if (response.Error.Code == 404) {
+                    return NotFound(response);
+                }
+                else {
+                    return BadRequest(response);
+                }
+            }
+            return NoContent();
+        }
+
     }
 }

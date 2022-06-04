@@ -447,10 +447,91 @@ namespace MAS.Infrastructure.Repositories.MasUser
             return result;
         }
 
-        public Task<Result<bool>> SendMentorRequest(ClaimsPrincipal principal, MentorRequest request)
+        public async Task<Result<bool>> SendMentorRequest(ClaimsPrincipal principal)
         {
-            throw new NotImplementedException();
+            var result = new Result<bool>();
+            var loggedInUser = await _userManager.GetUserAsync(principal);
+            if (loggedInUser is null) {
+                result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, ErrorMessages.NotFound);
+                return result;
+            }
+            var identityId = loggedInUser.Id;
+
+            var user = await _context.MasUsers.FirstOrDefaultAsync(x => x.IdentityId == identityId);
+            if (user is null) {
+                result.Error = Helpers.ErrorHelper.PopulateError(404, ErrorTypes.NotFound, ErrorMessages.NotFound);
+                return result;
+            }
+
+
+            if (user.IsMentor == true) {
+                result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Bạn đã là mentor.");
+                return result;
+            }
+
+            if (user.IsMentor == false) {
+                result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Tài khoản đang chờ xét duyệt.");
+                return result;
+            }
+
+            user.IsMentor = false;
+
+            if (await _context.SaveChangesAsync() >= 0) {
+                result.Content = true;
+                return result;
+            }
+
+            result.Error = Helpers.ErrorHelper.PopulateError(0, ErrorTypes.SaveFail, ErrorMessages.SaveFail);
+
+            return result;
         }
+
+
+        public async Task<Result<bool>> AcceptRequest(string userId, MentorRequest request)
+        {
+            var result = new Result<bool>();
+            var user = await _context.MasUsers.FindAsync(userId);
+
+            if (user is null) {
+                result.Error = Helpers.ErrorHelper.PopulateError(404, ErrorTypes.NotFound, ErrorMessages.NotFound);
+                return result;
+
+            }
+
+            if (request.IsMentor == true) {
+                if (user.IsMentor == true) {
+                    result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Tài khoản đã là mentor.");
+                    return result;
+                }
+                user.IsMentor = true;
+                if (await _context.SaveChangesAsync() >= 0) {
+                    result.Content = true;
+                    return result;
+                }
+
+                result.Error = Helpers.ErrorHelper.PopulateError(0, ErrorTypes.SaveFail, ErrorMessages.SaveFail);
+                return result;
+            }
+            else if (request.IsMentor == false) {
+                if (user.IsMentor == false) {
+                    result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Tài khoản đang chờ xét duyệt.");
+                    return result;
+                }
+
+            }
+            else {
+                user.IsMentor = null;
+                if (await _context.SaveChangesAsync() >= 0) {
+                    result.Content = true;
+                    return result;
+                }
+            }
+
+            result.Error = Helpers.ErrorHelper.PopulateError(0, ErrorTypes.SaveFail, ErrorMessages.SaveFail);
+
+            return result;
+        }
+
 
         public async Task<Result<bool>> UpdatePersonalInfoAsync(ClaimsPrincipal principal, UserPersonalInfoUpdateRequest request)
         {

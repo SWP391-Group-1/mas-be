@@ -93,9 +93,32 @@ namespace MAS.Core.Services.MasUser
             }
         }
 
-        public async Task<Result<bool>> SendMentorRequest(ClaimsPrincipal principal, MentorRequest request)
+        public async Task<Result<bool>> SendMentorRequest(ClaimsPrincipal principal)
         {
-            throw new NotImplementedException();
+            try {
+                if (principal is null) {
+                    throw new ArgumentNullException(nameof(principal));
+                }
+                return await _masUserRepository.SendMentorRequest(principal);
+            }
+            catch (Exception ex) {
+                _logger.LogError($"Error while trying to call SendMentorRequest in service class, Error Message: {ex}.");
+                throw;
+            }
+        }
+
+        public async Task<Result<bool>> AcceptRequest(string userId, MentorRequest request)
+        {
+            try {
+                if (userId is null) {
+                    throw new ArgumentNullException(nameof(userId));
+                }
+                return await _masUserRepository.AcceptRequest(userId, request);
+            }
+            catch (Exception ex) {
+                _logger.LogError($"Error while trying to call AcceptRequest in service class, Error Message: {ex}.");
+                throw;
+            }
         }
 
         public async Task<Result<bool>> UpdatePersonalInfoAsync(ClaimsPrincipal principal, UserPersonalInfoUpdateRequest request)
