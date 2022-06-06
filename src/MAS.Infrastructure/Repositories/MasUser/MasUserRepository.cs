@@ -110,7 +110,6 @@ namespace MAS.Infrastructure.Repositories.MasUser
             FilterUserBySubjectId(ref query, param.SubjectId);
 
             // FilterUserByDate(ref query, param.DayInWeek);
-            FilterUserByHour(ref query, param.FromHour, param.ToHour);
 
             FilterIsMentor(ref query, param.IsMentor);
             FilterActiveUser(ref query, true);
