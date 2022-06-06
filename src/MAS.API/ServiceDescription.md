@@ -9,6 +9,7 @@
 - <a href="#subject" target="_self">Subject</a> <br>
 - <a href="#subjectMentor" target="_self">Subject of Mentor</a> <br>
 - <a href="#user" target="_self">Users</a> <br>
+- <a href="#question" target="_self">Question</a> <br>
 - <a href="#email" target="_self">Email</a> <br>
 - <a href="#api" target="_self">MAS API</a> <br>
 
@@ -131,7 +132,6 @@
 >   ***Description***: Active or disable user  
 >   ***Role Access***: Admin  
 >
-<<<<<<< HEAD
 > - ``PUT /api/mas/v1/users/mentor-request ``  
 >   ***Description***: Send mentor request  
 >   ***Role Access***: User  
@@ -163,13 +163,11 @@
 > - ``DELETE /api/mas/v1/questions/{questionId} ``  
 >   ***Description***: Delete Question by Id   
 >   ***Role Access***: User  
-=======
 
 <h2 id="email">Email  <a href="#table-of-contents" target="_self">🔙</a></h2>  
 
 > - ``POST /api/mas/v1/email/send ``  
 >   ***Description***: Send email to a specific user    
 >   ***Role Access***: Admin, User        
->>>>>>> 4e9be244252c6f6f5295d633c8869758b220e8de
 >
 <h2 id="api">MAS API  <a href="#table-of-contents" target="_self">🔙</a></h2>   

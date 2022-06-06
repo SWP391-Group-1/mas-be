@@ -76,15 +76,13 @@ namespace MAS.API.Helpers
             services.AddScoped<IMasUserService, MasUserService>();
             services.AddScoped<IMasUserRepository, MasUserRepository>();
 
-<<<<<<< HEAD
             // Config for Question
             services.AddScoped<IQuestionService, QuestionService>();
             services.AddScoped<IQuestionRepository, QuestionRepository>();
-=======
+            
             // Config for Email
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IEmailRepository, EmailRepository>();
->>>>>>> 4e9be244252c6f6f5295d633c8869758b220e8de
             // -----------------------------------------------------------------------------------------
             services.AddHttpClient();
             return services;
