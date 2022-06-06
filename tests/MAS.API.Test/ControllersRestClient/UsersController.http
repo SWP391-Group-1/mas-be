@@ -27,7 +27,7 @@ Authorization: {{authToken}}
 ###
 
 # Get user by Id
-GET {{baseUrl}}/api/mas/v1/users/81ca169e-626a-4bbd-a3e0-9d4bd4d6e843
+GET {{baseUrl}}/api/mas/v1/users/e491ca0c-eff5-4374-b6d3-2136b65255e7
 content-type: {{contentType}}
 Authorization: {{authToken}}
 

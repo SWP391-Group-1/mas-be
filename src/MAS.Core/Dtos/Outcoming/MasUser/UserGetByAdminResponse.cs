@@ -12,7 +12,7 @@ namespace MAS.Core.Dtos.Outcoming.MasUser
         public string MeetUrl { get; set; }
         public float Rate { get; set; }
         public int NumOfRate { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreateDate { get; set; }
         public bool IsActive { get; set; }
         public bool? IsMentor { get; set; }
 
