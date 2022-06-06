@@ -48,3 +48,17 @@ content-type: {{contentType}}
 Authorization: {{authToken}}
 
 ###
+
+
+# Register user
+POST {{baseUrl}}/api/mas/v1/accounts/register-user
+content-type: {{contentType}}
+
+{
+  "email": "user@fe.edu.vn",
+  "password": "Pa55w0rd!",
+  "confirmPassword": "Pa55w0rd!",
+  "name" : "test mentor"
+}
+
+###

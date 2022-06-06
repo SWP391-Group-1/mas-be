@@ -1,4 +1,5 @@
 using MAS.API.Helpers;
+using MAS.Core.Dtos.Incoming.Email;
 using MAS.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -35,7 +36,7 @@ namespace MAS.API
         {
             services.ConfigureServiceInjection(Configuration);
             
-            //services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddControllers()
                 .AddNewtonsoftJson(o => o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
