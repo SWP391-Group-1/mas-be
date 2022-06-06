@@ -1,5 +1,7 @@
 ﻿using MAS.Core.Dtos.Incoming.Account;
 using MAS.Core.Dtos.Incoming.MasUser;
+using MAS.Core.Dtos.Outcoming.Generic;
+using MAS.Core.Dtos.Outcoming.MasUser;
 using MAS.Core.Interfaces.Services.MasUser;
 using MAS.Core.Parameters.MasUser;
 using Microsoft.AspNetCore.Authorization;
@@ -72,7 +74,7 @@ namespace MAS.API.Controllers.V1
         /// </remarks>
         [HttpGet, Route("personal")]
         [Authorize(Roles = RoleConstants.User)]
-        public async Task<ActionResult> GetPersonalInfo()
+        public async Task<ActionResult<Result<PersonalInfoResponse>>> GetPersonalInfo()
         {
             var response = await _masUserService.GetPersonalInfoByIdentityIdAsync(HttpContext.User);
             if (!response.IsSuccess) {
@@ -96,7 +98,7 @@ namespace MAS.API.Controllers.V1
         /// </remarks>
         [HttpGet, Route("{userId}")]
         [Authorize(Roles = RoleConstants.User + "," + RoleConstants.Admin)]
-        public async Task<ActionResult> GetUserBasicInfoById(string userId)
+        public async Task<ActionResult<Result<UserGetBasicInfoResponse>>> GetUserBasicInfoById(string userId)
         {
             var response = await _masUserService.GetUserBasicInfoByIdAsync(userId);
             if (!response.IsSuccess) {
@@ -121,7 +123,7 @@ namespace MAS.API.Controllers.V1
         /// </remarks>
         [HttpGet, Route("mentors")]
         [Authorize(Roles = RoleConstants.User)]
-        public async Task<ActionResult> GetAllMentor([FromQuery] UserParameters param)
+        public async Task<ActionResult<PagedResult<UserSearchResponse>>> GetAllMentor([FromQuery] UserParameters param)
         {
             var response = await _masUserService.GetAllMentorsAsync(HttpContext.User, param);
 
@@ -157,7 +159,7 @@ namespace MAS.API.Controllers.V1
         /// </remarks>
         [HttpGet]
         [Authorize(Roles = RoleConstants.Admin)]
-        public async Task<ActionResult> GetAllUser([FromQuery] AdminUserParameters param)
+        public async Task<ActionResult<PagedResult<UserGetByAdminResponse>>> GetAllUser([FromQuery] AdminUserParameters param)
         {
             var response = await _masUserService.GetAllUsersForAdminAsync(param);
             if (!response.IsSuccess) {

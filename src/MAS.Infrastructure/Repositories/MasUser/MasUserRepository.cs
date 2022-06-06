@@ -41,7 +41,7 @@ namespace MAS.Infrastructure.Repositories.MasUser
 
             if (request.IsActive == true) {
                 if (user.IsActive == true) {
-                    result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Tài khoản {user.Name} hiện đang active.");
+                    result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Account {user.Name} is actived.");
                     return result;
                 }
                 user.IsActive = true;
@@ -55,11 +55,11 @@ namespace MAS.Infrastructure.Repositories.MasUser
             }
             else {
                 if (user.IsActive == false) {
-                    result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Tài khoản {user.Name} hiện đang bị khóa.");
+                    result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Account {user.Name} is locked.");
                     return result;
                 }
                 if (String.IsNullOrEmpty(request.Note) || String.IsNullOrWhiteSpace(request.Note)) {
-                    result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Bạn chưa nhập lí do khóa tài khoản.");
+                    result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Reason is required.");
                     return result;
                 }
 
@@ -458,12 +458,12 @@ namespace MAS.Infrastructure.Repositories.MasUser
 
 
             if (user.IsMentor == true) {
-                result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Bạn đã là mentor.");
+                result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Account is already mentor.");
                 return result;
             }
 
             if (user.IsMentor == false) {
-                result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Tài khoản đang chờ xét duyệt.");
+                result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Request is pending.");
                 return result;
             }
 
@@ -493,7 +493,7 @@ namespace MAS.Infrastructure.Repositories.MasUser
 
             if (request.IsMentor == true) {
                 if (user.IsMentor == true) {
-                    result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Tài khoản đã là mentor.");
+                    result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Account is already mentor.");
                     return result;
                 }
                 user.IsMentor = true;
@@ -507,7 +507,7 @@ namespace MAS.Infrastructure.Repositories.MasUser
             }
             else if (request.IsMentor == false) {
                 if (user.IsMentor == false) {
-                    result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Tài khoản đang chờ xét duyệt.");
+                    result.Error = Helpers.ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, $"Request is pending.");
                     return result;
                 }
 

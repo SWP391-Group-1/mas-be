@@ -45,7 +45,7 @@ namespace MAS.Infrastructure.Repositories.Question
             if (loggedInUser.Id != question.Appointment.MentorId) {
                 result.Error = ErrorHelper.PopulateError(400,
                                                         ErrorTypes.BadRequest,
-                                                        "Chỉ mentor mới trả lời được câu hỏi.");
+                                                        "Do not have permission to perform this.");
                 return result;
             }
 
@@ -84,7 +84,7 @@ namespace MAS.Infrastructure.Repositories.Question
             if (loggedInUser.Id != appointment.CreatorId) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                          ErrorTypes.BadRequest,
-                                                         "Chỉ người tạo yêu cầu mới có thể đặt câu hỏi.");
+                                                         "Do not have permission to perform this.");
                 return result;
             }
 
@@ -121,7 +121,7 @@ namespace MAS.Infrastructure.Repositories.Question
             }
 
             if (loggedInUser.Id != question.CreatorId && loggedInUser.Id != question.Appointment.MentorId) {
-                result.Error = ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, "Bạn không có quyền xoá câu hỏi này.");
+                result.Error = ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, "Do not have permission to perform this.");
                 return result;
             }
             _context.Questions.Remove(question);
