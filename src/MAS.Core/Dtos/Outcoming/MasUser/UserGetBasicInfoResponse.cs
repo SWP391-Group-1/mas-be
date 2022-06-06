@@ -14,7 +14,7 @@ namespace MAS.Core.Dtos.Outcoming.MasUser
         public int NumOfRate { get; set; }
         public bool? IsMentor { get; set; }
         public bool IsActive { get; set; } = true;
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreateDate { get; set; }
 
 
 
