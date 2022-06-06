@@ -20,8 +20,8 @@ namespace MAS.Infrastructure.Repositories.Question
     {
         private readonly UserManager<IdentityUser> _userManager;
         public QuestionRepository(IMapper mapper,
-                                       AppDbContext context,
-                                       UserManager<IdentityUser> userManager) : base(mapper, context)
+                                  AppDbContext context,
+                                  UserManager<IdentityUser> userManager) : base(mapper, context)
         {
             _userManager = userManager;
         }
