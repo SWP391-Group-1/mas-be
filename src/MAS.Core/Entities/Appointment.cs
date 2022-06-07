@@ -18,7 +18,7 @@ namespace MAS.Core.Entities
         public ICollection<Question> Questions { get; set; }
         public ICollection<Rating> Ratings { get; set; }
 
-        public bool IsApprove { get; set; }
+        public bool? IsApprove { get; set; }
 
         public DateTime? StartTime { get; set; }
 

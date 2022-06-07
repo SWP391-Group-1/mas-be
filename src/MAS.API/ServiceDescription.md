@@ -10,6 +10,7 @@
 - <a href="#subjectMentor" target="_self">Subject of Mentor</a> <br>
 - <a href="#user" target="_self">Users</a> <br>
 - <a href="#question" target="_self">Question</a> <br>
+- <a href="#slot" target="_self">Slot</a> <br>
 - <a href="#email" target="_self">Email</a> <br>
 - <a href="#api" target="_self">MAS API</a> <br>
 
@@ -162,6 +163,25 @@
 >
 > - ``DELETE /api/mas/v1/questions/{questionId} ``  
 >   ***Description***: Delete Question by Id   
+>   ***Role Access***: User  
+
+<h2 id="slot">Slot  <a href="#table-of-contents" target="_self">🔙</a></h2>   
+
+> - ``GET /api/mas/v1/slots ``  
+>   ***Description***: Get all available slots   
+>   ***Role Access***: Admin, User  
+>   ***Extension***: Paging, Filter by Mentor Id, Filter by time range, Sorting
+>
+> - ``POST /api/mas/v1/slots ``  
+>   ***Description***: Create a Slot   
+>   ***Role Access***: User  
+>
+> - ``GET /api/mas/v1/slots/{slotId} ``  
+>   ***Description***: Get Slot by Id   
+>   ***Role Access***: Admin, User  
+>
+> - ``DELETE /api/mas/v1/slots/{slotId} ``  
+>   ***Description***: Delete Slot by Id   
 >   ***Role Access***: User  
 
 <h2 id="email">Email  <a href="#table-of-contents" target="_self">🔙</a></h2>  
