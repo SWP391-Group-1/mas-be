@@ -33,11 +33,12 @@ namespace MAS.Infrastructure.Repositories.Subject
                 return result;
             }
 
-            var existSubject = await _context.Subjects.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim());
+            var existSubject = await _context.Subjects.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
+                                                                || x.Code.ToLower().Trim() == request.Code.ToLower().Trim());
             if (existSubject) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                          ErrorTypes.BadRequest,
-                                                         ErrorMessages.Exist + $"{request.Title} in System.");
+                                                         ErrorMessages.Exist + $"{request.Title} or {request.Code} in System.");
                 return result;
             }
 
@@ -116,10 +117,10 @@ namespace MAS.Infrastructure.Repositories.Subject
 
         private void SortResultsAscOrDesc(ref IQueryable<Core.Entities.Subject> query, bool? sortAsc)
         {
-            if(sortAsc is null) {
+            if (sortAsc is null) {
                 return;
             }
-            if(sortAsc is true) {
+            if (sortAsc is true) {
                 query = query.OrderBy(x => x.Title);
             }
             else {
@@ -145,7 +146,7 @@ namespace MAS.Infrastructure.Repositories.Subject
                 return;
             }
             query = query.Where(x =>
-                                    (x.Title + " " + x.Description)
+                                    (x.Title + " " + x.Description + " " + x.Code)
                                     .ToLower()
                                     .Contains(searchString.ToLower())
                                );
@@ -188,8 +189,10 @@ namespace MAS.Infrastructure.Repositories.Subject
                 return result;
             }
 
-            var existSubject = await _context.Subjects.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
-                                                                    && x.Id != subjectId);
+            var existSubject = await _context.Subjects.AnyAsync(x => (x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
+                                                                    && x.Id != subjectId)
+                                                                || (x.Code.ToLower().Trim() == request.Code.ToLower().Trim() 
+                                                                    && x.Id != subjectId));
             if (existSubject) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                          ErrorTypes.BadRequest,

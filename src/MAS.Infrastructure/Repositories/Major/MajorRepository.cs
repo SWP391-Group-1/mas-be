@@ -25,7 +25,8 @@ namespace MAS.Infrastructure.Repositories.Major
         {
             var result = new Result<MajorResponse>();
 
-            var existMajor = await _context.Majors.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim());
+            var existMajor = await _context.Majors.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
+                                                            || x.Code.ToLower().Trim() == request.Code.ToLower().Trim());
             if (existMajor) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                          ErrorTypes.BadRequest,
@@ -90,7 +91,7 @@ namespace MAS.Infrastructure.Repositories.Major
                || String.IsNullOrWhiteSpace(searchString)) {
                 return;
             }
-            query = query.Where(x => (x.Title + " " + x.Description)
+            query = query.Where(x => (x.Title + " " + x.Description + " " + x.Code)
                                     .ToLower()
                                     .Contains(searchString.ToLower())
                                );
@@ -125,8 +126,10 @@ namespace MAS.Infrastructure.Repositories.Major
                 return result;
             }
 
-            var existMajor = await _context.Majors.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
-                                                                    && x.Id != MajorId);
+            var existMajor = await _context.Majors.AnyAsync(x => (x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
+                                                                    && x.Id != MajorId)
+                                                                || (x.Code.ToLower().Trim() == request.Code.ToLower().Trim()
+                                                                    && x.Id != MajorId));
             if (existMajor) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                          ErrorTypes.BadRequest,

@@ -6,6 +6,10 @@ namespace MAS.Core.Dtos.Incoming.Subject
     public class SubjectCreateRequest : BaseCreateRequest
     {
         [Required]
+        [MaxLength(10)]
+        public string Code { get; set; }
+
+        [Required]
         [MaxLength(100)]
         public string MajorId { get; set; }
 
