@@ -21,9 +21,6 @@ namespace MAS.Core.Entities
         public bool IsActive { get; set; }
 
         public ICollection<Slot> Slots { get; set; }
-        public ICollection<Appointment> Appointments { get; set; }
         public ICollection<MentorSubject> MentorSubjects { get; set; }
-        public ICollection<Question> Questions { get; set; }
-        public ICollection<Rating> Ratings { get; set; }
     }
 }

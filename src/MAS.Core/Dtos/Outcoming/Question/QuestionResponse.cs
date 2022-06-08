@@ -6,7 +6,7 @@ namespace MAS.Core.Dtos.Outcoming.Question
     {
         public string Id { get; set; }
         public string AppointmentId { get; set; }
-        public Appointment Appointment { get; set; }
+        public Entities.Appointment Appointment { get; set; }
 
         public string CreatorId { get; set; }
         //public MasUser Creator { get; set; }

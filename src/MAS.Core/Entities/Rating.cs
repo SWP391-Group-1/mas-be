@@ -10,7 +10,6 @@ namespace MAS.Core.Entities
         public string CreatorId { get; set; }        
 
         public string MentorId { get; set; }
-        //public MasUser Mentor { get; set; }
 
         public int Vote { get; set; }
         public string Comment { get; set; }
