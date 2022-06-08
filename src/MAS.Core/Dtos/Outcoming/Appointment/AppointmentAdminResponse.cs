@@ -1,12 +1,14 @@
 using MAS.Core.Dtos.Outcoming.MasUser;
 using MAS.Core.Dtos.Outcoming.Slot;
 using System;
-using System.Collections.Generic;
 
 namespace MAS.Core.Dtos.Outcoming.Appointment
 {
-    public class AppointmentUserResponse
+    public interface AppointmentAdminResponse
     {
+        public string CreatorId { get; set; }
+        public UserGetBasicInfoResponse Creator { get; set; }
+
         public string MentorId { get; set; }
         public UserGetBasicInfoResponse Mentor { get; set; }
 
