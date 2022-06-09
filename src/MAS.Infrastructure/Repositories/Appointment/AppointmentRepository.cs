@@ -284,7 +284,9 @@ namespace MAS.Infrastructure.Repositories.Appointment
             return PagedResult<AppointmentAdminResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
         }
 
-        public async Task<PagedResult<AppointmentUserResponse>> GetAllAppointmentsOfOwnAsync(ClaimsPrincipal principal, AppointmentUserParameters param)
+        public async Task<PagedResult<AppointmentUserResponse>> GetAllAppointmentsOfOwnAsync(
+            ClaimsPrincipal principal,
+            AppointmentUserParameters param)
         {
             var result = new PagedResult<AppointmentUserResponse>();
 
@@ -348,29 +350,261 @@ namespace MAS.Infrastructure.Repositories.Appointment
 
             response.Creator = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(response.CreatorId));
             response.Mentor = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(response.MentorId));
-            
+
             result.Content = response;
             return result;
         }
 
-        public async Task<Result<AppointmentMentorDetailResponse>> GetAppointmentOfMentorByIdAsync(ClaimsPrincipal principal, string appointmentId)
+        public async Task<Result<AppointmentMentorDetailResponse>> GetAppointmentOfMentorByIdAsync(
+            ClaimsPrincipal principal,
+            string appointmentId)
         {
-            throw new System.NotImplementedException();
+            var result = new Result<AppointmentMentorDetailResponse>();
+
+            var loggedInUser = await _userManager.GetUserAsync(principal);
+            if (loggedInUser is null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.NotLogIn);
+                return result;
+            }
+            var identityId = loggedInUser.Id; //new Guid(loggedInUser.Id).ToString()
+
+            var user = await _context.MasUsers.FirstOrDefaultAsync(x => x.IdentityId == identityId);
+            if (user is null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.NotLogIn);
+                return result;
+            }
+            if (user.IsActive is false) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.AccountDisable);
+                return result;
+            }
+            if (user.IsMentor is not true) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         "You are not mentor!");
+                return result;
+            }
+
+            var app = await _context.Appointments.FindAsync(appointmentId);
+            if (app == null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
+                                                         ErrorTypes.NotFound,
+                                                         ErrorMessages.NotFound + "subject.");
+                return result;
+            }
+            if (app.MentorId != user.Id) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         "This is not your appointment!");
+                return result;
+            }
+            await _context.Entry(app).Reference(x => x.Slot).LoadAsync();
+            await _context.Entry(app).Collection(x => x.Questions).LoadAsync();
+            await _context.Entry(app).Collection(x => x.AppointmentSubjects).LoadAsync();
+
+            var response = _mapper.Map<AppointmentMentorDetailResponse>(app);
+
+            response.Creator = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(response.CreatorId));
+
+            result.Content = response;
+            return result;
         }
 
-        public async Task<Result<AppointmentUserDetailResponse>> GetAppointmentOfOwnByIdAsync(ClaimsPrincipal principal, string appointmentId)
+        public async Task<Result<AppointmentUserDetailResponse>> GetAppointmentOfOwnByIdAsync(
+            ClaimsPrincipal principal,
+            string appointmentId)
         {
-            throw new System.NotImplementedException();
+            var result = new Result<AppointmentUserDetailResponse>();
+
+            var loggedInUser = await _userManager.GetUserAsync(principal);
+            if (loggedInUser is null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.NotLogIn);
+                return result;
+            }
+            var identityId = loggedInUser.Id; //new Guid(loggedInUser.Id).ToString()
+
+            var user = await _context.MasUsers.FirstOrDefaultAsync(x => x.IdentityId == identityId);
+            if (user is null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.NotLogIn);
+                return result;
+            }
+            if (user.IsActive is false) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.AccountDisable);
+                return result;
+            }
+
+            var app = await _context.Appointments.FindAsync(appointmentId);
+            if (app == null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
+                                                         ErrorTypes.NotFound,
+                                                         ErrorMessages.NotFound + "subject.");
+                return result;
+            }
+            if (app.CreatorId != user.Id) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         "This is not your appointment!");
+                return result;
+            }
+            await _context.Entry(app).Reference(x => x.Slot).LoadAsync();
+            await _context.Entry(app).Collection(x => x.Questions).LoadAsync();
+            await _context.Entry(app).Collection(x => x.AppointmentSubjects).LoadAsync();
+
+            var response = _mapper.Map<AppointmentUserDetailResponse>(app);
+
+            response.Mentor = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(response.MentorId));
+
+            result.Content = response;
+            return result;
         }
 
         public async Task<Result<bool>> MentorUpdateAppointmentAsync(ClaimsPrincipal principal, string appointmentId, AppointmentUpdateRequest request)
         {
-            throw new System.NotImplementedException();
+            var result = new Result<bool>();
+
+            var loggedInUser = await _userManager.GetUserAsync(principal);
+            if (loggedInUser is null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.NotLogIn);
+                return result;
+            }
+            var identityId = loggedInUser.Id; //new Guid(loggedInUser.Id).ToString()
+
+            var user = await _context.MasUsers.FirstOrDefaultAsync(x => x.IdentityId == identityId);
+            if (user is null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.NotLogIn);
+                return result;
+            }
+            if (user.IsActive is false) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.AccountDisable);
+                return result;
+            }
+            if (user.IsMentor is not true) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         "You are not mentor!");
+                return result;
+            }
+
+            var app = await _context.Appointments.FindAsync(appointmentId);
+            if (app == null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
+                                                         ErrorTypes.NotFound,
+                                                         ErrorMessages.NotFound + "subject.");
+                return result;
+            }
+            if (app.MentorId != user.Id) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         "This is not your appointment!");
+                return result;
+            }
+
+            var model = _mapper.Map(request, app);
+            _context.Appointments.Update(model);
+
+            if (await _context.SaveChangesAsync() >= 0) {
+                result.Content = true;
+                return result;
+            }
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
+                                                     ErrorTypes.SaveFail,
+                                                     ErrorMessages.SaveFail);
+            return result;
         }
 
         public async Task<Result<bool>> ProcessAppointmentAsync(ClaimsPrincipal principal, string appointmentId, AppointmentProcessRequest request)
         {
-            throw new System.NotImplementedException();
+            var result = new Result<bool>();
+
+            var loggedInUser = await _userManager.GetUserAsync(principal);
+            if (loggedInUser is null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.NotLogIn);
+                return result;
+            }
+            var identityId = loggedInUser.Id; //new Guid(loggedInUser.Id).ToString()
+
+            var user = await _context.MasUsers.FirstOrDefaultAsync(x => x.IdentityId == identityId);
+            if (user is null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.NotLogIn);
+                return result;
+            }
+            if (user.IsActive is false) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         ErrorMessages.AccountDisable);
+                return result;
+            }
+            if (user.IsMentor is not true) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         "You are not mentor!");
+                return result;
+            }
+
+            var app = await _context.Appointments.FindAsync(appointmentId);
+            if (app == null) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
+                                                         ErrorTypes.NotFound,
+                                                         ErrorMessages.NotFound + "subject.");
+                return result;
+            }
+            if (app.MentorId != user.Id) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         "This is not your appointment!");
+                return result;
+            }
+
+            if (request.IsApprove == false) {
+                if (String.IsNullOrEmpty(request.MentorDescription) || String.IsNullOrWhiteSpace(request.MentorDescription)) {
+                    result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                         ErrorTypes.BadRequest,
+                                                         "Please enter your description why you reject this appointment!");
+                    return result;
+                }
+                app.IsApprove = request.IsApprove;
+                app.MentorDescription = request.MentorDescription;
+                if (await _context.SaveChangesAsync() >= 0) {
+                    result.Content = true;
+                    return result;
+                }
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
+                                                         ErrorTypes.SaveFail,
+                                                         ErrorMessages.SaveFail);
+                return result;
+            }
+            else {
+                app.IsApprove = request.IsApprove;
+                if (await _context.SaveChangesAsync() >= 0) {
+                    result.Content = true;
+                    return result;
+                }
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
+                                                         ErrorTypes.SaveFail,
+                                                         ErrorMessages.SaveFail);
+                return result;
+            }
         }
     }
 }
