@@ -161,7 +161,7 @@ namespace MAS.Infrastructure.Repositories.Slot
             _context.Slots.Remove(slot);
             if ((await _context.SaveChangesAsync() >= 0)) {
                 foreach (var item in slot.Appointments) {
-                    if (item.IsApprove is not true) {
+                    if (item.IsApprove is false) {
                         await _context.Entry(item).Collection(x => x.AppointmentSubjects).LoadAsync();
                         _context.AppointmentSubjects.RemoveRange(item.AppointmentSubjects); // Remove appointment subject
                         if ((await _context.SaveChangesAsync() >= 0)) {

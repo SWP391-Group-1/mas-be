@@ -48,7 +48,7 @@ namespace MAS.Infrastructure.Repositories.Account
 
             if (payload is null) {
                 return new AuthenResult {
-                    Errors = new List<string>() { "IdToken không hợp lệ." }
+                    Errors = new List<string>() { "IdToken not valid." }
                 };
             }
 
@@ -90,7 +90,7 @@ namespace MAS.Infrastructure.Repositories.Account
 
                                 IsActive = true,
 
-                                CreateDate = DateTime.UtcNow,
+                                CreateDate = DateTime.UtcNow.AddHours(7),
                                 UpdateDate = null
                             };
                             await _context.MasUsers.AddAsync(masUser);
@@ -113,7 +113,7 @@ namespace MAS.Infrastructure.Repositories.Account
 
                                 IsActive = true,
 
-                                CreateDate = DateTime.UtcNow,
+                                CreateDate = DateTime.UtcNow.AddHours(7),
                                 UpdateDate = null
                             };
                             await _context.MasUsers.AddAsync(masUser);
@@ -136,7 +136,7 @@ namespace MAS.Infrastructure.Repositories.Account
 
                 if (appUser is null) {
                     return new AuthenResult {
-                        Errors = new List<string>() { "Tài khoản không tồn tại." }
+                        Errors = new List<string>() { "Account not exist." }
                     };
                 }
 
@@ -148,7 +148,7 @@ namespace MAS.Infrastructure.Repositories.Account
             }
 
             return new AuthenResult {
-                Errors = new List<string>() { "Lỗi xác thực với Google!" }
+                Errors = new List<string>() { "Error when authenticate with Google!" }
             };
         }
 
@@ -273,7 +273,7 @@ namespace MAS.Infrastructure.Repositories.Account
         {
             if (await IsExistEmail(request.Email)) {
                 return new AuthenResult {
-                    Errors = new List<string>() { "Tài khoản đã tồn tại." }
+                    Errors = new List<string>() { "Account already existed." }
                 };
             }
 
@@ -287,7 +287,7 @@ namespace MAS.Infrastructure.Repositories.Account
 
             if (result.Succeeded) {
                 return new AuthenResult {
-                    Message = "Tạo tài khoản Administrator thành công!"
+                    Message = "Create Admin account successfully!"
                 };
             }
 
@@ -321,13 +321,13 @@ namespace MAS.Infrastructure.Repositories.Account
 
             if (user is null) {
                 return new AuthenResult {
-                    Errors = new List<string>() { "Tài khoản không tồn tại." }
+                    Errors = new List<string>() { "Account is not existed." }
                 };
             }
 
             if (!await IsAdmin(user)) {
                 return new AuthenResult {
-                    Errors = new List<string>() { "Tài khoản không tồn tại." }
+                    Errors = new List<string>() { "Account is not existed." }
                 };
             }
 
@@ -335,7 +335,7 @@ namespace MAS.Infrastructure.Repositories.Account
 
             if (!result) {
                 return new AuthenResult {
-                    Errors = new List<string>() { "Sai Password. Vui lòng kiểm tra và thử lại!" }
+                    Errors = new List<string>() { "Wrong password!" }
                 };
             }
 
@@ -387,7 +387,7 @@ namespace MAS.Infrastructure.Repositories.Account
                 if (CheckIsMailMentor(request.Email)) {
                     userEntityModel.Id = Guid.NewGuid().ToString();
                     userEntityModel.IdentityId = identityUser.Id;
-                    userEntityModel.CreateDate = DateTime.UtcNow;
+                    userEntityModel.CreateDate = DateTime.UtcNow.AddHours(7);
                     userEntityModel.UpdateDate = null;
                     userEntityModel.Avatar = "";
 
@@ -403,7 +403,7 @@ namespace MAS.Infrastructure.Repositories.Account
                 else {
                     userEntityModel.Id = Guid.NewGuid().ToString();
                     userEntityModel.IdentityId = identityUser.Id;
-                    userEntityModel.CreateDate = DateTime.UtcNow;
+                    userEntityModel.CreateDate = DateTime.UtcNow.AddHours(7);
                     userEntityModel.UpdateDate = null;
                     userEntityModel.Avatar = "";
 

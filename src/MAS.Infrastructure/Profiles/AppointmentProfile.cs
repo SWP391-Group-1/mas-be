@@ -12,7 +12,8 @@ namespace MAS.Infrastructure.Profiles
             // src => target
             CreateMap<AppointmentCreateRequest, Appointment>();
             CreateMap<AppointmentProcessRequest, Appointment>();
-            CreateMap<AppointmentUpdateRequest, Appointment>(); 
+            CreateMap<AppointmentUpdateRequest, Appointment>();
+            CreateMap<AppointmentSubjectCreateRequest, AppointmentSubject>(); 
             
             CreateMap<Appointment, AppointmentUserResponse>();
             CreateMap<Appointment, AppointmentUserDetailResponse>();

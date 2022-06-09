@@ -4,6 +4,6 @@ namespace MAS.Core.Dtos.Incoming.Generic
 {
     public abstract class BaseUpdateRequest
     {
-        public DateTime UpdateDate = DateTime.UtcNow;
+        public DateTime UpdateDate = DateTime.UtcNow.AddHours(7);
     }
 }

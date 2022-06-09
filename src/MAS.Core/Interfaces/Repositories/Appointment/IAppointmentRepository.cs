@@ -10,8 +10,8 @@ namespace MAS.Core.Interfaces.Repositories.Appointment
     public interface IAppointmentRepository
     {
         /* Student create, delete appointment, view all appointments and view in detail appointment */
-        Task<Result<bool>> CreateAppointmentAsync(ClaimsPrincipal principal, string mentorId, AppointmentCreateRequest request);
-        Task<Result<bool>> DeleteAppointmentAsync(string appointmentId);
+        Task<Result<bool>> CreateAppointmentAsync(ClaimsPrincipal principal, AppointmentCreateRequest request);
+        Task<Result<bool>> DeleteAppointmentAsync(ClaimsPrincipal principal, string appointmentId);
         Task<PagedResult<AppointmentUserResponse>> GetAllAppointmentsOfOwnAsync(ClaimsPrincipal principal, AppointmentUserParameters param);
         Task<Result<AppointmentUserDetailResponse>> GetAppointmentOfOwnByIdAsync(ClaimsPrincipal principal, string appointmentId);
 
