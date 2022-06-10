@@ -9,95 +9,94 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace MAS.Core.Services.MentorSubject
+namespace MAS.Core.Services.MentorSubject;
+
+public class MentorSubjectService : IMentorSubjectService
 {
-    public class MentorSubjectService : IMentorSubjectService
+    private readonly IMentorSubjectRepository _mentorSubjectRepository;
+    private readonly ILogger<MentorSubjectService> _logger;
+
+    public MentorSubjectService(
+        IMentorSubjectRepository mentorSubjectRepository,
+        ILogger<MentorSubjectService> logger)
     {
-        private readonly IMentorSubjectRepository _mentorSubjectRepository;
-        private readonly ILogger<MentorSubjectService> _logger;
-
-        public MentorSubjectService(
-            IMentorSubjectRepository mentorSubjectRepository,
-            ILogger<MentorSubjectService> logger)
-        {
-            _mentorSubjectRepository = mentorSubjectRepository;
-            _logger = logger;
+        _mentorSubjectRepository = mentorSubjectRepository;
+        _logger = logger;
+    }
+    public async Task<Result<bool>> DeleteSubjectOfMentorAsync(
+        ClaimsPrincipal principal,
+        string subjectOfMentorId)
+    {
+        try {
+            if (principal is null) {
+                throw new ArgumentNullException(nameof(principal));
+            }
+            if (String.IsNullOrEmpty(subjectOfMentorId) || String.IsNullOrWhiteSpace(subjectOfMentorId)) {
+                throw new ArgumentNullException(nameof(subjectOfMentorId));
+            }
+            return await _mentorSubjectRepository.DeleteSubjectOfMentorAsync(principal, subjectOfMentorId);
         }
-        public async Task<Result<bool>> DeleteSubjectOfMentorAsync(
-            ClaimsPrincipal principal,
-            string subjectOfMentorId)
-        {
-            try {
-                if (principal is null) {
-                    throw new ArgumentNullException(nameof(principal));
-                }
-                if (String.IsNullOrEmpty(subjectOfMentorId) || String.IsNullOrWhiteSpace(subjectOfMentorId)) {
-                    throw new ArgumentNullException(nameof(subjectOfMentorId));
-                }
-                return await _mentorSubjectRepository.DeleteSubjectOfMentorAsync(principal, subjectOfMentorId);
-            }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call DeleteSubjectOfMentorAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call DeleteSubjectOfMentorAsync in service class, Error Message: {ex}.");
+            throw;
         }
+    }
 
-        public async Task<PagedResult<MentorSubjectResponse>> GetAllsSubjectOfMentorAsync(
-            string mentorId,
-            MentorSubjectParameters param)
-        {
-            try {
-                if (String.IsNullOrEmpty(mentorId) || String.IsNullOrWhiteSpace(mentorId)) {
-                    throw new ArgumentNullException(nameof(mentorId));
-                }
-                return await _mentorSubjectRepository.GetAllsSubjectOfMentorAsync(mentorId, param);
+    public async Task<PagedResult<MentorSubjectResponse>> GetAllsSubjectOfMentorAsync(
+        string mentorId,
+        MentorSubjectParameters param)
+    {
+        try {
+            if (String.IsNullOrEmpty(mentorId) || String.IsNullOrWhiteSpace(mentorId)) {
+                throw new ArgumentNullException(nameof(mentorId));
             }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call GetAllsSubjectOfMentorAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+            return await _mentorSubjectRepository.GetAllsSubjectOfMentorAsync(mentorId, param);
         }
-
-        public async Task<Result<bool>> RegisterSubjectAsync(
-            ClaimsPrincipal principal,
-            MentorSubjectRegisterRequest request)
-        {
-            try {
-                if (principal is null) {
-                    throw new ArgumentNullException(nameof(principal));
-                }
-                if (request is null) {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                return await _mentorSubjectRepository.RegisterSubjectAsync(principal, request);
-            }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call RegisterSubjectAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call GetAllsSubjectOfMentorAsync in service class, Error Message: {ex}.");
+            throw;
         }
+    }
 
-        public async Task<Result<bool>> UpdateSubjectOfMentorAsync(
-            ClaimsPrincipal principal,
-            string subjectOfMentorId,
-            MentorSubjectUpdateRequest request)
-        {
-            try {
-                if (principal is null) {
-                    throw new ArgumentNullException(nameof(principal));
-                }
-                if (String.IsNullOrEmpty(subjectOfMentorId) || String.IsNullOrWhiteSpace(subjectOfMentorId)) {
-                    throw new ArgumentNullException(nameof(subjectOfMentorId));
-                }
-                if (request is null) {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                return await _mentorSubjectRepository.UpdateSubjectOfMentorAsync(principal, subjectOfMentorId, request);
+    public async Task<Result<bool>> RegisterSubjectAsync(
+        ClaimsPrincipal principal,
+        MentorSubjectRegisterRequest request)
+    {
+        try {
+            if (principal is null) {
+                throw new ArgumentNullException(nameof(principal));
             }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call UpdateSubjectOfMentorAsync in service class, Error Message: {ex}.");
-                throw;
+            if (request is null) {
+                throw new ArgumentNullException(nameof(request));
             }
+            return await _mentorSubjectRepository.RegisterSubjectAsync(principal, request);
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call RegisterSubjectAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
+
+    public async Task<Result<bool>> UpdateSubjectOfMentorAsync(
+        ClaimsPrincipal principal,
+        string subjectOfMentorId,
+        MentorSubjectUpdateRequest request)
+    {
+        try {
+            if (principal is null) {
+                throw new ArgumentNullException(nameof(principal));
+            }
+            if (String.IsNullOrEmpty(subjectOfMentorId) || String.IsNullOrWhiteSpace(subjectOfMentorId)) {
+                throw new ArgumentNullException(nameof(subjectOfMentorId));
+            }
+            if (request is null) {
+                throw new ArgumentNullException(nameof(request));
+            }
+            return await _mentorSubjectRepository.UpdateSubjectOfMentorAsync(principal, subjectOfMentorId, request);
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call UpdateSubjectOfMentorAsync in service class, Error Message: {ex}.");
+            throw;
         }
     }
 }

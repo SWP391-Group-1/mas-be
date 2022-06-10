@@ -40,68 +40,67 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace MAS.API.Helpers
+namespace MAS.API.Helpers;
+
+public static class ServiceInjections
 {
-    public static class ServiceInjections
+    public static IServiceCollection ConfigureServiceInjection(this IServiceCollection services, IConfiguration configuration)
     {
-        public static IServiceCollection ConfigureServiceInjection(this IServiceCollection services, IConfiguration configuration)
-        {
-            if (services is null) {
-                throw new ArgumentNullException(nameof(services));
-            }
-
-            if (configuration is null) {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            services.AddDbContext<AppDbContext>
-            (
-                options => options.UseSqlServer(configuration.GetConnectionString("MasDbConnection"))
-            );
-
-            // Config for automapper
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-            // Config DI--------------------------------------------------------------------------------
-
-            // Config for Authentication
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IAccountRepository, AccountRepository>();
-
-            // Config for Major
-            services.AddScoped<IMajorService, MajorService>();
-            services.AddScoped<IMajorRepository, MajorRepository>();
-
-            // Config for Subject
-            services.AddScoped<ISubjectService, SubjectService>();
-            services.AddScoped<ISubjectRepository, SubjectRepository>();
-
-            // Config for MentorSubject
-            services.AddScoped<IMentorSubjectService, MentorSubjectService>();
-            services.AddScoped<IMentorSubjectRepository, MentorSubjectRepository>();
-
-            // Config for MasUser
-            services.AddScoped<IMasUserService, MasUserService>();
-            services.AddScoped<IMasUserRepository, MasUserRepository>();
-
-            // Config for Question
-            services.AddScoped<IQuestionService, QuestionService>();
-            services.AddScoped<IQuestionRepository, QuestionRepository>();
-
-            // Config for Question
-            services.AddScoped<IQuestionService, QuestionService>();
-            services.AddScoped<IQuestionRepository, QuestionRepository>();
-
-            // Config for Slot
-            services.AddScoped<ISlotService, SlotService>();
-            services.AddScoped<ISlotRepository, SlotRepository>();
-
-            // Config for Appointment
-            services.AddScoped<IAppointmentService, AppointmentService>();
-            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
-            // -----------------------------------------------------------------------------------------
-            services.AddHttpClient();
-            return services;
+        if (services is null) {
+            throw new ArgumentNullException(nameof(services));
         }
+
+        if (configuration is null) {
+            throw new ArgumentNullException(nameof(configuration));
+        }
+
+        services.AddDbContext<AppDbContext>
+        (
+            options => options.UseSqlServer(configuration.GetConnectionString("MasDbConnection"))
+        );
+
+        // Config for automapper
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+        // Config DI--------------------------------------------------------------------------------
+
+        // Config for Authentication
+        services.AddScoped<IAccountService, AccountService>();
+        services.AddScoped<IAccountRepository, AccountRepository>();
+
+        // Config for Major
+        services.AddScoped<IMajorService, MajorService>();
+        services.AddScoped<IMajorRepository, MajorRepository>();
+
+        // Config for Subject
+        services.AddScoped<ISubjectService, SubjectService>();
+        services.AddScoped<ISubjectRepository, SubjectRepository>();
+
+        // Config for MentorSubject
+        services.AddScoped<IMentorSubjectService, MentorSubjectService>();
+        services.AddScoped<IMentorSubjectRepository, MentorSubjectRepository>();
+
+        // Config for MasUser
+        services.AddScoped<IMasUserService, MasUserService>();
+        services.AddScoped<IMasUserRepository, MasUserRepository>();
+
+        // Config for Question
+        services.AddScoped<IQuestionService, QuestionService>();
+        services.AddScoped<IQuestionRepository, QuestionRepository>();
+
+        // Config for Email
+        services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IEmailRepository, EmailRepository>();
+
+        // Config for Slot
+        services.AddScoped<ISlotService, SlotService>();
+        services.AddScoped<ISlotRepository, SlotRepository>();
+
+        // Config for Appointment
+        services.AddScoped<IAppointmentService, AppointmentService>();
+        services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+        // -----------------------------------------------------------------------------------------
+        services.AddHttpClient();
+        return services;
     }
 }

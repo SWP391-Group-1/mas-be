@@ -3,21 +3,20 @@ using MAS.Core.Dtos.Incoming.MasUser;
 using MAS.Core.Dtos.Outcoming.MasUser;
 using MAS.Core.Entities;
 
-namespace MAS.Infrastructure.Profiles
+namespace MAS.Infrastructure.Profiles;
+
+public class MasUserProfile : Profile
 {
-    public class MasUserProfile : Profile
+    public MasUserProfile()
     {
-        public MasUserProfile()
-        {
-            CreateMap<MasUser, PersonalInfoResponse>();
+        CreateMap<MasUser, PersonalInfoResponse>();
 
-            CreateMap<UserPersonalInfoUpdateRequest, MasUser>();
-            CreateMap<IsActiveChangeRequest, MasUser>();
-            CreateMap<MentorRequest, MasUser>();
+        CreateMap<UserPersonalInfoUpdateRequest, MasUser>();
+        CreateMap<IsActiveChangeRequest, MasUser>();
+        CreateMap<MentorRequest, MasUser>();
 
-            CreateMap<MasUser, UserGetBasicInfoResponse>();
-            CreateMap<MasUser, UserSearchResponse>();
-            CreateMap<MasUser, UserGetByAdminResponse>();
-        }
+        CreateMap<MasUser, UserGetBasicInfoResponse>();
+        CreateMap<MasUser, UserSearchResponse>();
+        CreateMap<MasUser, UserGetByAdminResponse>();
     }
 }

@@ -1,19 +1,18 @@
 ﻿using MAS.Core.Dtos.Incoming.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MAS.Core.Dtos.Incoming.Major
-{
-    public class MajorUpdateRequest : BaseUpdateRequest
-    {
-        [Required]
-        [MaxLength(10)]
-        public string Code { get; set; }
-        
-        [Required]
-        [MaxLength(200)]
-        public string Title { get; set; }
+namespace MAS.Core.Dtos.Incoming.Major;
 
-        [MaxLength(1000)]
-        public string Description { get; set; }
-    }
+public class MajorUpdateRequest : BaseUpdateRequest
+{
+    [Required]
+    [MaxLength(10)]
+    public string Code { get; set; }
+    
+    [Required]
+    [MaxLength(200)]
+    public string Title { get; set; }
+
+    [MaxLength(1000)]
+    public string Description { get; set; }
 }

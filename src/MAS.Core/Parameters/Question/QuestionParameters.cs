@@ -1,7 +1,6 @@
-﻿namespace MAS.Core.Parameters.Question
-{
-    public class QuestionParameters : QueryStringParameters
-    {
+﻿namespace MAS.Core.Parameters.Question;
 
-    }
+public class QuestionParameters : QueryStringParameters
+{
+
 }

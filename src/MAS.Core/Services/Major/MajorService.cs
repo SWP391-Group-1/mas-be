@@ -8,88 +8,87 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace MAS.Core.Services.Major
+namespace MAS.Core.Services.Major;
+
+public class MajorService : IMajorService
 {
-    public class MajorService : IMajorService
+    private readonly IMajorRepository _majorRepository;
+    private readonly ILogger<MajorService> _logger;
+
+    public MajorService(IMajorRepository majorRepository, ILogger<MajorService> logger)
     {
-        private readonly IMajorRepository _majorRepository;
-        private readonly ILogger<MajorService> _logger;
+        _logger = logger;
+        _majorRepository = majorRepository;
 
-        public MajorService(IMajorRepository majorRepository, ILogger<MajorService> logger)
-        {
-            _logger = logger;
-            _majorRepository = majorRepository;
+    }
 
+    public async Task<Result<MajorResponse>> CreateMajorAsync(MajorCreateRequest request)
+    {
+        try {
+            if (request is null) {
+                throw new ArgumentNullException(nameof(request));
+            }
+            return await _majorRepository.CreateMajorAsync(request);
         }
-
-        public async Task<Result<MajorResponse>> CreateMajorAsync(MajorCreateRequest request)
-        {
-            try {
-                if (request is null) {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                return await _majorRepository.CreateMajorAsync(request);
-            }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call CreateMajorAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call CreateMajorAsync in service class, Error Message: {ex}.");
+            throw;
         }
+    }
 
-        public async Task<Result<bool>> DeleteMajorAsync(string majorId)
-        {
-            try {
-                if (String.IsNullOrEmpty(majorId) || String.IsNullOrWhiteSpace(majorId)) {
-                    throw new ArgumentNullException(nameof(majorId));
-                }
-                return await _majorRepository.DeleteMajorAsync(majorId);
+    public async Task<Result<bool>> DeleteMajorAsync(string majorId)
+    {
+        try {
+            if (String.IsNullOrEmpty(majorId) || String.IsNullOrWhiteSpace(majorId)) {
+                throw new ArgumentNullException(nameof(majorId));
             }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call DeleteMajorAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+            return await _majorRepository.DeleteMajorAsync(majorId);
         }
-
-        public async Task<PagedResult<MajorResponse>> GetAllMajorsAsync(MajorParameters param)
-        {
-            try {
-                return await _majorRepository.GetAllMajorsAsync(param);
-            }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call GetAllMajorsAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call DeleteMajorAsync in service class, Error Message: {ex}.");
+            throw;
         }
+    }
 
-        public async Task<Result<MajorResponse>> GetMajorByIdAsync(string majorId)
-        {
-            try {
-                if (String.IsNullOrEmpty(majorId) || String.IsNullOrWhiteSpace(majorId)) {
-                    throw new ArgumentNullException(nameof(majorId));
-                }
-                return await _majorRepository.GetMajorByIdAsync(majorId);
-            }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call DeleteMajorAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+    public async Task<PagedResult<MajorResponse>> GetAllMajorsAsync(MajorParameters param)
+    {
+        try {
+            return await _majorRepository.GetAllMajorsAsync(param);
         }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call GetAllMajorsAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
 
-        public async Task<Result<bool>> UpdateMajorAsync(string majorId, MajorUpdateRequest request)
-        {
-            try {
-                if (String.IsNullOrEmpty(majorId) || String.IsNullOrWhiteSpace(majorId)) {
-                    throw new ArgumentNullException(nameof(majorId));
-                }
-                if (request is null) {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                return await _majorRepository.UpdateMajorAsync(majorId, request);
+    public async Task<Result<MajorResponse>> GetMajorByIdAsync(string majorId)
+    {
+        try {
+            if (String.IsNullOrEmpty(majorId) || String.IsNullOrWhiteSpace(majorId)) {
+                throw new ArgumentNullException(nameof(majorId));
             }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call UpdateMajorAsync in service class, Error Message: {ex}.");
-                throw;
+            return await _majorRepository.GetMajorByIdAsync(majorId);
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call DeleteMajorAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
+
+    public async Task<Result<bool>> UpdateMajorAsync(string majorId, MajorUpdateRequest request)
+    {
+        try {
+            if (String.IsNullOrEmpty(majorId) || String.IsNullOrWhiteSpace(majorId)) {
+                throw new ArgumentNullException(nameof(majorId));
             }
+            if (request is null) {
+                throw new ArgumentNullException(nameof(request));
+            }
+            return await _majorRepository.UpdateMajorAsync(majorId, request);
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call UpdateMajorAsync in service class, Error Message: {ex}.");
+            throw;
         }
     }
 }

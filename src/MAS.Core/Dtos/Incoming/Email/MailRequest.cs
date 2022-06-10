@@ -1,9 +1,8 @@
-namespace MAS.Core.Dtos.Incoming.Email
+namespace MAS.Core.Dtos.Incoming.Email;
+
+public class MailRequest
 {
-    public class MailRequest
-    {
-        public string ToEmail { get; set; }
-        public string Subject { get; set; }
-        public string Body { get; set; }
-    }
+    public string ToEmail { get; set; }
+    public string Subject { get; set; }
+    public string Body { get; set; }
 }

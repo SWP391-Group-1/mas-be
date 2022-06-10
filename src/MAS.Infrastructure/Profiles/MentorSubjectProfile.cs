@@ -3,19 +3,18 @@ using MAS.Core.Dtos.Incoming.MentorSubject;
 using MAS.Core.Dtos.Outcoming.MentorSubject;
 using MAS.Core.Entities;
 
-namespace MAS.Infrastructure.Profiles
+namespace MAS.Infrastructure.Profiles;
+
+public class MentorSubjectProfile : Profile
 {
-    public class MentorSubjectProfile : Profile
+    public MentorSubjectProfile()
     {
-        public MentorSubjectProfile()
-        {
-            // src => target
-            CreateMap<MentorSubjectRegisterRequest, MentorSubject>();
-            CreateMap<MentorSubjectUpdateRequest, MentorSubject>();
+        // src => target
+        CreateMap<MentorSubjectRegisterRequest, MentorSubject>();
+        CreateMap<MentorSubjectUpdateRequest, MentorSubject>();
 
-            CreateMap<MentorSubject, MentorSubjectResponse>();
+        CreateMap<MentorSubject, MentorSubjectResponse>();
 
-            CreateMap<Subject, SubjectOfMentorResponse>();
-        }
+        CreateMap<Subject, SubjectOfMentorResponse>();
     }
 }

@@ -5,13 +5,12 @@ using MAS.Core.Parameters.Slot;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace MAS.Core.Interfaces.Services.Slot
+namespace MAS.Core.Interfaces.Services.Slot;
+
+public interface ISlotService
 {
-    public interface ISlotService
-    {
-        Task<Result<bool>> CreateAvailableSlotAsync(ClaimsPrincipal principal, SlotCreateRequest request);
-        Task<Result<bool>> DeleteAvailableSlotAsync(ClaimsPrincipal principal, string slotId);
-        Task<PagedResult<SlotResponse>> GetAllAvailableSlotsAsync(SlotParameters param);
-        Task<Result<SlotDetailResponse>> GetSlotByIdAsync(string slotId);
-    }
+    Task<Result<bool>> CreateAvailableSlotAsync(ClaimsPrincipal principal, SlotCreateRequest request);
+    Task<Result<bool>> DeleteAvailableSlotAsync(ClaimsPrincipal principal, string slotId);
+    Task<PagedResult<SlotResponse>> GetAllAvailableSlotsAsync(SlotParameters param);
+    Task<Result<SlotDetailResponse>> GetSlotByIdAsync(string slotId);
 }

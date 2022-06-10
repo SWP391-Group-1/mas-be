@@ -6,102 +6,101 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
-namespace MAS.Core.Services.Account
+namespace MAS.Core.Services.Account;
+
+public class AccountService : IAccountService
 {
-    public class AccountService : IAccountService
+    private readonly IAccountRepository accountRepository;
+    private readonly ILogger<AccountService> logger;
+
+    public AccountService(IAccountRepository accountRepository, ILogger<AccountService> logger)
     {
-        private readonly IAccountRepository accountRepository;
-        private readonly ILogger<AccountService> logger;
+        this.accountRepository = accountRepository;
+        this.logger = logger;
+    }
 
-        public AccountService(IAccountRepository accountRepository, ILogger<AccountService> logger)
-        {
-            this.accountRepository = accountRepository;
-            this.logger = logger;
+    /// <summary>
+    /// Login with Admin account service.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public async Task<AuthenResult> LoginAdminAsync(LoginAdminRequest request)
+    {
+        try {
+            if (request is null) {
+                throw new ArgumentNullException(nameof(request));
+            }
+            return await accountRepository.LoginAdminAsync(request);
         }
-
-        /// <summary>
-        /// Login with Admin account service.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public async Task<AuthenResult> LoginAdminAsync(LoginAdminRequest request)
-        {
-            try {
-                if (request is null) {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                return await accountRepository.LoginAdminAsync(request);
-            }
-            catch (Exception ex) {
-                logger.LogError($"Error while trying to call LoginAdminAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+        catch (Exception ex) {
+            logger.LogError($"Error while trying to call LoginAdminAsync in service class, Error Message: {ex}.");
+            throw;
         }
+    }
 
-        public async Task<AuthenResult> LoginUserAsync(LoginUserRequest request)
-        {
-            try {
-                if (request is null) {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                return await accountRepository.LoginUserAsync(request);
+    public async Task<AuthenResult> LoginUserAsync(LoginUserRequest request)
+    {
+        try {
+            if (request is null) {
+                throw new ArgumentNullException(nameof(request));
             }
-            catch (Exception ex) {
-                logger.LogError($"Error while trying to call LoginUserAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+            return await accountRepository.LoginUserAsync(request);
         }
-
-        /// <summary>
-        /// Login with Google account service.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public async Task<AuthenResult> LoginWithGoogleAsync(GoogleLoginRequest request)
-        {
-            try {
-                if (request is null) {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                return await accountRepository.LoginWithGoogleAsync(request);
-            }
-            catch (Exception ex) {
-                logger.LogError($"Error while trying to call LoginByGoogleAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+        catch (Exception ex) {
+            logger.LogError($"Error while trying to call LoginUserAsync in service class, Error Message: {ex}.");
+            throw;
         }
+    }
 
-        /// <summary>
-        /// Register an admin account service.
-        /// </summary>
-        /// <param name="request"></param>
-        /// <returns></returns>
-        public async Task<AuthenResult> RegisterAdminAsync(RegisterAdminRequest request)
-        {
-            try {
-                if (request is null) {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                return await accountRepository.RegisterAdminAsync(request);
+    /// <summary>
+    /// Login with Google account service.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public async Task<AuthenResult> LoginWithGoogleAsync(GoogleLoginRequest request)
+    {
+        try {
+            if (request is null) {
+                throw new ArgumentNullException(nameof(request));
             }
-            catch (Exception ex) {
-                logger.LogError($"Error while trying to call RegisterAdminAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+            return await accountRepository.LoginWithGoogleAsync(request);
         }
+        catch (Exception ex) {
+            logger.LogError($"Error while trying to call LoginByGoogleAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
 
-        public async Task<AuthenResult> RegisterUserAsync(RegisterUserRequest request)
-        {
-            try {
-                if (request is null) {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                return await accountRepository.RegisterUserAsync(request);
+    /// <summary>
+    /// Register an admin account service.
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    public async Task<AuthenResult> RegisterAdminAsync(RegisterAdminRequest request)
+    {
+        try {
+            if (request is null) {
+                throw new ArgumentNullException(nameof(request));
             }
-            catch (Exception ex) {
-                logger.LogError($"Error while trying to call RegisterUserAsync in service class, Error Message: {ex}.");
-                throw;
+            return await accountRepository.RegisterAdminAsync(request);
+        }
+        catch (Exception ex) {
+            logger.LogError($"Error while trying to call RegisterAdminAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
+
+    public async Task<AuthenResult> RegisterUserAsync(RegisterUserRequest request)
+    {
+        try {
+            if (request is null) {
+                throw new ArgumentNullException(nameof(request));
             }
+            return await accountRepository.RegisterUserAsync(request);
+        }
+        catch (Exception ex) {
+            logger.LogError($"Error while trying to call RegisterUserAsync in service class, Error Message: {ex}.");
+            throw;
         }
     }
 }

@@ -1,8 +1,6 @@
-﻿namespace MAS.Core.Dtos.Incoming.MasUser
-{
-    public class MentorRequest
-    {
+﻿namespace MAS.Core.Dtos.Incoming.MasUser;
 
-        public bool? IsMentor { get; set; }
-    }
+public class MentorRequest
+{
+    public bool? IsMentor { get; set; }
 }

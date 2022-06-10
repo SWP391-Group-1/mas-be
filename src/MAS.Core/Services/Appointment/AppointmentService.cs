@@ -9,203 +9,202 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace MAS.Core.Services.Appointment
+namespace MAS.Core.Services.Appointment;
+
+public class AppointmentService : IAppointmentService
 {
-    public class AppointmentService : IAppointmentService
+    private readonly IAppointmentRepository _appointmentRepository;
+    private readonly ILogger<AppointmentService> _logger;
+
+    public AppointmentService(
+        IAppointmentRepository appointmentRepository,
+        ILogger<AppointmentService> logger)
     {
-        private readonly IAppointmentRepository _appointmentRepository;
-        private readonly ILogger<AppointmentService> _logger;
+        _appointmentRepository = appointmentRepository;
+        _logger = logger;
+    }
 
-        public AppointmentService(
-            IAppointmentRepository appointmentRepository,
-            ILogger<AppointmentService> logger)
-        {
-            _appointmentRepository = appointmentRepository;
-            _logger = logger;
+    public async Task<Result<bool>> CreateAppointmentAsync(
+        ClaimsPrincipal principal,
+        AppointmentCreateRequest request)
+    {
+        try {
+            if (principal is null) {
+                throw new ArgumentNullException(nameof(principal));
+            }
+            if (request is null) {
+                throw new ArgumentNullException(nameof(request));
+            }
+            return await _appointmentRepository.CreateAppointmentAsync(principal, request);
         }
-
-        public async Task<Result<bool>> CreateAppointmentAsync(
-            ClaimsPrincipal principal,
-            AppointmentCreateRequest request)
-        {
-            try {
-                if (principal is null) {
-                    throw new ArgumentNullException(nameof(principal));
-                }
-                if (request is null) {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                return await _appointmentRepository.CreateAppointmentAsync(principal, request);
-            }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call CreateAppointmentAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call CreateAppointmentAsync in service class, Error Message: {ex}.");
+            throw;
         }
+    }
 
-        public async Task<Result<bool>> DeleteAppointmentAsync(
-            ClaimsPrincipal principal,
-            string appointmentId)
-        {
-            try {
-                if (principal is null) {
-                    throw new ArgumentNullException(nameof(principal));
-                }
-                if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
-                    throw new ArgumentNullException(nameof(appointmentId));
-                }
-                return await _appointmentRepository.DeleteAppointmentAsync(principal, appointmentId);
+    public async Task<Result<bool>> DeleteAppointmentAsync(
+        ClaimsPrincipal principal,
+        string appointmentId)
+    {
+        try {
+            if (principal is null) {
+                throw new ArgumentNullException(nameof(principal));
             }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call DeleteAppointmentAsync in service class, Error Message: {ex}.");
-                throw;
+            if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
+                throw new ArgumentNullException(nameof(appointmentId));
             }
+            return await _appointmentRepository.DeleteAppointmentAsync(principal, appointmentId);
         }
-
-        public async Task<PagedResult<AppointmentMentorResponse>> GetAllAppointmentsOfMentorAsync(
-            ClaimsPrincipal principal,
-            AppointmentMentorParameters param)
-        {
-            try {
-                if (principal is null) {
-                    throw new ArgumentNullException(nameof(principal));
-                }
-                return await _appointmentRepository.GetAllAppointmentsOfMentorAsync(principal, param);
-            }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call GetAllAppointmentsOfMentorAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call DeleteAppointmentAsync in service class, Error Message: {ex}.");
+            throw;
         }
+    }
 
-        public async Task<PagedResult<AppointmentAdminResponse>> GetAllAppointmentsOfUserForAdminAsync(
-            string userId,
-            AppointmentAdminParameters param)
-        {
-            try {
-                if (String.IsNullOrEmpty(userId) || String.IsNullOrWhiteSpace(userId)) {
-                    throw new ArgumentNullException(nameof(userId));
-                }
-                return await _appointmentRepository.GetAllAppointmentsOfUserForAdminAsync(userId, param);
+    public async Task<PagedResult<AppointmentMentorResponse>> GetAllAppointmentsOfMentorAsync(
+        ClaimsPrincipal principal,
+        AppointmentMentorParameters param)
+    {
+        try {
+            if (principal is null) {
+                throw new ArgumentNullException(nameof(principal));
             }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call GetAllAppointmentsOfUserForAdminAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+            return await _appointmentRepository.GetAllAppointmentsOfMentorAsync(principal, param);
         }
-
-        public async Task<PagedResult<AppointmentUserResponse>> GetAllAppointmentsOfOwnAsync(
-            ClaimsPrincipal principal,
-            AppointmentUserParameters param)
-        {
-            try {
-                if (principal is null) {
-                    throw new ArgumentNullException(nameof(principal));
-                }
-                return await _appointmentRepository.GetAllAppointmentsOfOwnAsync(principal, param);
-            }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call GetAllAppointmentsOfOwnAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call GetAllAppointmentsOfMentorAsync in service class, Error Message: {ex}.");
+            throw;
         }
+    }
 
-        public async Task<Result<AppointmentAdminDetailResponse>> GetAppointmentByIdForAdminAsync(string appointmentId)
-        {
-            try {
-                if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
-                    throw new ArgumentNullException(nameof(appointmentId));
-                }
-                return await _appointmentRepository.GetAppointmentByIdForAdminAsync(appointmentId);
+    public async Task<PagedResult<AppointmentAdminResponse>> GetAllAppointmentsOfUserForAdminAsync(
+        string userId,
+        AppointmentAdminParameters param)
+    {
+        try {
+            if (String.IsNullOrEmpty(userId) || String.IsNullOrWhiteSpace(userId)) {
+                throw new ArgumentNullException(nameof(userId));
             }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call GetAppointmentByIdForAdminAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+            return await _appointmentRepository.GetAllAppointmentsOfUserForAdminAsync(userId, param);
         }
-
-        public async Task<Result<AppointmentMentorDetailResponse>> GetAppointmentOfMentorByIdAsync(
-            ClaimsPrincipal principal,
-            string appointmentId)
-        {
-            try {
-                if (principal is null) {
-                    throw new ArgumentNullException(nameof(principal));
-                }
-                if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
-                    throw new ArgumentNullException(nameof(appointmentId));
-                }
-                return await _appointmentRepository.GetAppointmentOfMentorByIdAsync(principal, appointmentId);
-            }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call GetAppointmentOfMentorByIdAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call GetAllAppointmentsOfUserForAdminAsync in service class, Error Message: {ex}.");
+            throw;
         }
+    }
 
-        public async Task<Result<AppointmentUserDetailResponse>> GetAppointmentOfOwnByIdAsync(
-            ClaimsPrincipal principal,
-            string appointmentId)
-        {
-            try {
-                if (principal is null) {
-                    throw new ArgumentNullException(nameof(principal));
-                }
-                if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
-                    throw new ArgumentNullException(nameof(appointmentId));
-                }
-                return await _appointmentRepository.GetAppointmentOfOwnByIdAsync(principal, appointmentId);
+    public async Task<PagedResult<AppointmentUserResponse>> GetAllAppointmentsOfOwnAsync(
+        ClaimsPrincipal principal,
+        AppointmentUserParameters param)
+    {
+        try {
+            if (principal is null) {
+                throw new ArgumentNullException(nameof(principal));
             }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call GetAppointmentOfMentorByIdAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+            return await _appointmentRepository.GetAllAppointmentsOfOwnAsync(principal, param);
         }
-
-        public async Task<Result<bool>> MentorUpdateAppointmentAsync(
-            ClaimsPrincipal principal,
-            string appointmentId,
-            AppointmentUpdateRequest request)
-        {
-            try {
-                if (principal is null) {
-                    throw new ArgumentNullException(nameof(principal));
-                }
-                if (request is null) {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
-                    throw new ArgumentNullException(nameof(appointmentId));
-                }
-                return await _appointmentRepository.MentorUpdateAppointmentAsync(principal, appointmentId, request);
-            }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call MentorUpdateAppointmentAsync in service class, Error Message: {ex}.");
-                throw;
-            }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call GetAllAppointmentsOfOwnAsync in service class, Error Message: {ex}.");
+            throw;
         }
+    }
 
-        public async Task<Result<bool>> ProcessAppointmentAsync(
-            ClaimsPrincipal principal,
-            string appointmentId,
-            AppointmentProcessRequest request)
-        {
-            try {
-                if (principal is null) {
-                    throw new ArgumentNullException(nameof(principal));
-                }
-                if (request is null) {
-                    throw new ArgumentNullException(nameof(request));
-                }
-                if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
-                    throw new ArgumentNullException(nameof(appointmentId));
-                }
-                return await _appointmentRepository.ProcessAppointmentAsync(principal, appointmentId, request);
+    public async Task<Result<AppointmentAdminDetailResponse>> GetAppointmentByIdForAdminAsync(string appointmentId)
+    {
+        try {
+            if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
+                throw new ArgumentNullException(nameof(appointmentId));
             }
-            catch (Exception ex) {
-                _logger.LogError($"Error while trying to call ProcessAppointmentAsync in service class, Error Message: {ex}.");
-                throw;
+            return await _appointmentRepository.GetAppointmentByIdForAdminAsync(appointmentId);
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call GetAppointmentByIdForAdminAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
+
+    public async Task<Result<AppointmentMentorDetailResponse>> GetAppointmentOfMentorByIdAsync(
+        ClaimsPrincipal principal,
+        string appointmentId)
+    {
+        try {
+            if (principal is null) {
+                throw new ArgumentNullException(nameof(principal));
             }
+            if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
+                throw new ArgumentNullException(nameof(appointmentId));
+            }
+            return await _appointmentRepository.GetAppointmentOfMentorByIdAsync(principal, appointmentId);
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call GetAppointmentOfMentorByIdAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
+
+    public async Task<Result<AppointmentUserDetailResponse>> GetAppointmentOfOwnByIdAsync(
+        ClaimsPrincipal principal,
+        string appointmentId)
+    {
+        try {
+            if (principal is null) {
+                throw new ArgumentNullException(nameof(principal));
+            }
+            if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
+                throw new ArgumentNullException(nameof(appointmentId));
+            }
+            return await _appointmentRepository.GetAppointmentOfOwnByIdAsync(principal, appointmentId);
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call GetAppointmentOfMentorByIdAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
+
+    public async Task<Result<bool>> MentorUpdateAppointmentAsync(
+        ClaimsPrincipal principal,
+        string appointmentId,
+        AppointmentUpdateRequest request)
+    {
+        try {
+            if (principal is null) {
+                throw new ArgumentNullException(nameof(principal));
+            }
+            if (request is null) {
+                throw new ArgumentNullException(nameof(request));
+            }
+            if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
+                throw new ArgumentNullException(nameof(appointmentId));
+            }
+            return await _appointmentRepository.MentorUpdateAppointmentAsync(principal, appointmentId, request);
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call MentorUpdateAppointmentAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
+
+    public async Task<Result<bool>> ProcessAppointmentAsync(
+        ClaimsPrincipal principal,
+        string appointmentId,
+        AppointmentProcessRequest request)
+    {
+        try {
+            if (principal is null) {
+                throw new ArgumentNullException(nameof(principal));
+            }
+            if (request is null) {
+                throw new ArgumentNullException(nameof(request));
+            }
+            if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
+                throw new ArgumentNullException(nameof(appointmentId));
+            }
+            return await _appointmentRepository.ProcessAppointmentAsync(principal, appointmentId, request);
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call ProcessAppointmentAsync in service class, Error Message: {ex}.");
+            throw;
         }
     }
 }

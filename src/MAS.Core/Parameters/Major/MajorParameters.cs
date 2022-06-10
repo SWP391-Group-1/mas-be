@@ -1,7 +1,6 @@
-﻿namespace MAS.Core.Parameters.Major
+﻿namespace MAS.Core.Parameters.Major;
+
+public class MajorParameters : QueryStringParameters
 {
-    public class MajorParameters : QueryStringParameters
-    {
-        public string SearchString { get; set; }
-    }
+    public string SearchString { get; set; }
 }

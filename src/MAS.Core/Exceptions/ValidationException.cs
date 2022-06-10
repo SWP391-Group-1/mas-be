@@ -1,30 +1,29 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace MAS.Core.Exceptions
+namespace MAS.Core.Exceptions;
+
+[Serializable]
+public class ValidationException : DomainException
 {
-    [Serializable]
-    public class ValidationException : DomainException
+    public ValidationException()
     {
-        public ValidationException()
-        {
-        }
+    }
 
-        public ValidationException(string message)
-            : base(message)
-        {
-        }
+    public ValidationException(string message)
+        : base(message)
+    {
+    }
 
-        public ValidationException(string message, Exception inner)
-            : base(message, inner)
-        {
-        }
+    public ValidationException(string message, Exception inner)
+        : base(message, inner)
+    {
+    }
 
-        protected ValidationException(
-            SerializationInfo info,
-            StreamingContext context)
-            : base(info, context)
-        {
-        }
+    protected ValidationException(
+        SerializationInfo info,
+        StreamingContext context)
+        : base(info, context)
+    {
     }
 }

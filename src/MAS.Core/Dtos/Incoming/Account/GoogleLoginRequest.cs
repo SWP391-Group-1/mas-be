@@ -1,13 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MAS.Core.Dtos.Incoming.Account
-{
-    public class GoogleLoginRequest
-    {
-        [Required]
-        public string ProviderName { get; set; }
+namespace MAS.Core.Dtos.Incoming.Account;
 
-        [Required]
-        public string IdToken { get; set; }
-    }
+public class GoogleLoginRequest
+{
+    [Required]
+    public string ProviderName { get; set; }
+
+    [Required]
+    public string IdToken { get; set; }
 }

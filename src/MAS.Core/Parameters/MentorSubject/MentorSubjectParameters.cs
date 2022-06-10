@@ -1,6 +1,5 @@
-﻿namespace MAS.Core.Parameters.MentorSubject
+﻿namespace MAS.Core.Parameters.MentorSubject;
+
+public class MentorSubjectParameters : QueryStringParameters
 {
-    public class MentorSubjectParameters : QueryStringParameters
-    {
-    }
 }

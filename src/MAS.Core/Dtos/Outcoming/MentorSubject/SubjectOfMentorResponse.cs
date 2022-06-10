@@ -1,11 +1,10 @@
-﻿namespace MAS.Core.Dtos.Outcoming.MentorSubject
-{
-    public class SubjectOfMentorResponse
-    {
-        public string Id { get; set; }
-        public string MajorId { get; set; }
+﻿namespace MAS.Core.Dtos.Outcoming.MentorSubject;
 
-        public string Title { get; set; }
-        public string Description { get; set; }
-    }
+public class SubjectOfMentorResponse
+{
+    public string Id { get; set; }
+    public string MajorId { get; set; }
+
+    public string Title { get; set; }
+    public string Description { get; set; }
 }

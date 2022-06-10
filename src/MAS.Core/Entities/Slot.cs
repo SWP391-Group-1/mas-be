@@ -2,14 +2,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace MAS.Core.Entities
+namespace MAS.Core.Entities;
+
+public class Slot : BaseEntity
 {
-    public class Slot : BaseEntity
-    {
-        public string MentorId { get; set; }
-        public MasUser Mentor { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime FinishTime { get; set; }
-        public ICollection<Appointment> Appointments { get; set; }
-    }
+    public string MentorId { get; set; }
+    public MasUser Mentor { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime FinishTime { get; set; }
+    public ICollection<Appointment> Appointments { get; set; }
 }

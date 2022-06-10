@@ -10,62 +10,61 @@ using NLog.Web;
 using System;
 using System.IO;
 
-namespace MAS.API
+namespace MAS.API;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            string currentEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", false, reloadOnChange: true);
+        string currentEnvironment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+        IConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", false, reloadOnChange: true);
 
-            if (currentEnvironment?.Equals("Development", StringComparison.OrdinalIgnoreCase) == true) {
-                configurationBuilder.AddJsonFile($"appsettings.{currentEnvironment}.json", optional: false);
-            }
-
-            IConfigurationRoot config = configurationBuilder.Build();
-            LogManager.Configuration = new NLogLoggingConfiguration(config.GetSection("NLog"));
-            Logger logger = LogManager.GetCurrentClassLogger();
-
-            try {
-                logger.Info($"{ApiConstants.FriendlyServiceName} starts running...");
-                var host = CreateHostBuilder(args).Build();
-
-                using (var scope = host.Services.CreateScope()) {
-                    var services = scope.ServiceProvider;
-
-                    try {
-                        SeedData.Initialize(services);
-                    }
-                    catch (Exception ex) {
-                        logger.Error(ex, "An error occurred seeding the DB.");
-                    }
-                }
-
-                host.Run();
-                logger.Info($"{ApiConstants.FriendlyServiceName} is stopped");
-            }
-            catch (Exception exception) {
-                logger.Error(exception);
-                throw;
-            }
-            finally {
-                LogManager.Shutdown();
-            }
-
+        if (currentEnvironment?.Equals("Development", StringComparison.OrdinalIgnoreCase) == true) {
+            configurationBuilder.AddJsonFile($"appsettings.{currentEnvironment}.json", optional: false);
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder => {
-                    webBuilder.UseStartup<Startup>();
-                })
-                .ConfigureLogging(logging => {
-                    //logging.ClearProviders();
-                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                })
-                .UseNLog();
+        IConfigurationRoot config = configurationBuilder.Build();
+        LogManager.Configuration = new NLogLoggingConfiguration(config.GetSection("NLog"));
+        Logger logger = LogManager.GetCurrentClassLogger();
+
+        try {
+            logger.Info($"{ApiConstants.FriendlyServiceName} starts running...");
+            var host = CreateHostBuilder(args).Build();
+
+            using (var scope = host.Services.CreateScope()) {
+                var services = scope.ServiceProvider;
+
+                try {
+                    SeedData.Initialize(services);
+                }
+                catch (Exception ex) {
+                    logger.Error(ex, "An error occurred seeding the DB.");
+                }
+            }
+
+            host.Run();
+            logger.Info($"{ApiConstants.FriendlyServiceName} is stopped");
+        }
+        catch (Exception exception) {
+            logger.Error(exception);
+            throw;
+        }
+        finally {
+            LogManager.Shutdown();
+        }
+
     }
+
+    public static IHostBuilder CreateHostBuilder(string[] args) =>
+        Host.CreateDefaultBuilder(args)
+            .ConfigureWebHostDefaults(webBuilder => {
+                webBuilder.UseStartup<Startup>();
+            })
+            .ConfigureLogging(logging => {
+                //logging.ClearProviders();
+                logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+            })
+            .UseNLog();
 }

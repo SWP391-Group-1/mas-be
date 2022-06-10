@@ -1,8 +1,7 @@
-﻿namespace MAS.API.Helpers
+﻿namespace MAS.API.Helpers;
+
+public class ApiConstants
 {
-    public class ApiConstants
-    {
-        public const string ServiceName = "mas";
-        public const string FriendlyServiceName = "Mentor Appointment Scheduling Application";
-    }
+    public const string ServiceName = "mas";
+    public const string FriendlyServiceName = "Mentor Appointment Scheduling Application";
 }

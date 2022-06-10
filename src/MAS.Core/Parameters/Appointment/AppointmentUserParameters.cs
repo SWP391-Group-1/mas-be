@@ -1,8 +1,7 @@
-namespace MAS.Core.Parameters.Appointment
+namespace MAS.Core.Parameters.Appointment;
+
+public class AppointmentUserParameters : QueryStringParameters
 {
-    public class AppointmentUserParameters : QueryStringParameters
-    {
-        public bool? IsNew { get; set; }
-        public string SlotId { get; set; }
-    }
+    public bool? IsNew { get; set; }
+    public string SlotId { get; set; }
 }

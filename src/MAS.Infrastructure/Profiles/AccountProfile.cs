@@ -2,13 +2,12 @@
 using MAS.Core.Dtos.Incoming.Account;
 using MAS.Core.Entities;
 
-namespace MAS.Infrastructure.Profiles
+namespace MAS.Infrastructure.Profiles;
+
+public class AccountProfile : Profile
 {
-    public class AccountProfile : Profile
+    public AccountProfile()
     {
-        public AccountProfile()
-        {
-            CreateMap<RegisterUserRequest, MasUser>();
-        }
+        CreateMap<RegisterUserRequest, MasUser>();
     }
 }
