@@ -63,8 +63,8 @@ namespace MAS.API
                     webBuilder.UseStartup<Startup>();
                 })
                 .ConfigureLogging(logging => {
-                        //logging.ClearProviders();
-                        logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                    //logging.ClearProviders();
+                    logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                 })
                 .UseNLog();
     }

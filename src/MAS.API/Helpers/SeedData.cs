@@ -19,7 +19,7 @@ namespace MAS.API.Helpers
                             Id = Guid.NewGuid().ToString(),
                             CreateDate = DateTime.UtcNow.AddHours(7),
                             UpdateDate = null,
-                            Code ="GD",
+                            Code = "GD",
                             Title = "Graphics Design",
                             Description = "Learn to become a graphic designer."
                         },

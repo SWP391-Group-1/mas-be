@@ -28,7 +28,7 @@ namespace MAS.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureServiceInjection(Configuration);
-            
+
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
             services.AddControllers()
                 .AddNewtonsoftJson(o => o.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);

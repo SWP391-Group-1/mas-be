@@ -75,7 +75,7 @@ namespace MAS.API.Controllers.V1
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        [HttpPost, Route("register-admin")]        
+        [HttpPost, Route("register-admin")]
         public async Task<ActionResult<AuthenResult>> AdminRegister(RegisterAdminRequest request)
         {
             if (!ModelState.IsValid) {
