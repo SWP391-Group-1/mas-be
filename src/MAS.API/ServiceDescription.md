@@ -10,7 +10,8 @@
 - <a href="#subjectMentor" target="_self">Subject of Mentor</a> <br>
 - <a href="#user" target="_self">Users</a> <br>
 - <a href="#question" target="_self">Question</a> <br>
-- <a href="#slot" target="_self">Slot</a> <br>
+- <a href="#availableSlot" target="_self">Slot</a> <br>
+- <a href="#appointment" target="_self">Appointment</a> <br>
 - <a href="#email" target="_self">Email</a> <br>
 - <a href="#api" target="_self">MAS API</a> <br>
 
@@ -141,7 +142,29 @@
 >   ***Description***: Accept/deny mentor request  
 >   ***Role Access***: Admin  
 >
-
+> - ``GET /api/mas/v1/users/own/appointments ``  
+>   ***Description***: Get all appointments create by self (student)  
+>   ***Role Access***: User (Student)  
+>   ***Extension***: Paging, filter by slot, order by new appointment 
+>
+> - ``GET /api/mas/v1/users/mentor/appointments ``  
+>   ***Description***: Get all appointments received (mentor)  
+>   ***Role Access***: User (Mentor)  
+>   ***Extension***: Paging, filter by slot, order by new appointment 
+>
+> - ``GET /api/mas/v1/users/{userId}/appointments ``  
+>   ***Description***: Get all appointments of a specific user  
+>   ***Role Access***: Admin  
+>   ***Extension***: Paging, filter by slot, order by new appointment 
+>
+> - ``GET /api/mas/v1/users/own/appointments/{appointmentId} ``  
+>   ***Description***: Get a appointment create by self (student)  
+>   ***Role Access***: User (Student)  
+>
+> - ``GET /api/mas/v1/users/mentor/appointments/{appointmentId} ``  
+>   ***Description***: Get a appointment received (mentor)  
+>   ***Role Access***: User (Mentor)  
+>
 <h2 id="question">Question  <a href="#table-of-contents" target="_self">🔙</a></h2>   
 
 > - ``GET /api/mas/v1/questions/{appointmentId} ``  
@@ -165,7 +188,7 @@
 >   ***Description***: Delete Question by Id   
 >   ***Role Access***: User  
 
-<h2 id="slot">Slot  <a href="#table-of-contents" target="_self">🔙</a></h2>   
+<h2 id="availableSlot">Slot  <a href="#table-of-contents" target="_self">🔙</a></h2>   
 
 > - ``GET /api/mas/v1/slots ``  
 >   ***Description***: Get all available slots   
@@ -182,7 +205,29 @@
 >
 > - ``DELETE /api/mas/v1/slots/{slotId} ``  
 >   ***Description***: Delete Slot by Id   
+>   ***Role Access***: User   
+
+<h2 id="appointment">Appointment  <a href="#table-of-contents" target="_self">🔙</a></h2>   
+
+> - ``GET /api/mas/v1/appointments/{appointmentId} ``  
+>   ***Description***: Get a appointment in detail   
+>   ***Role Access***: Admin  
+>
+> - ``DELETE /api/mas/v1/appointments/{appointmentId} ``  
+>   ***Description***: Delete a appointment in detail   
 >   ***Role Access***: User  
+>
+> - ``POST /api/mas/v1/appointments ``  
+>   ***Description***: Create a appointment   
+>   ***Role Access***: User  
+>
+> - ``PUT /api/mas/v1/appointments/process/{appointmentId} ``  
+>   ***Description***: Mentor process an appointment, decide to approve or deny.   
+>   ***Role Access***: User (Mentor)  
+>
+> - ``PUT /api/mas/v1/appointments/update/{appointmentId} ``  
+>   ***Description***: Mentor add time start, time finish, and description of the appointment    
+>   ***Role Access***: User (Mentor)  
 
 <h2 id="email">Email  <a href="#table-of-contents" target="_self">🔙</a></h2>  
 

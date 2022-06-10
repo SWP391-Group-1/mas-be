@@ -261,11 +261,11 @@ namespace MAS.Infrastructure.Repositories.Appointment
             }
         }
 
-        public async Task<PagedResult<AppointmentAdminResponse>> GetAllAppointmentsOfMentorForAdminAsync(
-            string mentorId,
+        public async Task<PagedResult<AppointmentAdminResponse>> GetAllAppointmentsOfUserForAdminAsync(
+            string userId,
             AppointmentAdminParameters param)
         {
-            var apps = await _context.Appointments.Where(x => x.MentorId == mentorId).ToListAsync();
+            var apps = await _context.Appointments.Where(x => (x.MentorId + x.CreatorId).Contains(userId)).ToListAsync();
 
             var query = apps.AsQueryable();
 

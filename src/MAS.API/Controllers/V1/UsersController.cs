@@ -1,8 +1,11 @@
 ﻿using MAS.Core.Dtos.Incoming.Account;
 using MAS.Core.Dtos.Incoming.MasUser;
+using MAS.Core.Dtos.Outcoming.Appointment;
 using MAS.Core.Dtos.Outcoming.Generic;
 using MAS.Core.Dtos.Outcoming.MasUser;
+using MAS.Core.Interfaces.Services.Appointment;
 using MAS.Core.Interfaces.Services.MasUser;
+using MAS.Core.Parameters.Appointment;
 using MAS.Core.Parameters.MasUser;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +18,14 @@ namespace MAS.API.Controllers.V1
     public class UsersController : BaseController
     {
         private readonly IMasUserService _masUserService;
+        private readonly IAppointmentService _appointmentService;
 
-        public UsersController(IMasUserService masUserService)
+        public UsersController(
+            IMasUserService masUserService,
+            IAppointmentService appointmentService)
         {
             _masUserService = masUserService;
+            _appointmentService = appointmentService;
         }
 
         /*
@@ -261,6 +268,137 @@ namespace MAS.API.Controllers.V1
             }
             return NoContent();
         }
+
+        /*
+        *================================================
+        *                                              ||
+        * Appointment APIs Section                     ||
+        *                                              ||
+        *================================================
+        */
+        /// <summary>
+        /// Get all own appointments
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Roles Access: User
+        /// </remarks>
+        [HttpGet, Route("own/appointments")]
+        [Authorize(Roles = RoleConstants.User)]
+        public async Task<ActionResult<PagedResult<AppointmentUserResponse>>> GetAllAppointmentsOfOwn([FromQuery] AppointmentUserParameters param)
+        {
+            var response = await _appointmentService.GetAllAppointmentsOfOwnAsync(HttpContext.User, param);
+            if (!response.IsSuccess) {
+                if (response.Error.Code == 404) {
+                    return NotFound(response);
+                }
+                else {
+                    return BadRequest(response);
+                }
+            }
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Get all appointments for mentor
+        /// </summary>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Roles Access: User
+        /// </remarks>
+        [HttpGet, Route("mentor/appointments")]
+        [Authorize(Roles = RoleConstants.User)]
+        public async Task<ActionResult<PagedResult<AppointmentMentorResponse>>> GetAllAppointmentsOfMentor([FromQuery] AppointmentMentorParameters param)
+        {
+            var response = await _appointmentService.GetAllAppointmentsOfMentorAsync(HttpContext.User, param);
+            if (!response.IsSuccess) {
+                if (response.Error.Code == 404) {
+                    return NotFound(response);
+                }
+                else {
+                    return BadRequest(response);
+                }
+            }
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Get all appointments of a user for admin
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="param"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Roles Access: Admin
+        /// </remarks>
+        [HttpGet, Route("{userId}/appointments")]
+        [Authorize(Roles = RoleConstants.Admin)]
+        public async Task<ActionResult<PagedResult<AppointmentAdminResponse>>> GetAllAppointmentsOfMentorForAdmin(
+            string userId,
+            [FromQuery] AppointmentAdminParameters param)
+        {
+            var response = await _appointmentService.GetAllAppointmentsOfUserForAdminAsync(userId, param);
+            if (!response.IsSuccess) {
+                if (response.Error.Code == 404) {
+                    return NotFound(response);
+                }
+                else {
+                    return BadRequest(response);
+                }
+            }
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Get a specific appointment create by self
+        /// </summary>
+        /// <param name="appointmentId"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Roles Access: User (normal User)
+        /// </remarks>
+        [HttpGet, Route("own/appointments/{appointmentId}")]
+        [Authorize(Roles = RoleConstants.User)]
+        public async Task<ActionResult<Result<AppointmentUserDetailResponse>>> GetAppointmentOfOwnById(string appointmentId)
+        {
+            var response = await _appointmentService.GetAppointmentOfOwnByIdAsync(HttpContext.User, appointmentId);
+            if (!response.IsSuccess) {
+                if (response.Error.Code == 404) {
+                    return NotFound(response);
+                }
+                else {
+                    return BadRequest(response);
+                }
+            }
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Get a specific appointment received
+        /// </summary>
+        /// <param name="appointmentId"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Roles Access: User (Mentor)
+        /// </remarks>
+        [HttpGet, Route("mentor/appointments/{appointmentId}")]
+        [Authorize(Roles = RoleConstants.User)]
+        public async Task<ActionResult<Result<AppointmentMentorDetailResponse>>> GetAppointmentOfMentorById(string appointmentId)
+        {
+            var response = await _appointmentService.GetAppointmentOfMentorByIdAsync(HttpContext.User, appointmentId);
+            if (!response.IsSuccess) {
+                if (response.Error.Code == 404) {
+                    return NotFound(response);
+                }
+                else {
+                    return BadRequest(response);
+                }
+            }
+            return Ok(response);
+        }
+
 
     }
 }

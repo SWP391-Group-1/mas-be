@@ -5,9 +5,9 @@ using MAS.Core.Parameters.Appointment;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace MAS.Core.Interfaces.Repositories.Appointment
+namespace MAS.Core.Interfaces.Services.Appointment
 {
-    public interface IAppointmentRepository
+    public interface IAppointmentService
     {
         /* Student create, delete appointment, view all appointments and view in detail appointment */
         Task<Result<bool>> CreateAppointmentAsync(ClaimsPrincipal principal, AppointmentCreateRequest request);
