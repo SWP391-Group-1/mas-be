@@ -66,6 +66,13 @@ public class SlotRepository : BaseRepository, ISlotRepository
             return result;
         }
 
+        if (request.CreateDate > request.StartTime.AddDays(-2) ){
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     "This slot must be started after today at least 2 days!");
+            return result;
+        }
+
         var mentorSlots = await _context.Slots.Where(x => x.MentorId == user.Id).ToListAsync();
         foreach (var slot in mentorSlots) {
             if (slot.StartTime <= request.StartTime && slot.FinishTime >= request.StartTime) {
