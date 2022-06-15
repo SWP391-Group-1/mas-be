@@ -15,5 +15,4 @@ public class Rating : BaseEntity
     public string Comment { get; set; }
 
     public bool? IsApprove { get; set; }
-    public bool IsActive { get; set; }
 }

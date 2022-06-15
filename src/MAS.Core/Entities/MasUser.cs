@@ -18,8 +18,6 @@ public class MasUser : BaseEntity
     public bool? IsMentor { get; set; }
     public string MeetUrl { get; set; }
 
-    public bool IsActive { get; set; }
-
     public ICollection<Slot> Slots { get; set; }
     public ICollection<MentorSubject> MentorSubjects { get; set; }
 }
