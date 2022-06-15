@@ -25,8 +25,8 @@ public class MajorRepository : BaseRepository, IMajorRepository
     {
         var result = new Result<MajorResponse>();
 
-        var existMajor = await _context.Majors.AnyAsync(x => x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
-                                                        || x.Code.ToLower().Trim() == request.Code.ToLower().Trim());
+        var existMajor = await _context.Majors.AnyAsync(x => (x.Title.ToLower().Trim() == request.Title.ToLower().Trim() && x.IsActive == true)
+                                                        || (x.Code.ToLower().Trim() == request.Code.ToLower().Trim() && x.IsActive == true));
         if (existMajor) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
@@ -51,15 +51,15 @@ public class MajorRepository : BaseRepository, IMajorRepository
     {
         var result = new Result<bool>();
 
-        var Major = await _context.Majors.FindAsync(MajorId);
-        if (Major == null) {
+        var major = await _context.Majors.FindAsync(MajorId);
+        if (major == null || major.IsActive == false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "Major.");
             return result;
         }
 
-        _context.Majors.Remove(Major);
+        major.IsActive = false;
         if ((await _context.SaveChangesAsync() >= 0)) {
             result.Content = true;
             return result;
@@ -72,14 +72,23 @@ public class MajorRepository : BaseRepository, IMajorRepository
 
     public async Task<PagedResult<MajorResponse>> GetAllMajorsAsync(MajorParameters param)
     {
-        var Majors = await _context.Majors.ToListAsync();
-        var query = Majors.AsQueryable();
+        var majors = await _context.Majors.ToListAsync();
+        var query = majors.AsQueryable();
 
         FilterMajor(ref query, param.SearchString);
+        FilterActive(ref query, param.IsActive);
 
-        Majors = query.ToList();
-        var response = _mapper.Map<List<MajorResponse>>(Majors);
+        majors = query.ToList();
+        var response = _mapper.Map<List<MajorResponse>>(majors);
         return PagedResult<MajorResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+    }
+
+    private void FilterActive(ref IQueryable<Core.Entities.Major> query, bool? isActive)
+    {
+        if (!query.Any() || isActive is null) {
+            return;
+        }
+        query = query.Where(x => x.IsActive == isActive);
     }
 
     private void FilterMajor(
@@ -97,29 +106,29 @@ public class MajorRepository : BaseRepository, IMajorRepository
                            );
     }
 
-    public async Task<Result<MajorResponse>> GetMajorByIdAsync(string MajorId)
+    public async Task<Result<MajorResponse>> GetMajorByIdAsync(string majorId)
     {
         var result = new Result<MajorResponse>();
 
-        var Major = await _context.Majors.FindAsync(MajorId);
-        if (Major == null) {
+        var major = await _context.Majors.FindAsync(majorId);
+        if (major == null || major.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "Major.");
             return result;
         }
 
-        var response = _mapper.Map<MajorResponse>(Major);
+        var response = _mapper.Map<MajorResponse>(major);
         result.Content = response;
         return result;
     }
 
-    public async Task<Result<bool>> UpdateMajorAsync(string MajorId, MajorUpdateRequest request)
+    public async Task<Result<bool>> UpdateMajorAsync(string majorId, MajorUpdateRequest request)
     {
         var result = new Result<bool>();
 
-        var Major = await _context.Majors.FindAsync(MajorId);
-        if (Major == null) {
+        var major = await _context.Majors.FindAsync(majorId);
+        if (major == null || major.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "Major.");
@@ -127,9 +136,9 @@ public class MajorRepository : BaseRepository, IMajorRepository
         }
 
         var existMajor = await _context.Majors.AnyAsync(x => (x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
-                                                                && x.Id != MajorId)
+                                                                && x.Id != majorId && x.IsActive == true)
                                                             || (x.Code.ToLower().Trim() == request.Code.ToLower().Trim()
-                                                                && x.Id != MajorId));
+                                                                && x.Id != majorId && x.IsActive == true));
         if (existMajor) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
@@ -137,7 +146,7 @@ public class MajorRepository : BaseRepository, IMajorRepository
             return result;
         }
 
-        var model = _mapper.Map(request, Major);
+        var model = _mapper.Map(request, major);
         _context.Majors.Update(model);
 
         if (await _context.SaveChangesAsync() >= 0) {

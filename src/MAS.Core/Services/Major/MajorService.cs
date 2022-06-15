@@ -70,7 +70,7 @@ public class MajorService : IMajorService
             return await _majorRepository.GetMajorByIdAsync(majorId);
         }
         catch (Exception ex) {
-            _logger.LogError($"Error while trying to call DeleteMajorAsync in service class, Error Message: {ex}.");
+            _logger.LogError($"Error while trying to call GetMajorByIdAsync in service class, Error Message: {ex}.");
             throw;
         }
     }
