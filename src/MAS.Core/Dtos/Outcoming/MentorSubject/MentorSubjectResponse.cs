@@ -8,4 +8,5 @@ public class MentorSubjectResponse
     public SubjectOfMentorResponse Subject { get; set; }
 
     public string BriefInfo { get; set; }
+    public bool IsActive { get; set; }
 }

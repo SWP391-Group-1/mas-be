@@ -9,6 +9,7 @@ using MAS.Infrastructure.Data;
 using MAS.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -56,7 +57,7 @@ public class MentorSubjectRepository : BaseRepository, IMentorSubjectRepository
         }
 
         var mentorSubject = await _context.MentorSubjects.FindAsync(subjectOfMentorId);
-        if (mentorSubject is null) {
+        if (mentorSubject is null || mentorSubject.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      ErrorMessages.NotFound + "this information!");
@@ -70,7 +71,7 @@ public class MentorSubjectRepository : BaseRepository, IMentorSubjectRepository
             return result;
         }
 
-        _context.MentorSubjects.Remove(mentorSubject);
+        mentorSubject.IsActive = false;
         if ((await _context.SaveChangesAsync() >= 0)) {
             result.Content = true;
             return result;
@@ -97,16 +98,29 @@ public class MentorSubjectRepository : BaseRepository, IMentorSubjectRepository
         if (mentor.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     "This mentor account is unactive!");
+                                                     "This mentor account is inactive!");
             return result;
         }
 
         var mentorSubjects = await _context.MentorSubjects.Where(x => x.MentorId == mentorId).ToListAsync();
+        var query = mentorSubjects.AsQueryable();
+
+        FilterActive(ref query, param.IsActive);
+
+        mentorSubjects = query.ToList();
         foreach (var mentorSubject in mentorSubjects) {
             await _context.Entry(mentorSubject).Reference(x => x.Subject).LoadAsync();
         }
         var response = _mapper.Map<List<MentorSubjectResponse>>(mentorSubjects);
         return PagedResult<MentorSubjectResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+    }
+
+    private void FilterActive(ref IQueryable<Core.Entities.MentorSubject> query, bool? isActive)
+    {
+        if (!query.Any() || isActive is null) {
+            return;
+        }
+        query = query.Where(x => x.IsActive == isActive);
     }
 
     public async Task<Result<bool>> RegisterSubjectAsync(
@@ -142,6 +156,14 @@ public class MentorSubjectRepository : BaseRepository, IMentorSubjectRepository
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      "You are not Mentor!");
+            return result;
+        }
+
+        var subject = await _context.Subjects.FindAsync(request.SubjectId);
+        if(subject is null || subject.IsActive is false){
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotFound + "subject!");
             return result;
         }
 
@@ -205,7 +227,7 @@ public class MentorSubjectRepository : BaseRepository, IMentorSubjectRepository
         }
 
         var subject = await _context.Subjects.FindAsync(request.SubjectId);
-        if (subject is null) {
+        if (subject is null || subject.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      ErrorMessages.NotFound + "this subject!");

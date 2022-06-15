@@ -2,4 +2,5 @@
 
 public class MentorSubjectParameters : QueryStringParameters
 {
+    public bool? IsActive { get; set; }
 }
