@@ -11,4 +11,5 @@ public class SlotDetailResponse
 
     public string MentorId { get; set; }
     public UserGetBasicInfoResponse Mentor { get; set; }
+    public bool IsActive { get; set; }
 }
