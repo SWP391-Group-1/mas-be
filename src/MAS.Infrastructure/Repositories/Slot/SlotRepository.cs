@@ -66,14 +66,14 @@ public class SlotRepository : BaseRepository, ISlotRepository
             return result;
         }
 
-        if (request.CreateDate > request.StartTime.AddDays(-2) ){
+        if (request.CreateDate > request.StartTime.AddDays(-2)) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      "This slot must be started after today at least 2 days!");
             return result;
         }
 
-        var mentorSlots = await _context.Slots.Where(x => x.MentorId == user.Id).ToListAsync();
+        var mentorSlots = await _context.Slots.Where(x => x.MentorId == user.Id && x.IsActive == true).ToListAsync();
         foreach (var slot in mentorSlots) {
             if (slot.StartTime <= request.StartTime && slot.FinishTime >= request.StartTime) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
@@ -139,7 +139,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
         }
 
         var slot = await _context.Slots.FindAsync(slotId);
-        if (slot is null) {
+        if (slot is null || slot.IsActive == false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      ErrorMessages.NotFound + "this information!");
@@ -165,22 +165,17 @@ public class SlotRepository : BaseRepository, ISlotRepository
             }
         }
 
-        _context.Slots.Remove(slot);
+        slot.IsActive = false;
         if ((await _context.SaveChangesAsync() >= 0)) {
             foreach (var item in slot.Appointments) {
-                if (item.IsApprove is false) {
-                    await _context.Entry(item).Collection(x => x.AppointmentSubjects).LoadAsync();
-                    _context.AppointmentSubjects.RemoveRange(item.AppointmentSubjects); // Remove appointment subject
-                    if ((await _context.SaveChangesAsync() >= 0)) {
-                        _context.Appointments.Remove(item); // Remove appointment
-                        if ((await _context.SaveChangesAsync() < 0)) {
-                            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
-                                                 ErrorTypes.SaveFail,
-                                                 ErrorMessages.SaveFail);
-                            return result;
-                        }
+                if (item.IsApprove is not true) {
+                    item.IsActive = false;
+                    if ((await _context.SaveChangesAsync() < 0)) {
+                        result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
+                                             ErrorTypes.SaveFail,
+                                             ErrorMessages.SaveFail);
+                        return result;
                     }
-
                 }
             }
             result.Content = true;
@@ -201,9 +196,19 @@ public class SlotRepository : BaseRepository, ISlotRepository
         FilterSlotByMentorId(ref query, param.MentorId);
         FilterByRange(ref query, param.From, param.To);
         SortByAsc(ref query, param.IsAsc);
+        FilterActive(ref query, param.IsActive);
+
         slots = query.ToList();
         var response = _mapper.Map<List<SlotResponse>>(slots);
         return PagedResult<SlotResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+    }
+
+    private void FilterActive(ref IQueryable<Core.Entities.Slot> query, bool? isActive)
+    {
+        if (!query.Any() || isActive is null) {
+            return;
+        }
+        query = query.Where(x => x.IsActive == isActive);
     }
 
     private void FilterByRange(ref IQueryable<Core.Entities.Slot> query, DateTime? from, DateTime? to)
@@ -245,7 +250,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
         var result = new Result<SlotDetailResponse>();
 
         var slot = await _context.Slots.FindAsync(slotId);
-        if (slot == null) {
+        if (slot == null || slot.IsActive == false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "subject.");
