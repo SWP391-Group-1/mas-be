@@ -3,7 +3,6 @@
 <h2 id="table-of-contents">Table Of Contents</h2>  
 - <a href="#services-description" target="_self">Title</a> <br>
 - <a href="#table-of-contents" target="_self">Table Of Contents</a> <br>
-- <a href="#weather" target="_self">Weather Forecast</a> <br>
 - <a href="#account" target="_self">Account</a> <br>
 - <a href="#major" target="_self">Major</a> <br>
 - <a href="#subject" target="_self">Subject</a> <br>
@@ -14,12 +13,6 @@
 - <a href="#appointment" target="_self">Appointment</a> <br>
 - <a href="#email" target="_self">Email</a> <br>
 - <a href="#api" target="_self">MAS API</a> <br>
-
-<h2 id="weather">Weather Forecast <a href="#table-of-contents" target="_self">🔙</a></h2>
-
-> - ``GET /api/mas/v1/weather-forecast ``  
->   ***Description***: Default api  
->   ***Role Access***: Admin  
 
 <h2 id="account">Account <a href="#table-of-contents" target="_self">🔙</a></h2>
 
