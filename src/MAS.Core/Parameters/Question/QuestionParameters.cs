@@ -2,5 +2,5 @@
 
 public class QuestionParameters : QueryStringParameters
 {
-
+    public bool? IsActive { get; set; }
 }

@@ -33,7 +33,7 @@ public class QuestionService : IQuestionService
             if (questionId is null) {
                 throw new ArgumentNullException(nameof(questionId));
             }
-            return await _questionRepository.AnswerQuestion(principal, questionId, request);
+            return await _questionRepository.AnswerQuestionAsync(principal, questionId, request);
         }
         catch (Exception ex) {
             _logger.LogError($"Error while trying to call AnswerQuestion in service class, Error Message: {ex}.");
@@ -62,7 +62,7 @@ public class QuestionService : IQuestionService
             if (questionId is null) {
                 throw new ArgumentNullException(nameof(questionId));
             }
-            return await _questionRepository.DeleteQuestion(principal, questionId);
+            return await _questionRepository.DeleteQuestionAsync(principal, questionId);
         }
         catch (Exception ex) {
             _logger.LogError($"Error while trying to call DeleteQuestion in service class, Error Message: {ex}.");
@@ -90,7 +90,7 @@ public class QuestionService : IQuestionService
             if (questionId is null) {
                 throw new ArgumentNullException(nameof(questionId));
             }
-            return await _questionRepository.GetQuestionById(questionId);
+            return await _questionRepository.GetQuestionByIdAsync(questionId);
         }
         catch (Exception ex) {
             _logger.LogError($"Error while trying to call GetQuestionById in service class, Error Message: {ex}.");

@@ -9,6 +9,7 @@ using MAS.Infrastructure.Data;
 using MAS.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -25,7 +26,10 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
     {
         _userManager = userManager;
     }
-    public async Task<Result<QuestionResponse>> AnswerQuestion(ClaimsPrincipal principal, string questionId, AnswerQuestionRequest request)
+    public async Task<Result<QuestionResponse>> AnswerQuestionAsync(
+        ClaimsPrincipal principal,
+        string questionId,
+        AnswerQuestionRequest request)
     {
         var result = new Result<QuestionResponse>();
         var loggedInUser = await _userManager.GetUserAsync(principal);
@@ -42,7 +46,21 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
             return result;
         }
 
-        if (loggedInUser.Id != question.Appointment.MentorId) {
+        await _context.Entry(question).Reference(x => x.Appointment).LoadAsync();
+        var mentor = await _context.MasUsers.FindAsync(question.Appointment.MentorId);
+        if (mentor is null) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotLogIn);
+            return result;
+        }
+        if (mentor.IsActive is false) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.AccountDisable);
+            return result;
+        }
+        if (loggedInUser.Id != mentor.IdentityId) {
             result.Error = ErrorHelper.PopulateError(400,
                                                     ErrorTypes.BadRequest,
                                                     "Do not have permission to perform this.");
@@ -63,7 +81,9 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
         return result;
     }
 
-    public async Task<Result<QuestionResponse>> CreateQuestionAsync(ClaimsPrincipal principal, CreateQuestionRequest request)
+    public async Task<Result<QuestionResponse>> CreateQuestionAsync(
+        ClaimsPrincipal principal,
+        CreateQuestionRequest request)
     {
         var result = new Result<QuestionResponse>();
 
@@ -81,7 +101,21 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
             return result;
         }
 
-        if (loggedInUser.Id != appointment.CreatorId) {
+        var user = await _context.MasUsers.FindAsync(appointment.CreatorId);
+        if (user is null) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotLogIn);
+            return result;
+        }
+        if (user.IsActive is false) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.AccountDisable);
+            return result;
+        }
+
+        if (loggedInUser.Id != user.IdentityId) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      "Do not have permission to perform this.");
@@ -102,7 +136,9 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
         return result;
     }
 
-    public async Task<Result<bool>> DeleteQuestion(ClaimsPrincipal principal, string questionId)
+    public async Task<Result<bool>> DeleteQuestionAsync(
+        ClaimsPrincipal principal,
+        string questionId)
     {
         var result = new Result<bool>();
 
@@ -113,18 +149,32 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
         }
 
         var question = await _context.Questions.FindAsync(questionId);
-        if (question == null) {
+        if (question == null || question.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "question.");
             return result;
         }
 
-        if (loggedInUser.Id != question.CreatorId && loggedInUser.Id != question.Appointment.MentorId) {
+        var user = await _context.MasUsers.FindAsync(question.CreatorId);
+        if (user is null) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotLogIn);
+            return result;
+        }
+        if (user.IsActive is false) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.AccountDisable);
+            return result;
+        }
+
+        if (loggedInUser.Id != user.IdentityId) {
             result.Error = ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, "Do not have permission to perform this.");
             return result;
         }
-        _context.Questions.Remove(question);
+        question.IsActive = false;
         if ((await _context.SaveChangesAsync() >= 0)) {
             result.Content = true;
             return result;
@@ -135,12 +185,14 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
         return result;
     }
 
-    public async Task<PagedResult<QuestionResponse>> GetAllQuestionAsync(string appointmentId, QuestionParameters param)
+    public async Task<PagedResult<QuestionResponse>> GetAllQuestionAsync(
+        string appointmentId,
+        QuestionParameters param)
     {
         var result = new PagedResult<QuestionResponse>();
 
         var appointment = await _context.Appointments.FindAsync(appointmentId);
-        if (appointment == null) {
+        if (appointment == null || appointment.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      ErrorMessages.NotFound + "appointment!");
@@ -148,23 +200,32 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
         }
 
         var questions = await _context.Questions.Where(x => x.AppointmentId == appointmentId).ToListAsync();
-
+        var query = questions.AsQueryable();
+        FilterActive(ref query, param.IsActive);
+        questions = query.ToList();
         var response = _mapper.Map<List<QuestionResponse>>(questions);
         return PagedResult<QuestionResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
     }
 
-    public async Task<Result<QuestionResponse>> GetQuestionById(string questionId)
+    private void FilterActive(ref IQueryable<Core.Entities.Question> query, bool? isActive)
+    {
+        if (!query.Any() || isActive is null) {
+            return;
+        }
+        query = query.Where(x => x.IsActive == isActive);
+    }
+
+    public async Task<Result<QuestionResponse>> GetQuestionByIdAsync(string questionId)
     {
         var result = new Result<QuestionResponse>();
 
         var question = await _context.Questions.FindAsync(questionId);
-        if (question == null) {
+        if (question == null || question.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "question.");
             return result;
         }
-        await _context.Entry(question).Reference(x => x.Appointment).LoadAsync();
         var response = _mapper.Map<QuestionResponse>(question);
         result.Content = response;
         return result;
