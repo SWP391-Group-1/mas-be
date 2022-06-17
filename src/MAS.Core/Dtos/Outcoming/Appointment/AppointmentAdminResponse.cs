@@ -17,4 +17,5 @@ public interface AppointmentAdminResponse
 
     public bool? IsApprove { get; set; }
     public DateTime CreateDate { get; set; }
+    public bool IsActive { get; set; }
 }

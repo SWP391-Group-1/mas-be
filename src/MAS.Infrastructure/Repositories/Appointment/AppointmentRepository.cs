@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using MAS.Core.Constants.Appointment;
 
 namespace MAS.Infrastructure.Repositories.Appointment;
 
@@ -57,14 +58,14 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         }
 
         var slot = await _context.Slots.FindAsync(request.SlotId);
-        if (slot is null) {
+        if (slot is null || slot.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "Slot");
             return result;
         }
 
-        if (slot.StartTime.AddDays(-1) < request.CreateDate) {
+        if (slot.StartTime.AddDays(-(int)AppointmentTime.TimeProcess) < request.CreateDate) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      "Not allow to register appointment in this slot!. You can register a slot before it start at least 1 day!");
@@ -73,7 +74,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
 
         foreach (var item in request.AppointmentSubjects) {
             var subject = await _context.Subjects.FindAsync(item.SubjectId);
-            if (subject is null) {
+            if (subject is null || subject.IsActive is false) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "Subject");
@@ -92,7 +93,8 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
                 IsApprove = null,
                 StartTime = null,
                 FinishTime = null,
-                MentorDescription = ""
+                MentorDescription = "",
+                IsActive = true
             }
         );
         if ((await _context.SaveChangesAsync() >= 0)) {
@@ -104,7 +106,8 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
                         UpdateDate = null,
                         AppointmentId = request.Id,
                         SubjectId = item.SubjectId,
-                        BriefProblem = item.BriefProblem
+                        BriefProblem = item.BriefProblem,
+                        IsActive = true
                     }
                 );
                 if ((await _context.SaveChangesAsync() < 0)) {
@@ -153,7 +156,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         }
 
         var appointment = await _context.Appointments.FindAsync(appointmentId);
-        if (appointment is null) {
+        if (appointment is null || appointment.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "Appointment");
@@ -172,15 +175,15 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             return result;
         }
 
-        await _context.Entry(appointment).Collection(x => x.AppointmentSubjects).LoadAsync();
-        _context.AppointmentSubjects.RemoveRange(appointment.AppointmentSubjects);
+        // await _context.Entry(appointment).Collection(x => x.AppointmentSubjects).LoadAsync();
+        // _context.AppointmentSubjects.RemoveRange(appointment.AppointmentSubjects);
+        // if ((await _context.SaveChangesAsync() >= 0)) {
+        appointment.IsActive = false;
         if ((await _context.SaveChangesAsync() >= 0)) {
-            _context.Appointments.Remove(appointment);
-            if ((await _context.SaveChangesAsync() >= 0)) {
-                result.Content = true;
-                return result;
-            }
+            result.Content = true;
+            return result;
         }
+        // }
         result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
                                                  ErrorTypes.SaveFail,
                                                  ErrorMessages.SaveFail);
@@ -228,6 +231,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
 
         FilterBySlot(ref query, param.SlotId);
         SortNewAppointment(ref query, param.IsNew);
+        FilterActive(ref query, param.IsActive);
 
         apps = query.ToList();
         foreach (var item in apps) {
@@ -238,6 +242,14 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             item.Creator = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(item.CreatorId));
         }
         return PagedResult<AppointmentMentorResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+    }
+
+    private void FilterActive(ref IQueryable<Core.Entities.Appointment> query, bool? isActive)
+    {
+        if (!query.Any() || isActive is null) {
+            return;
+        }
+        query = query.Where(x => x.IsActive == isActive);
     }
 
     private void FilterBySlot(ref IQueryable<Core.Entities.Appointment> query, string slotId)
@@ -271,6 +283,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
 
         FilterBySlot(ref query, param.SlotId);
         SortNewAppointment(ref query, param.IsNew);
+        FilterActive(ref query, param.IsActive);
 
         apps = query.ToList();
         foreach (var item in apps) {
@@ -319,6 +332,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
 
         FilterBySlot(ref query, param.SlotId);
         SortNewAppointment(ref query, param.IsNew);
+        FilterActive(ref query, param.IsActive);
 
         apps = query.ToList();
         foreach (var item in apps) {
@@ -391,7 +405,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         }
 
         var app = await _context.Appointments.FindAsync(appointmentId);
-        if (app == null) {
+        if (app == null || app.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "subject.");
@@ -445,7 +459,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         }
 
         var app = await _context.Appointments.FindAsync(appointmentId);
-        if (app == null) {
+        if (app == null || app.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "subject.");
@@ -503,7 +517,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         }
 
         var app = await _context.Appointments.FindAsync(appointmentId);
-        if (app == null) {
+        if (app == null || app.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "subject.");
@@ -563,7 +577,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         }
 
         var app = await _context.Appointments.FindAsync(appointmentId);
-        if (app == null) {
+        if (app == null || app.IsActive == false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      ErrorMessages.NotFound + "subject.");

@@ -9,4 +9,5 @@ public class AppointmentSubjectResponse
     public SubjectResponse Subject { get; set; }
 
     public string BriefProblem { get; set; }
+    public bool IsActive { get; set; }
 }

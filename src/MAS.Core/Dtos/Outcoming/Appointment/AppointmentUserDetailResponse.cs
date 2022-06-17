@@ -16,4 +16,5 @@ public class AppointmentUserDetailResponse
     public ICollection<QuestionAppointmentResponse> Questions { get; set; }
 
     public bool? IsApprove { get; set; }
+    public bool IsActive { get; set; }
 }
