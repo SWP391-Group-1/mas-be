@@ -129,72 +129,7 @@ public class MasUserRepository : BaseRepository, IMasUserRepository
                 param.PageNumber,
                 param.PageSize);
     }
-    //private void OrderUserByHighestRating(ref IQueryable<Core.Entities.MasUser> query, bool? isOrderByRating)
-    //{
-    //    if (!query.Any() || isOrderByRating is null || isOrderByRating is false) {
-    //        return;
-    //    }
 
-    //    query = query.OrderByDescending(x => x.RankingPoint).Where(x => x.NumOfRate != 0);
-    //}
-    //private void FilterUserByDate(ref IQueryable<Core.Entities.MasUser> query, int DayInWeek)
-    //{
-    //    if (!query.Any()
-    //       || DayInWeek == 0) {
-    //        return;
-    //    }
-    //    var list = new List<Core.Entities.MasUser>();
-    //    if (DayInWeek == 2) {
-    //        var datings = _context.Slots.Where(x => x.DayInWeek == 2);
-    //        foreach (var item in datings) {
-    //            var user = _context.MasUsers.Find(item.UserId);
-    //            list.Add(user);
-    //        }
-    //    }
-    //    if (DayInWeek == 3) {
-    //        var datings = _context.Datings.Where(x => x.DayInWeek == 3);
-    //        foreach (var item in datings) {
-    //            var user = _context.MasUsers.Find(item.UserId);
-    //            list.Add(user);
-    //        }
-    //    }
-    //    if (DayInWeek == 4) {
-    //        var datings = _context.Datings.Where(x => x.DayInWeek == 4);
-    //        foreach (var item in datings) {
-    //            var user = _context.MasUsers.Find(item.UserId);
-    //            list.Add(user);
-    //        }
-    //    }
-    //    if (DayInWeek == 5) {
-    //        var datings = _context.Datings.Where(x => x.DayInWeek == 5);
-    //        foreach (var item in datings) {
-    //            var user = _context.MasUsers.Find(item.UserId);
-    //            list.Add(user);
-    //        }
-    //    }
-    //    if (DayInWeek == 6) {
-    //        var datings = _context.Datings.Where(x => x.DayInWeek == 6);
-    //        foreach (var item in datings) {
-    //            var user = _context.MasUsers.Find(item.UserId);
-    //            list.Add(user);
-    //        }
-    //    }
-    //    if (DayInWeek == 7) {
-    //        var datings = _context.Datings.Where(x => x.DayInWeek == 7);
-    //        foreach (var item in datings) {
-    //            var user = _context.MasUsers.Find(item.UserId);
-    //            list.Add(user);
-    //        }
-    //    }
-    //    if (DayInWeek == 8) {
-    //        var datings = _context.Datings.Where(x => x.DayInWeek == 8);
-    //        foreach (var item in datings) {
-    //            var user = _context.MasUsers.Find(item.UserId);
-    //            list.Add(user);
-    //        }
-    //    }
-    //    query = list.AsQueryable();
-    //}
 
     private void FilterUserByHour(ref IQueryable<Core.Entities.MasUser> query, string fromHour, string toHour)
     {
@@ -375,7 +310,7 @@ public class MasUserRepository : BaseRepository, IMasUserRepository
 
         FilterActiveUser(ref query, param.IsActive);
         FilterUserByNameVsEmail(ref query, param.Name);
-
+        FilterIsMentor(ref query, param.IsMentor);
         OrderUserByCreatedDate(ref query, param.IsNew);
 
         users = query.ToList();

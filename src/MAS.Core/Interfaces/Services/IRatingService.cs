@@ -5,14 +5,13 @@ using MAS.Core.Parameters.Rating;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace MAS.Core.Interfaces.Services
+namespace MAS.Core.Interfaces.Services;
+
+public interface IRatingService
 {
-    public interface IRatingService
-    {
-        Task<Result<bool>> CreateRatingFeedbackAsync(ClaimsPrincipal principal, string appointmentId, CreateRatingRequest request);
-        Task<PagedResult<RatingResponse>> GetAllRatingsAsync(string mentorId, RatingParameters param);
-        Task<Result<RatingResponse>> GetRatingByIdAsync(string ratingId);
-        Task<PagedResult<RatingResponse>> GetAllRatingsForAdminAsync(RatingParametersAdmin param);
-        Task<Result<bool>> ProcessViolateRatingAsync(string ratingId, ProcessRatingRequest request);
-    }
+    Task<Result<bool>> CreateRatingFeedbackAsync(ClaimsPrincipal principal, string appointmentId, CreateRatingRequest request);
+    Task<PagedResult<RatingResponse>> GetAllRatingsAsync(string mentorId, RatingParameters param);
+    Task<Result<RatingResponse>> GetRatingByIdAsync(string ratingId);
+    Task<PagedResult<RatingResponse>> GetAllRatingsForAdminAsync(RatingParametersAdmin param);
+    Task<Result<bool>> ProcessViolateRatingAsync(string ratingId, ProcessRatingRequest request);
 }

@@ -228,4 +228,30 @@
 >   ***Description***: Send email to a specific user    
 >   ***Role Access***: Admin, User        
 >
+
+<h2 id="rating">Rating  <a href="#table-of-contents" target="_self">🔙</a></h2>   
+
+> - ``GET /api/mas/v1/ratings/{mentorId} ``  
+>   ***Description***: Get a all rating of a specific mentor   
+>   ***Role Access***: Admin, User  
+>
+> - ``GET /api/mas/v1/ratings/unapproved ``  
+>   ***Description***: Get all unapproved ratings   
+>   ***Role Access***: Admin  
+>
+> - ``POST /api/mas/v1/ratings/{appointmentId} ``  
+>   ***Description***: Make Rating Feedback    
+>   ***Role Access***: User  
+>
+> - ``GET /api/mas/v1/ratings/{ratingId} ``  
+>   ***Description***: Get rating by Id  
+>   ***Role Access***: Admin, User  
+>
+> - ``PUT /api/mas/v1/ratings/process/{rateId} ``  
+>   ***Description***: Process rating   
+>   ***Role Access***: Admin 
+
 <h2 id="api">MAS API  <a href="#table-of-contents" target="_self">🔙</a></h2>   
+
+
+
