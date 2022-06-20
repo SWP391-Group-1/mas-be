@@ -11,6 +11,7 @@
 - <a href="#question" target="_self">Question</a> <br>
 - <a href="#availableSlot" target="_self">Slot</a> <br>
 - <a href="#appointment" target="_self">Appointment</a> <br>
+- <a href="#rating" target="_self">Rating</a> <br>
 - <a href="#email" target="_self">Email</a> <br>
 - <a href="#api" target="_self">MAS API</a> <br>
 
