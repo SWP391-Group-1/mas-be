@@ -7,6 +7,5 @@ namespace MAS.Core.Parameters.Rating
         public bool? IsNew { get; set; }
         public bool? IsActive { get; set; }
         public bool? IsApprove { get; set; }
-        public bool? IsViolate { get; set; }
     }
 }

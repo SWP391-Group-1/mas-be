@@ -24,7 +24,10 @@ public class RatingRepository : BaseRepository, IRatingRepository
         _userManager = userManager;
     }
 
-    public async Task<Result<bool>> CreateRatingFeedbackAsync(ClaimsPrincipal principal, string appointmentId, CreateRatingRequest request)
+    public async Task<Result<bool>> CreateRatingFeedbackAsync(
+        ClaimsPrincipal principal,
+        string appointmentId,
+        CreateRatingRequest request)
     {
         var result = new Result<bool>();
         var loggedInUser = await _userManager.GetUserAsync(principal);
@@ -67,7 +70,7 @@ public class RatingRepository : BaseRepository, IRatingRepository
         model.CreatorId = appointment.CreatorId;
         model.MentorId = appointment.MentorId;
         model.IsActive = false;
-        model.IsApprove = false;
+        model.IsApprove = null;
 
         await _context.Ratings.AddAsync(model);
 
@@ -167,7 +170,7 @@ public class RatingRepository : BaseRepository, IRatingRepository
     {
         var result = new Result<RatingResponse>();
         var rating = await _context.Ratings.FindAsync(ratingId);
-        if (rating is null) {
+        if (rating is null || (rating.IsActive is false && rating.IsApprove is not null)) {
             result.Error = Helpers.ErrorHelper.PopulateError(404, ErrorTypes.NotFound, ErrorMessages.NotFound);
             return result;
         }
