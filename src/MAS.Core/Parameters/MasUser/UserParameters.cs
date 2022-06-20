@@ -7,5 +7,5 @@ public class UserParameters : QueryStringParameters
     public bool? IsOrderByName { get; set; }
     public bool? IsOrderByRating { get; set; }
 
-    public bool? IsMentor { get; set; }
+    //public bool? IsMentor { get; set; }
 }

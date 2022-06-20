@@ -111,8 +111,9 @@ public class MasUserRepository : BaseRepository, IMasUserRepository
 
         // FilterUserByDate(ref query, param.DayInWeek);
 
-        FilterIsMentor(ref query, param.IsMentor);
+        FilterIsMentor(ref query, true);
         FilterActiveUser(ref query, true);
+        FilterUserByItSelf(ref query, user.Id);
 
         OrderUserByASCName(ref query, param.IsOrderByName);
 
@@ -130,6 +131,14 @@ public class MasUserRepository : BaseRepository, IMasUserRepository
                 param.PageSize);
     }
 
+
+    private void FilterUserByItSelf(ref IQueryable<Core.Entities.MasUser> query, string id)
+    {
+        if (!query.Any() || String.IsNullOrEmpty(id) || String.IsNullOrWhiteSpace(id)) {
+            return;
+        }
+        query = query.Where(x => x.Id != id);
+    }
 
     private void FilterUserByHour(ref IQueryable<Core.Entities.MasUser> query, string fromHour, string toHour)
     {
