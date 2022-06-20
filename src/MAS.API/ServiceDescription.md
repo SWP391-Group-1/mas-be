@@ -235,8 +235,8 @@
 >   ***Description***: Get a all rating of a specific mentor   
 >   ***Role Access***: Admin, User  
 >
-> - ``GET /api/mas/v1/ratings/unapproved ``  
->   ***Description***: Get all unapproved ratings   
+> - ``GET /api/mas/v1/ratings``  
+>   ***Description***: Get all ratings   
 >   ***Role Access***: Admin  
 >
 > - ``POST /api/mas/v1/ratings/{appointmentId} ``  

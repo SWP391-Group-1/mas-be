@@ -81,9 +81,9 @@ public class RatingsController : BaseController
     /// <remarks>
     /// Roles Access: Admin
     /// </remarks>
-    [HttpGet("unapproved")]
+    [HttpGet]
     [Authorize(Roles = RoleConstants.Admin)]
-    public async Task<ActionResult> GetAllViolateRatings([FromQuery] RatingParametersAdmin param)
+    public async Task<ActionResult> GetAllRatings([FromQuery] RatingParametersAdmin param)
     {
         var response = await _ratingService.GetAllRatingsForAdminAsync(param);
         if (!response.IsSuccess) {
