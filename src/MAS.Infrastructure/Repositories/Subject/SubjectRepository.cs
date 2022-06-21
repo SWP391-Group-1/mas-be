@@ -210,7 +210,7 @@ public class SubjectRepository : BaseRepository, ISubjectRepository
         if (existSubject) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     ErrorMessages.Exist + $"{request.Title} in System.");
+                                                     ErrorMessages.Exist + $"{request.Title} or {request.Code} in System.");
             return result;
         }
 
