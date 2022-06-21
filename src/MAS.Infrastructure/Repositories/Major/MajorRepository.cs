@@ -25,14 +25,25 @@ public class MajorRepository : BaseRepository, IMajorRepository
     {
         var result = new Result<MajorResponse>();
 
-        var existMajor = await _context.Majors.AnyAsync(x => (x.Title.ToLower().Trim() == request.Title.ToLower().Trim() && x.IsActive == true)
-                                                        || (x.Code.ToLower().Trim() == request.Code.ToLower().Trim() && x.IsActive == true));
-        if (existMajor) {
+        var existCodeMajor = await _context.Majors.AnyAsync(x => (x.Code.ToLower().Trim() == request.Code.ToLower().Trim()
+                                                                    && x.IsActive == true));
+        if (existCodeMajor) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     ErrorMessages.Exist + $"{request.Title} or {request.Code} in System.");
+                                                     ErrorMessages.Exist + $"{request.Code} in System.");
             return result;
         }
+
+        var existTitleMajor = await _context.Majors.AnyAsync(x => (x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
+                                                                    && x.IsActive == true));
+        if (existTitleMajor) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.Exist + $"{request.Title} in System.");
+            return result;
+        }
+
+
 
         var model = _mapper.Map<Core.Entities.Major>(request);
         await _context.Majors.AddAsync(model);
@@ -135,14 +146,21 @@ public class MajorRepository : BaseRepository, IMajorRepository
             return result;
         }
 
-        var existMajor = await _context.Majors.AnyAsync(x => (x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
-                                                                && x.Id != majorId && x.IsActive == true)
-                                                            || (x.Code.ToLower().Trim() == request.Code.ToLower().Trim()
+        var existCodeMajor = await _context.Majors.AnyAsync(x => (x.Code.ToLower().Trim() == request.Code.ToLower().Trim()
                                                                 && x.Id != majorId && x.IsActive == true));
-        if (existMajor) {
+        if (existCodeMajor) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     ErrorMessages.Exist + $"{request.Title} or {request.Code} in System.");
+                                                     ErrorMessages.Exist + $"{request.Code} in System.");
+            return result;
+        }
+
+        var existTitleMajor = await _context.Majors.AnyAsync(x => (x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
+                                                                && x.Id != majorId && x.IsActive == true));
+        if (existTitleMajor) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.Exist + $"{request.Title} in System.");
             return result;
         }
 

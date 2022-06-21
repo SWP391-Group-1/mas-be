@@ -33,12 +33,19 @@ public class SubjectRepository : BaseRepository, ISubjectRepository
             return result;
         }
 
-        var existSubject = await _context.Subjects.AnyAsync(x => (x.Title.ToLower().Trim() == request.Title.ToLower().Trim() && x.IsActive == true)
-                                                            || (x.Code.ToLower().Trim() == request.Code.ToLower().Trim() && x.IsActive == true));
-        if (existSubject) {
+        var existCodeSubject = await _context.Subjects.AnyAsync(x => (x.Code.ToLower().Trim() == request.Code.ToLower().Trim() && x.IsActive == true));
+        if (existCodeSubject) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     ErrorMessages.Exist + $"{request.Title} or {request.Code} in System.");
+                                                     ErrorMessages.Exist + $"{request.Code} in System.");
+            return result;
+        }
+
+        var existTitleSubject = await _context.Subjects.AnyAsync(x => (x.Title.ToLower().Trim() == request.Title.ToLower().Trim() && x.IsActive == true));
+        if (existTitleSubject) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.Exist + $"{request.Title} in System.");
             return result;
         }
 
@@ -203,14 +210,21 @@ public class SubjectRepository : BaseRepository, ISubjectRepository
             return result;
         }
 
-        var existSubject = await _context.Subjects.AnyAsync(x => (x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
-                                                                && x.Id != subjectId && x.IsActive == true)
-                                                            || (x.Code.ToLower().Trim() == request.Code.ToLower().Trim()
+        var existCodeSubject = await _context.Subjects.AnyAsync(x => (x.Code.ToLower().Trim() == request.Code.ToLower().Trim()
                                                                 && x.Id != subjectId && x.IsActive == true));
-        if (existSubject) {
+        if (existCodeSubject) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     ErrorMessages.Exist + $"{request.Title} or {request.Code} in System.");
+                                                     ErrorMessages.Exist + $"{request.Code} in System.");
+            return result;
+        }
+
+        var existTitleSubject = await _context.Subjects.AnyAsync(x => (x.Title.ToLower().Trim() == request.Title.ToLower().Trim()
+                                                                && x.Id != subjectId && x.IsActive == true));
+        if (existTitleSubject) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.Exist + $"{request.Title} in System.");
             return result;
         }
 
