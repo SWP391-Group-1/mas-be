@@ -70,6 +70,14 @@ public class MajorRepository : BaseRepository, IMajorRepository
             return result;
         }
 
+        var subjectInMajor = await _context.Subjects.Where(x => x.MajorId == major.Id).CountAsync();
+        if (subjectInMajor > 0) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
+                                                     ErrorTypes.NotFound,
+                                                     "Have subjects in this major. Please change or modify these information.");
+            return result;
+        }
+
         major.IsActive = false;
         if ((await _context.SaveChangesAsync() >= 0)) {
             result.Content = true;

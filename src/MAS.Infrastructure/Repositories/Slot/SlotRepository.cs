@@ -25,7 +25,9 @@ public class SlotRepository : BaseRepository, ISlotRepository
         _userManager = userManager;
     }
 
-    public async Task<Result<bool>> CreateAvailableSlotAsync(ClaimsPrincipal principal, SlotCreateRequest request)
+    public async Task<Result<bool>> CreateAvailableSlotAsync(
+        ClaimsPrincipal principal,
+        SlotCreateRequest request)
     {
         var result = new Result<bool>();
         var loggedInUser = await _userManager.GetUserAsync(principal);
@@ -59,10 +61,17 @@ public class SlotRepository : BaseRepository, ISlotRepository
             return result;
         }
 
-        if (request.StartTime <= request.FinishTime) {
+        if (request.StartTime >= request.FinishTime) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      "Finish Time invalid!");
+            return result;
+        }
+
+        if(request.FinishTime.AddMinutes(-30) <= request.StartTime){
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     "A Slot have at least 30 minutes!");
             return result;
         }
 
@@ -239,7 +248,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
 
     private void FilterSlotByMentorId(ref IQueryable<Core.Entities.Slot> query, string mentorId)
     {
-        if (!query.Any() || !string.IsNullOrEmpty(mentorId) || !string.IsNullOrWhiteSpace(mentorId)) {
+        if (!query.Any() || string.IsNullOrEmpty(mentorId) || string.IsNullOrWhiteSpace(mentorId)) {
             return;
         }
         query = query.Where(x => x.MentorId == mentorId);

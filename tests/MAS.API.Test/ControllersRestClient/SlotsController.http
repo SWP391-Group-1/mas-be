@@ -25,39 +25,35 @@ Authorization: {{authToken}}
 
 ###
 
-# Get all subject
-GET {{baseUrl}}/api/mas/v1/subjects
+# Get all slot
+GET {{baseUrl}}/api/mas/v1/slots
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
 ###
 
-# Get mentor subject 
-GET {{baseUrl}}/api/mas/v1/mentor-subjects/aaf445eb-c5c6-4a7e-8ae4-d15f40cd1df9
-Content-Type: {{contentType}}
-Authorization: {{authToken}}
-
-###
-
-# Register mentor subject
-POST {{baseUrl}}/api/mas/v1/mentor-subjects
+# Create slot
+POST {{baseUrl}}/api/mas/v1/slots
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
 {
-  "subjectId": "046cfc17-cec6-4725-b12a-b04b99dccd1f",
-  "briefInfo": "Biết  test đủ thứ..."
+  "startTime": "2022-06-25T15:00:02.989Z",
+  "finishTime": "2022-06-25T16:00:02.989Z"
 }
 
 ###
 
-# Update mentor subject
-PUT {{baseUrl}}/api/mas/v1/mentor-subjects/8993ac7d-7ac1-4b9e-856d-45fe75a0333a
+# Get a slot by Id
+GET {{baseUrl}}/api/mas/v1/slots/032c1774-8a9e-4a79-8e61-84f3eb3f7f99
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
-{
-  "briefInfo": "Know test everythings, backend, fontend, have family with many testing tool, 10 years experience in tester, QA, QC"
-}
+###
+
+# Delete a slot
+DELETE {{baseUrl}}/api/mas/v1/slots/032c1774-8a9e-4a79-8e61-84f3eb3f7f99
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
 
 ###
