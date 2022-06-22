@@ -160,10 +160,20 @@ public class MentorSubjectRepository : BaseRepository, IMentorSubjectRepository
         }
 
         var subject = await _context.Subjects.FindAsync(request.SubjectId);
-        if(subject is null || subject.IsActive is false){
+        if (subject is null || subject.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      ErrorMessages.NotFound + "subject!");
+            return result;
+        }
+
+        var existSubject = await _context.MentorSubjects.AnyAsync(x => x.MentorId == user.Id
+                                                                       && x.SubjectId == request.SubjectId
+                                                                       && x.IsActive == true);
+        if (existSubject is true) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.Exist + "subject in your profile!");
             return result;
         }
 
@@ -223,14 +233,6 @@ public class MentorSubjectRepository : BaseRepository, IMentorSubjectRepository
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      ErrorMessages.NotAllowModify);
-            return result;
-        }
-
-        var subject = await _context.Subjects.FindAsync(request.SubjectId);
-        if (subject is null || subject.IsActive is false) {
-            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
-                                                     ErrorTypes.BadRequest,
-                                                     ErrorMessages.NotFound + "this subject!");
             return result;
         }
 
