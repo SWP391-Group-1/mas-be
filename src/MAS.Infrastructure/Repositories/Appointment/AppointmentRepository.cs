@@ -72,6 +72,34 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             return result;
         }
 
+        var existAppointments = await _context.Appointments.Where(x => x.CreatorId == user.Id
+                                                                       && x.IsApprove != false).ToListAsync();
+        foreach (var item in existAppointments) {
+            if (item.StartTime >= slot.StartTime && item.StartTime <= slot.FinishTime) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.Exist 
+                                                     + $"appointment at {slot.StartTime} to {slot.FinishTime}.");
+                return result;
+            }
+
+            if (item.FinishTime >= slot.StartTime && item.FinishTime <= slot.FinishTime) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.Exist 
+                                                     + $"appointment at {slot.StartTime} to {slot.FinishTime}.");
+                return result;
+            }
+
+            if (item.StartTime <= slot.StartTime && item.FinishTime >= slot.FinishTime) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.Exist 
+                                                     + $"appointment at {slot.StartTime} to {slot.FinishTime}.");
+                return result;
+            }
+        }
+
         foreach (var item in request.AppointmentSubjects) {
             var subject = await _context.Subjects.FindAsync(item.SubjectId);
             if (subject is null || subject.IsActive is false) {
@@ -91,8 +119,8 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
                 MentorId = slot.MentorId,
                 SlotId = request.SlotId,
                 IsApprove = null,
-                StartTime = null,
-                FinishTime = null,
+                StartTime = slot.StartTime,
+                FinishTime = slot.FinishTime,
                 MentorDescription = "",
                 IsActive = true
             }
