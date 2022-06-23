@@ -78,7 +78,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             if (item.StartTime >= slot.StartTime && item.StartTime <= slot.FinishTime) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     ErrorMessages.Exist 
+                                                     ErrorMessages.Exist
                                                      + $"appointment at {slot.StartTime} to {slot.FinishTime}.");
                 return result;
             }
@@ -86,7 +86,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             if (item.FinishTime >= slot.StartTime && item.FinishTime <= slot.FinishTime) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     ErrorMessages.Exist 
+                                                     ErrorMessages.Exist
                                                      + $"appointment at {slot.StartTime} to {slot.FinishTime}.");
                 return result;
             }
@@ -94,7 +94,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             if (item.StartTime <= slot.StartTime && item.FinishTime >= slot.FinishTime) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     ErrorMessages.Exist 
+                                                     ErrorMessages.Exist
                                                      + $"appointment at {slot.StartTime} to {slot.FinishTime}.");
                 return result;
             }
@@ -638,6 +638,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         }
         else {
             app.IsApprove = request.IsApprove;
+            user.NumOfAppointment += 1;
             if (await _context.SaveChangesAsync() >= 0) {
                 result.Content = true;
                 return result;
