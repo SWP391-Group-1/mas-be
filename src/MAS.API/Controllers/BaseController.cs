@@ -6,7 +6,7 @@ namespace MAS.API.Controllers;
 [Produces("application/json")]
 [Route("api/" + ApiConstants.ServiceName + "/v{api-version:apiVersion}/[controller]")]
 [ApiController]
-public class BaseController : ControllerBase
+public abstract class BaseController : ControllerBase
 {
 
 }
