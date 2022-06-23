@@ -55,10 +55,10 @@ POST {{baseUrl}}/api/mas/v1/accounts/register-user
 content-type: {{contentType}}
 
 {
-  "email": "user@fpt.edu.vn",
+  "email": "testMentor02@fe.edu.vn",
   "password": "Pa55w0rd!",
   "confirmPassword": "Pa55w0rd!",
-  "name" : "test user"
+  "name" : "test mentor 02"
 }
 
 ###

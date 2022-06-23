@@ -25,8 +25,19 @@ Authorization: {{authToken}}
 
 ###
 
-# Get all slot
+# Get all slot of mentor 02
 GET {{baseUrl}}/api/mas/v1/slots
+?mentorId=a7c2258b-e2d1-457f-87f8-268dbadbe1ac
+&isAsc=true
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Get all slot of mentor 01
+GET {{baseUrl}}/api/mas/v1/slots
+?mentorId=aaf445eb-c5c6-4a7e-8ae4-d15f40cd1df9
+&isAsc=true
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
@@ -38,8 +49,8 @@ Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
 {
-  "startTime": "2022-06-25T15:00:02.989Z",
-  "finishTime": "2022-06-25T16:00:02.989Z"
+  "startTime": "2022-06-26T08:00:02.989Z",
+  "finishTime": "2022-06-26T10:00:02.989Z"
 }
 
 ###
