@@ -108,6 +108,13 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
                                                      ErrorMessages.NotFound + "Subject");
                 return result;
             }
+            var existSubjectMentor = await _context.MentorSubjects.AnyAsync(x => x.MentorId == slot.MentorId && x.SubjectId == subject.Id);
+            if (existSubjectMentor is false) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     $"Your mentor doesn't support subject {subject.Title}");
+                return result;
+            }
         }
 
         await _context.Appointments.AddAsync(
