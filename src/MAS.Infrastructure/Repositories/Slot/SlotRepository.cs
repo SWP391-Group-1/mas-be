@@ -61,6 +61,21 @@ public class SlotRepository : BaseRepository, ISlotRepository
             return result;
         }
 
+        if (String.IsNullOrEmpty(user.MeetUrl) || String.IsNullOrWhiteSpace(user.MeetUrl)) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     "Please input your Google Meet URL!");
+            return result;
+        }
+
+        await _context.Entry(user).Collection(x => x.MentorSubjects).LoadAsync();
+        if (user.MentorSubjects.Count() == 0) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     "Please register your major Subject");
+            return result;
+        }
+
         if (request.StartTime >= request.FinishTime) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
@@ -68,7 +83,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
             return result;
         }
 
-        if(request.FinishTime.AddMinutes(-30) <= request.StartTime){
+        if (request.FinishTime.AddMinutes(-30) <= request.StartTime) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      "A Slot have at least 30 minutes!");
