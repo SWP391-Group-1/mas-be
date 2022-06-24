@@ -2,10 +2,9 @@
 @port = 5001
 @azurehost = mas-api.azurewebsites.net
 @lchost = {{hostname}}:{{port}}
-@host = {{azurehost}}
 @baseUrl = https://{{lchost}}
 @contentType = application/json
-@token = {{loginAdmin.response.body.$.message}}
+@token = {{login.response.body.$.message}}
 @authToken = bearer {{token}}
 
 # @name login
@@ -14,7 +13,7 @@ content-type: {{contentType}}
 
 {
   "providerName": "https://accounts.google.com",
-  "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6Ijg2MTY0OWU0NTAzMTUzODNmNmI5ZDUxMGI3Y2Q0ZTkyMjZjM2NkODgiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL2FjY291bnRzLmdvb2dsZS5jb20iLCJhenAiOiIyMzI3NjMxMDExODktdWIwNmU4OW9sZThhZjk2c3VkNXE4aTJ2MmQyMWUzdHUuYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJhdWQiOiIyMzI3NjMxMDExODktNmJzazc2bTZ2cTNxcmtsdXF0ZWczcTAwYzlta3M4dGguYXBwcy5nb29nbGV1c2VyY29udGVudC5jb20iLCJzdWIiOiIxMDMzMTM3MDYxNTQ4ODcyNTYyNDMiLCJlbWFpbCI6Im1hbmgzMDA5MjAwMEBnbWFpbC5jb20iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6Ik1hbmggTmd1eWVuIiwicGljdHVyZSI6Imh0dHBzOi8vbGgzLmdvb2dsZXVzZXJjb250ZW50LmNvbS9hLS9BT2gxNEdqNXlsUUNjUnVZejZJSWp6OG43NkdJUzdVdVBVZjk0b2RhZjUtRE1RPXM5Ni1jIiwiZ2l2ZW5fbmFtZSI6Ik1hbmggTmd1eWVuIiwibG9jYWxlIjoidmkiLCJpYXQiOjE2NTExNTQwNjEsImV4cCI6MTY1MTE1NzY2MX0.FWFsbhyN4Ptl5XEJ5APLx2jEZJTj7fpVPFkbHrOMp2monh7psDTjXwYh1e_BF_4Y2RCFI4e90SikWaNfpXMWIJoYnMomXXv65L85lL0mVaBksQmEGYyBrSWXulqBSq2ri_bT9SN9_SJ7AW_0rCNKz8FLnOXc_LSwnWPTezWepKO9QUpPhtOBplIXDXSFpFVzz6YF5hEPtfjheVxCDl95ekHNVFPVjm0QaNstrkZhxe-S2WIDyM85IlVSik8ro2PD7QQJDjbSmBVxMefDrq7p"
+  "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImY5MGZiMWFlMDQ4YTU0OGZiNjgxYWQ2MDkyYjBiODY5ZWE0NjdhYzYiLCJ0eXAiOiJKV1QifQ.eyJuYW1lIjoiTmd1eeG7hW4gTmjhu7F0IEjDoG8iLCJwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EtL0FPaDE0R2ljU0hvR0xkbl9yb0RBMWlTb3ZaS3BoOVJMNXRCaXJDSEpEanVGPXM5Ni1jIiwiaXNzIjoiaHR0cHM6Ly9zZWN1cmV0b2tlbi5nb29nbGUuY29tL2ZwdC1tYXMtNWJhYjkiLCJhdWQiOiJmcHQtbWFzLTViYWI5IiwiYXV0aF90aW1lIjoxNjU2MDM2MTg3LCJ1c2VyX2lkIjoiVzBoTG52dTBBeGhLaFNlY1Q4N2txbmlza1ZOMiIsInN1YiI6IlcwaExudnUwQXhoS2hTZWNUODdrcW5pc2tWTjIiLCJpYXQiOjE2NTYwMzYxODcsImV4cCI6MTY1NjAzOTc4NywiZW1haWwiOiJoYW9ubnNlMTQwNzQyQGZwdC5lZHUudm4iLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJnb29nbGUuY29tIjpbIjEwMDIyOTA1MjAxNTk5NzM0MzU4NCJdLCJlbWFpbCI6WyJoYW9ubnNlMTQwNzQyQGZwdC5lZHUudm4iXX0sInNpZ25faW5fcHJvdmlkZXIiOiJnb29nbGUuY29tIn19.PdARXFZMAb2MWW6tH20Tq7UktzeNEYVfkpWJWpvZghIhbu8BVeKeDWVan_aT4qYJk4WQPnb_IdbZiNDg1VSCdB0ctSYKM5KDEQqFAp9picdqu8aLKfszlTlpVRtOZST1_NcwVNDlsNKS4Byj2JQ1rzyzuc1nLcENLuuoTQsmRwAZzg7HNwpNDGpFGYBBgN5w2vNpSKZ44U69Bd2azRAno2vKzJqtLn9EPF-BDNAvow35wG9EM1hCWQ4ozfradbZAUx-zZFtZDrxW-nKqkPq1z_Gtp3xO0MYueNC2soiYZR4nJvA_llGKVRwYAH0TKPmyZuD5j_hmpKemaJaMY5TFaA"
 }
 
 ###
@@ -60,5 +59,12 @@ content-type: {{contentType}}
   "confirmPassword": "Pa55w0rd!",
   "name" : "test mentor 02"
 }
+
+###
+
+# Get user profile
+GET {{baseUrl}}/api/mas/v1/users/personal
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
 
 ###

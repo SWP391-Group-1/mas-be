@@ -2,6 +2,7 @@
 
 public class SubjectOfMentorResponse
 {
+    public string Id { get; set; }
     public string MajorId { get; set; }
 
     public string Code { get; set; }
