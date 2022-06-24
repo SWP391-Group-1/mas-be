@@ -41,3 +41,10 @@ Authorization: {{authToken}}
 }
 
 ###
+
+# Get own appointment
+GET {{baseUrl}}/api/mas/v1/users/own/appointments
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
