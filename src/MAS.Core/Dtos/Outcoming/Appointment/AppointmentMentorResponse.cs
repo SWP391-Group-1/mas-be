@@ -6,6 +6,7 @@ namespace MAS.Core.Dtos.Outcoming.Appointment;
 
 public class AppointmentMentorResponse
 {
+    public string Id { get; set; }
     public string CreatorId { get; set; }
     public UserGetBasicInfoResponse Creator { get; set; }
 
