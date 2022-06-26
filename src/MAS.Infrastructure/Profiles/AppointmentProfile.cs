@@ -13,13 +13,15 @@ public class AppointmentProfile : Profile
         CreateMap<AppointmentCreateRequest, Appointment>();
         CreateMap<AppointmentProcessRequest, Appointment>();
         CreateMap<AppointmentUpdateRequest, Appointment>();
-        CreateMap<AppointmentSubjectCreateRequest, AppointmentSubject>(); 
-        
+        CreateMap<AppointmentSubjectCreateRequest, AppointmentSubject>();
+
         CreateMap<Appointment, AppointmentUserResponse>();
         CreateMap<Appointment, AppointmentUserDetailResponse>();
         CreateMap<Appointment, AppointmentMentorResponse>();
         CreateMap<Appointment, AppointmentMentorDetailResponse>();
         CreateMap<Appointment, AppointmentAdminResponse>();
         CreateMap<Appointment, AppointmentAdminDetailResponse>();
+
+        CreateMap<AppointmentSubject, AppointmentSubjectResponse>();
     }
 }

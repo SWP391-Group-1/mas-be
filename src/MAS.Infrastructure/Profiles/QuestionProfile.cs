@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MAS.Core.Dtos.Incoming.Question;
+using MAS.Core.Dtos.Outcoming.Appointment;
 using MAS.Core.Dtos.Outcoming.Question;
 using MAS.Core.Entities;
 
@@ -14,5 +15,6 @@ public class QuestionProfile : Profile
         CreateMap<AnswerQuestionRequest, Question>();
 
         CreateMap<Question, QuestionResponse>();
+        CreateMap<Question, QuestionAppointmentResponse>();
     }
 }
