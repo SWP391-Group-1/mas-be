@@ -289,7 +289,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
     }
     private void FilterApprove(ref IQueryable<Core.Entities.Appointment> query, bool? isApprove)
     {
-        if (!query.Any() || isApprove is null) {
+        if (!query.Any()) {
             return;
         }
         query = query.Where(x => x.IsApprove == isApprove);
