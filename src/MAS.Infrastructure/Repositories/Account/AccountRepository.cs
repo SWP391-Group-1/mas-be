@@ -140,6 +140,12 @@ public class AccountRepository : BaseRepository, IAccountRepository
                 };
             }
 
+            if (appUser.IsActive is false) {
+                return new AuthenResult {
+                    Errors = new List<string>() { "Your account is disable. Please contact with FPT University for more information." }
+                };
+            }
+
             var token = await GenerateToken(user);
             return new AuthenResult {
                 Message = token[0],
