@@ -1,0 +1,50 @@
+@hostname = localhost
+@port = 5001
+@azurehost = mas-api.azurewebsites.net
+@lchost = {{hostname}}:{{port}}
+@host = {{azurehost}}
+@baseUrl = https://{{lchost}}
+@contentType = application/json
+@token = {{login.response.body.$.message}}
+@authToken = bearer {{token}}
+
+# @name login
+POST {{baseUrl}}/api/mas/v1/accounts/login-user
+content-type: {{contentType}}
+
+{
+  "email": "user@fpt.edu.vn",
+  "password": "Pa55w0rd!"
+}
+###
+
+# Get user profile
+GET {{baseUrl}}/api/mas/v1/users/personal
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Create Appointment
+POST {{baseUrl}}/api/mas/v1/appointments
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+{
+  "slotId": "4da3b505-531d-48c5-9110-92e68ff9383d",
+  "appointmentSubjects": [
+    {
+      "subjectId": "046cfc17-cec6-4725-b12a-b04b99dccd1f",
+      "briefProblem": "Hong bit test"
+    }
+  ]
+}
+
+###
+
+# Get own appointment
+GET {{baseUrl}}/api/mas/v1/users/own/appointments
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###

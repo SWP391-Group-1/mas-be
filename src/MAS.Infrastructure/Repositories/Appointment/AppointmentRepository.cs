@@ -1,5 +1,5 @@
-using System;
 using AutoMapper;
+using MAS.Core.Constants.Appointment;
 using MAS.Core.Constants.Error;
 using MAS.Core.Dtos.Incoming.Appointment;
 using MAS.Core.Dtos.Outcoming.Appointment;
@@ -10,11 +10,11 @@ using MAS.Infrastructure.Data;
 using MAS.Infrastructure.Helpers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using MAS.Core.Constants.Appointment;
 
 namespace MAS.Infrastructure.Repositories.Appointment;
 
@@ -267,6 +267,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         FilterBySlot(ref query, param.SlotId);
         SortNewAppointment(ref query, param.IsNew);
         FilterActive(ref query, param.IsActive);
+        FilterApprove(ref query, param.IsApprove);
 
         apps = query.ToList();
         foreach (var item in apps) {
@@ -285,6 +286,13 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             return;
         }
         query = query.Where(x => x.IsActive == isActive);
+    }
+    private void FilterApprove(ref IQueryable<Core.Entities.Appointment> query, bool? isApprove)
+    {
+        if (!query.Any()) {
+            return;
+        }
+        query = query.Where(x => x.IsApprove == isApprove);
     }
 
     private void FilterBySlot(ref IQueryable<Core.Entities.Appointment> query, string slotId)
@@ -368,6 +376,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         FilterBySlot(ref query, param.SlotId);
         SortNewAppointment(ref query, param.IsNew);
         FilterActive(ref query, param.IsActive);
+        FilterApprove(ref query, param.IsApprove);
 
         apps = query.ToList();
         foreach (var item in apps) {

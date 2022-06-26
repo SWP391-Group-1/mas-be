@@ -15,7 +15,7 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.Property(x => x.CreatorId).HasColumnType("nvarchar(100)").IsRequired();
         builder.Property(x => x.MentorId).HasColumnType("nvarchar(100)").IsRequired();
         builder.Property(x => x.SlotId).HasColumnType("nvarchar(100)").IsRequired();
-        builder.Property(x => x.IsApprove).HasColumnType("bit").IsRequired();
+        builder.Property(x => x.IsApprove).HasColumnType("bit").IsRequired(false);
         builder.HasOne(a => a.Slot)
             .WithMany(s => s.Appointments)
             .HasForeignKey(a => a.SlotId);
