@@ -267,7 +267,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         FilterBySlot(ref query, param.SlotId);
         SortNewAppointment(ref query, param.IsNew);
         FilterActive(ref query, param.IsActive);
-        FilterApprove(ref query, param.IsApprove);
+        FilterApprove(ref query, param.IsApprove, param.IsAll);
 
         apps = query.ToList();
         foreach (var item in apps) {
@@ -287,9 +287,9 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         }
         query = query.Where(x => x.IsActive == isActive);
     }
-    private void FilterApprove(ref IQueryable<Core.Entities.Appointment> query, bool? isApprove)
+    private void FilterApprove(ref IQueryable<Core.Entities.Appointment> query, bool? isApprove, bool? isAll)
     {
-        if (!query.Any()) {
+        if (!query.Any() || isAll is true || isAll is null) {
             return;
         }
         query = query.Where(x => x.IsApprove == isApprove);
@@ -376,7 +376,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         FilterBySlot(ref query, param.SlotId);
         SortNewAppointment(ref query, param.IsNew);
         FilterActive(ref query, param.IsActive);
-        FilterApprove(ref query, param.IsApprove);
+        FilterApprove(ref query, param.IsApprove, param.IsAll);
 
         apps = query.ToList();
         foreach (var item in apps) {
