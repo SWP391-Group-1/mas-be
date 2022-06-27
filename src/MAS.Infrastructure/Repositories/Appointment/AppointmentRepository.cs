@@ -464,6 +464,10 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         await _context.Entry(app).Reference(x => x.Slot).LoadAsync();
         await _context.Entry(app).Collection(x => x.Questions).LoadAsync();
         await _context.Entry(app).Collection(x => x.AppointmentSubjects).LoadAsync();
+        foreach (var item in app.AppointmentSubjects)
+        {
+            await _context.Entry(item).Reference(x => x.Subject).LoadAsync();
+        }
 
         var response = _mapper.Map<AppointmentMentorDetailResponse>(app);
 
@@ -518,6 +522,10 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         await _context.Entry(app).Reference(x => x.Slot).LoadAsync();
         await _context.Entry(app).Collection(x => x.Questions).LoadAsync();
         await _context.Entry(app).Collection(x => x.AppointmentSubjects).LoadAsync();
+        foreach (var item in app.AppointmentSubjects)
+        {
+            await _context.Entry(item).Reference(x => x.Subject).LoadAsync();
+        }
 
         var response = _mapper.Map<AppointmentUserDetailResponse>(app);
 
