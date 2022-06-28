@@ -2,7 +2,10 @@ using MAS.Core.Dtos.Incoming.Account;
 using MAS.Core.Dtos.Incoming.Appointment;
 using MAS.Core.Dtos.Outcoming.Appointment;
 using MAS.Core.Dtos.Outcoming.Generic;
+using MAS.Core.Dtos.Outcoming.Question;
 using MAS.Core.Interfaces.Services.Appointment;
+using MAS.Core.Interfaces.Services.Question;
+using MAS.Core.Parameters.Question;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
@@ -13,10 +16,14 @@ namespace MAS.API.Controllers.V1;
 public class AppointmentsController : BaseController
 {
     private readonly IAppointmentService _appointmentService;
+    private readonly IQuestionService _questionService;
 
-    public AppointmentsController(IAppointmentService appointmentService)
+    public AppointmentsController(
+        IAppointmentService appointmentService,
+        IQuestionService questionService)
     {
         _appointmentService = appointmentService;
+        _questionService = questionService;
     }
 
     /// <summary>
@@ -139,5 +146,24 @@ public class AppointmentsController : BaseController
             }
         }
         return NoContent();
+    }
+
+    /// <summary>
+    /// Get all Questions of specific appointment
+    /// </summary>
+    /// <param name="appointmentId"></param>
+    /// <param name="param"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// Roles Access: Admin, User
+    /// </remarks>
+    [HttpGet, Route("{appointmentId}/questions")]
+    [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
+    public async Task<ActionResult<PagedResult<QuestionResponse>>> GetAllQuestions(
+        string appointmentId,
+        [FromQuery] QuestionParameters param)
+    {
+        var response = await _questionService.GetAllQuestionAsync(appointmentId, param);
+        return Ok(response);
     }
 }
