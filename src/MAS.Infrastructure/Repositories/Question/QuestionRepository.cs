@@ -89,25 +89,21 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
 
         var loggedInUser = await _userManager.GetUserAsync(principal);
         if (loggedInUser is null) {
-            result.Error = ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, ErrorMessages.NotAllowModify);
-            return result;
-        }
-
-        var appointment = await _context.Appointments.FindAsync(request.AppointmentId);
-        if (appointment == null) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
-                                                     ErrorTypes.NotFound,
-                                                     ErrorMessages.NotFound + $"this Major in System.");
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotLogIn);
             return result;
         }
+        var identityId = loggedInUser.Id; //new Guid(loggedInUser.Id).ToString()
 
-        var user = await _context.MasUsers.FindAsync(appointment.CreatorId);
+        var user = await _context.MasUsers.FirstOrDefaultAsync(x => x.IdentityId == identityId);
         if (user is null) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      ErrorMessages.NotLogIn);
             return result;
         }
+
         if (user.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
@@ -115,14 +111,23 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
             return result;
         }
 
-        if (loggedInUser.Id != user.IdentityId) {
+        var appointment = await _context.Appointments.FindAsync(request.AppointmentId);
+        if (appointment == null) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
+                                                     ErrorTypes.NotFound,
+                                                     ErrorMessages.NotFound + $"this Appointment in System.");
+            return result;
+        }
+
+        if(appointment.CreatorId != user.Id){
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     "Do not have permission to perform this.");
+                                                     $"You are not creator of this appointment so you not allowed to add question!");
             return result;
         }
 
         var model = _mapper.Map<Core.Entities.Question>(request);
+        model.CreatorId = user.Id;
         await _context.Questions.AddAsync(model);
 
         if ((await _context.SaveChangesAsync() >= 0)) {

@@ -6,7 +6,7 @@ public class QuestionResponse
 {
     public string Id { get; set; }
 
-    public string CreatorId { get; set; }
+    // public string CreatorId { get; set; }
     //public MasUser Creator { get; set; }
 
     public string QuestionContent { get; set; }

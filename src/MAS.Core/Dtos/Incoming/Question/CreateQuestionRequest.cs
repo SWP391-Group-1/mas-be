@@ -7,8 +7,7 @@ public class CreateQuestionRequest : BaseCreateRequest
 {
     [Required]
     public string AppointmentId { get; set; }
-    [Required]
-    public string CreatorId { get; set; }
+    
     [Required]
     public string QuestionContent { get; set; }
 }
