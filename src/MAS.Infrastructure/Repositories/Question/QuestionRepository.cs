@@ -202,9 +202,23 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
         var questions = await _context.Questions.Where(x => x.AppointmentId == appointmentId).ToListAsync();
         var query = questions.AsQueryable();
         FilterActive(ref query, param.IsActive);
+        FilterNewQuestion(ref query, param.IsNew);
         questions = query.ToList();
         var response = _mapper.Map<List<QuestionResponse>>(questions);
         return PagedResult<QuestionResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+    }
+
+    private void FilterNewQuestion(ref IQueryable<Core.Entities.Question> query, bool? isNew)
+    {
+        if (!query.Any() || isNew is null) {
+            return;
+        }
+        if (isNew is true) {
+            query = query.OrderByDescending(x => x.CreateDate);
+        }
+        else {
+            query = query.OrderBy(x => x.CreateDate);
+        }
     }
 
     private void FilterActive(ref IQueryable<Core.Entities.Question> query, bool? isActive)
