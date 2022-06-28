@@ -34,7 +34,9 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
         var result = new Result<QuestionResponse>();
         var loggedInUser = await _userManager.GetUserAsync(principal);
         if (loggedInUser is null) {
-            result.Error = ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, ErrorMessages.NotAllowModify);
+            result.Error = ErrorHelper.PopulateError(400,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotAllowModify);
             return result;
         }
 
@@ -149,7 +151,9 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
 
         var loggedInUser = await _userManager.GetUserAsync(principal);
         if (loggedInUser is null) {
-            result.Error = ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, ErrorMessages.NotAllowModify);
+            result.Error = ErrorHelper.PopulateError(400,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotAllowModify);
             return result;
         }
 
@@ -176,7 +180,9 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
         }
 
         if (loggedInUser.Id != user.IdentityId) {
-            result.Error = ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, "Do not have permission to perform this.");
+            result.Error = ErrorHelper.PopulateError(400,
+                                                     ErrorTypes.BadRequest,
+                                                     "Do not have permission to perform this.");
             return result;
         }
         question.IsActive = false;
