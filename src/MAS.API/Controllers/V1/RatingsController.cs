@@ -1,6 +1,6 @@
 ﻿using MAS.Core.Dtos.Incoming.Account;
 using MAS.Core.Dtos.Incoming.Rating;
-using MAS.Core.Interfaces.Services;
+using MAS.Core.Interfaces.Services.Rating;
 using MAS.Core.Parameters.Rating;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

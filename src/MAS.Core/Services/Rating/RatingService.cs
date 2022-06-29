@@ -2,7 +2,7 @@
 using MAS.Core.Dtos.Outcoming.Generic;
 using MAS.Core.Dtos.Outcoming.Rating;
 using MAS.Core.Interfaces.Repositories.Rating;
-using MAS.Core.Interfaces.Services;
+using MAS.Core.Interfaces.Services.Rating;
 using MAS.Core.Parameters.Rating;
 using Microsoft.Extensions.Logging;
 using System;
