@@ -90,10 +90,10 @@ public class SlotRepository : BaseRepository, ISlotRepository
             return result;
         }
 
-        if (request.CreateDate > request.StartTime.AddDays(-2)) {
+        if (request.CreateDate > request.StartTime.AddHours(-2)) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     "This slot must be started after today at least 2 days!");
+                                                     "This slot must be started after now at least 2 hours!");
             return result;
         }
 

@@ -65,10 +65,10 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             return result;
         }
 
-        if (slot.StartTime.AddDays(-(int)AppointmentTime.TimeProcess) < request.CreateDate) {
+        if (slot.StartTime.AddHours(-(int)AppointmentTime.TimeProcess) < request.CreateDate) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
-                                                     "Not allow to register appointment in this slot!. You can register a slot before it start at least 1 day!");
+                                                     "Not allow to register appointment in this slot!. You can register a slot before it start at least 1 hour!");
             return result;
         }
 
