@@ -89,7 +89,7 @@ public class MentorSubjectsController : BaseController
     /// </remarks>
     [HttpPut, Route("{subjectOfMentorId}")]
     [Authorize(Roles = RoleConstants.User)]
-    public async Task<ActionResult> UpdateSubject(string subjectOfMentorId, MentorSubjectUpdateRequest request)
+    public async Task<ActionResult> UpdateSubjectOfMentor(string subjectOfMentorId, MentorSubjectUpdateRequest request)
     {
         if (!ModelState.IsValid) {
             return BadRequest();
@@ -116,7 +116,7 @@ public class MentorSubjectsController : BaseController
     /// </remarks>
     [HttpDelete("{subjectOfMentorId}")]
     [Authorize(Roles = RoleConstants.User)]
-    public async Task<ActionResult> DeleteSubject(string subjectOfMentorId)
+    public async Task<ActionResult> DeleteSubjectOfMentor(string subjectOfMentorId)
     {
         var response = await _mentorSubjectService.DeleteSubjectOfMentorAsync(HttpContext.User, subjectOfMentorId);
         if (!response.IsSuccess) {
