@@ -65,6 +65,13 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             return result;
         }
 
+        if (slot.StartTime < DateTime.UtcNow.AddHours(7)) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     "Slot is passed");
+            return result;
+        }
+
         if (slot.StartTime.AddHours(-(int)AppointmentTime.TimeProcess) < request.CreateDate) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
