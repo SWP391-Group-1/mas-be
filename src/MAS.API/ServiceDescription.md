@@ -188,6 +188,10 @@
 >   ***Description***: Create a Slot   
 >   ***Role Access***: User  
 >
+> - ``PUT /api/mas/v1/slots ``  
+>   ***Description***: Check and update IsPassed if Slot is passed time   
+>   ***Role Access***: User, Admin  
+>
 > - ``GET /api/mas/v1/slots/{slotId} ``  
 >   ***Description***: Get Slot by Id   
 >   ***Role Access***: Admin, User  

@@ -22,5 +22,6 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
         builder.HasOne(q => q.Appointment)
             .WithMany(u => u.Questions)
             .HasForeignKey(a => a.AppointmentId);
+        builder.Property(x => x.IsActive).HasColumnType("bit").IsRequired();
     }
 }

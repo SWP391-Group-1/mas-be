@@ -22,6 +22,18 @@ public class SlotService : ISlotService
         _slotRepository = slotRepository;
 
     }
+
+    public async Task<Result<bool>> CheckPassedSlotAsync()
+    {
+        try {
+            return await _slotRepository.CheckPassedSlotAsync();
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call CheckPassedSlotAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
+
     public async Task<Result<bool>> CreateAvailableSlotAsync(ClaimsPrincipal principal, SlotCreateRequest request)
     {
         try {

@@ -15,5 +15,6 @@ public class AppointmentSubjectConfiguration : IEntityTypeConfiguration<Appointm
         builder.Property(x => x.AppointmentId).HasColumnType("nvarchar(100)").IsRequired();
         builder.Property(x => x.SubjectId).HasColumnType("nvarchar(100)").IsRequired();
         builder.Property(x => x.BriefProblem).HasColumnType("nvarchar(500)").IsRequired();
+        builder.Property(x => x.IsActive).HasColumnType("bit").IsRequired();
     }
 }

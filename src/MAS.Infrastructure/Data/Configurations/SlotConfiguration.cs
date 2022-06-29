@@ -15,5 +15,7 @@ public class SlotConfiguration : IEntityTypeConfiguration<Slot>
         builder.Property(x => x.MentorId).HasColumnType("nvarchar(100)").IsRequired();
         builder.Property(x => x.StartTime).HasColumnType("datetime").IsRequired();
         builder.Property(x => x.FinishTime).HasColumnType("datetime").IsRequired();
+        builder.Property(x => x.IsPassed).HasColumnType("bit").IsRequired(false);
+        builder.Property(x => x.IsActive).HasColumnType("bit").IsRequired();
     }
 }

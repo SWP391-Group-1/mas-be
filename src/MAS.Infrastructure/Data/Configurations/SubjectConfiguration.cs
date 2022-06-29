@@ -16,5 +16,6 @@ internal class SubjectConfiguration : IEntityTypeConfiguration<Subject>
         builder.Property(x => x.Code).HasColumnType("nvarchar(10)").IsRequired();
         builder.Property(x => x.Title).HasColumnType("nvarchar(200)").IsRequired();
         builder.Property(x => x.Description).HasColumnType("nvarchar(1000)").IsRequired(false);
+        builder.Property(x => x.IsActive).HasColumnType("bit").IsRequired();
     }
 }

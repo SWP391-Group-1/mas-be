@@ -110,4 +110,27 @@ public class SlotsController : BaseController
         }
         return NoContent();
     }
+
+    /// <summary>
+    /// Check which slot is passed
+    /// </summary>
+    /// <returns></returns>
+    /// <remarks>
+    /// Roles Access: Admin, User
+    /// </remarks>
+    [HttpPut]
+    [Authorize(Roles = RoleConstants.User + "," + RoleConstants.Admin)]
+    public async Task<ActionResult> CheckPassedSlot()
+    {
+        var response = await _slotService.CheckPassedSlotAsync();
+        if (!response.IsSuccess) {
+            if (response.Error.Code == 404) {
+                return NotFound(response);
+            }
+            else {
+                return BadRequest(response);
+            }
+        }
+        return NoContent();
+    }
 }
