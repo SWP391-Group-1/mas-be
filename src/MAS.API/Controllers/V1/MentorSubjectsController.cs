@@ -7,6 +7,7 @@ using MAS.Core.Interfaces.Services.MentorSubject;
 using MAS.Core.Parameters.MentorSubject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace MAS.API.Controllers.V1;
@@ -39,6 +40,14 @@ public class MentorSubjectsController : BaseController
         [FromQuery] MentorSubjectParameters param)
     {
         var response = await _mentorSubjectService.GetAllsSubjectOfMentorAsync(mentorId, param);
+        if (!response.IsSuccess) {
+            if (response.Error.Code == 404) {
+                return NotFound(response);
+            }
+            else {
+                return BadRequest(response);
+            }
+        }
         return Ok(response);
     }
 
@@ -80,7 +89,7 @@ public class MentorSubjectsController : BaseController
     /// </remarks>
     [HttpPut, Route("{subjectOfMentorId}")]
     [Authorize(Roles = RoleConstants.User)]
-    public async Task<ActionResult> UpdateSubject(string subjectOfMentorId, MentorSubjectUpdateRequest request)
+    public async Task<ActionResult> UpdateSubjectOfMentor(string subjectOfMentorId, MentorSubjectUpdateRequest request)
     {
         if (!ModelState.IsValid) {
             return BadRequest();
@@ -107,7 +116,7 @@ public class MentorSubjectsController : BaseController
     /// </remarks>
     [HttpDelete("{subjectOfMentorId}")]
     [Authorize(Roles = RoleConstants.User)]
-    public async Task<ActionResult> DeleteSubject(string subjectOfMentorId)
+    public async Task<ActionResult> DeleteSubjectOfMentor(string subjectOfMentorId)
     {
         var response = await _mentorSubjectService.DeleteSubjectOfMentorAsync(HttpContext.User, subjectOfMentorId);
         if (!response.IsSuccess) {

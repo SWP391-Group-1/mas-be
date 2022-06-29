@@ -9,4 +9,5 @@ public class SlotParameters : QueryStringParameters
     public DateTime? To { get; set; }
     public bool? IsAsc { get; set; }
     public bool? IsActive { get; set; }
+    public bool? IsPassed { get; set; }
 }

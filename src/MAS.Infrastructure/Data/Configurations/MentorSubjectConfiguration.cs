@@ -15,5 +15,6 @@ public class MentorSubjectConfiguration : IEntityTypeConfiguration<MentorSubject
         builder.Property(x => x.MentorId).HasColumnType("nvarchar(100)").IsRequired();
         builder.Property(x => x.SubjectId).HasColumnType("nvarchar(100)").IsRequired();
         builder.Property(x => x.BriefInfo).HasColumnType("nvarchar(500)").IsRequired();
+        builder.Property(x => x.IsActive).HasColumnType("bit").IsRequired();
     }
 }

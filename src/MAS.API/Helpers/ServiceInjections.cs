@@ -5,8 +5,10 @@ using MAS.Core.Interfaces.Repositories.Major;
 using MAS.Core.Interfaces.Repositories.MasUser;
 using MAS.Core.Interfaces.Repositories.MentorSubject;
 using MAS.Core.Interfaces.Repositories.Question;
+using MAS.Core.Interfaces.Repositories.Rating;
 using MAS.Core.Interfaces.Repositories.Slot;
 using MAS.Core.Interfaces.Repositories.Subject;
+using MAS.Core.Interfaces.Services;
 using MAS.Core.Interfaces.Services.Account;
 using MAS.Core.Interfaces.Services.Appointment;
 using MAS.Core.Interfaces.Services.Email;
@@ -23,6 +25,7 @@ using MAS.Core.Services.Major;
 using MAS.Core.Services.MasUser;
 using MAS.Core.Services.MentorSubject;
 using MAS.Core.Services.Question;
+using MAS.Core.Services.Rating;
 using MAS.Core.Services.Slot;
 using MAS.Core.Services.Subject;
 using MAS.Infrastructure.Data;
@@ -33,6 +36,7 @@ using MAS.Infrastructure.Repositories.Major;
 using MAS.Infrastructure.Repositories.MasUser;
 using MAS.Infrastructure.Repositories.MentorSubject;
 using MAS.Infrastructure.Repositories.Question;
+using MAS.Infrastructure.Repositories.Rating;
 using MAS.Infrastructure.Repositories.Slot;
 using MAS.Infrastructure.Repositories.Subject;
 using Microsoft.EntityFrameworkCore;
@@ -99,6 +103,10 @@ public static class ServiceInjections
         // Config for Appointment
         services.AddScoped<IAppointmentService, AppointmentService>();
         services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+
+        // Config for Rating
+        services.AddScoped<IRatingService, RatingService>();
+        services.AddScoped<IRatingRepository, RatingRepository>();
         // -----------------------------------------------------------------------------------------
         services.AddHttpClient();
         return services;

@@ -20,26 +20,7 @@ public class QuestionsController : BaseController
     public QuestionsController(IQuestionService questionService)
     {
         _questionService = questionService;
-    }
-
-    /// <summary>
-    /// Get all Questions of specific appointment
-    /// </summary>
-    /// <param name="appointmentId"></param>
-    /// <param name="param"></param>
-    /// <returns></returns>
-    /// <remarks>
-    /// Roles Access: Admin, User
-    /// </remarks>
-    [HttpGet, Route("{appointmentId}")]
-    [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
-    public async Task<ActionResult<PagedResult<QuestionResponse>>> GetAllQuestions(
-        string appointmentId,
-        [FromQuery] QuestionParameters param)
-    {
-        var response = await _questionService.GetAllQuestionAsync(appointmentId, param);
-        return Ok(response);
-    }
+    }    
 
     /// <summary>
     /// Get Question by Id

@@ -109,7 +109,11 @@ public class MentorSubjectRepository : BaseRepository, IMentorSubjectRepository
 
         mentorSubjects = query.ToList();
         foreach (var mentorSubject in mentorSubjects) {
-            await _context.Entry(mentorSubject).Reference(x => x.Subject).LoadAsync();
+            await _context.Entry(mentorSubject)
+                .Reference(x => x.Subject)
+                .Query()
+                .Include(x => x.Major)
+                .LoadAsync();
         }
         var response = _mapper.Map<List<MentorSubjectResponse>>(mentorSubjects);
         return PagedResult<MentorSubjectResponse>.ToPagedList(response, param.PageNumber, param.PageSize);

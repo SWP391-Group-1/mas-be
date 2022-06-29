@@ -34,7 +34,9 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
         var result = new Result<QuestionResponse>();
         var loggedInUser = await _userManager.GetUserAsync(principal);
         if (loggedInUser is null) {
-            result.Error = ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, ErrorMessages.NotAllowModify);
+            result.Error = ErrorHelper.PopulateError(400,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotAllowModify);
             return result;
         }
 
@@ -89,25 +91,21 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
 
         var loggedInUser = await _userManager.GetUserAsync(principal);
         if (loggedInUser is null) {
-            result.Error = ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, ErrorMessages.NotAllowModify);
-            return result;
-        }
-
-        var appointment = await _context.Appointments.FindAsync(request.AppointmentId);
-        if (appointment == null) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
-                                                     ErrorTypes.NotFound,
-                                                     ErrorMessages.NotFound + $"this Major in System.");
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotLogIn);
             return result;
         }
+        var identityId = loggedInUser.Id; //new Guid(loggedInUser.Id).ToString()
 
-        var user = await _context.MasUsers.FindAsync(appointment.CreatorId);
+        var user = await _context.MasUsers.FirstOrDefaultAsync(x => x.IdentityId == identityId);
         if (user is null) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      ErrorMessages.NotLogIn);
             return result;
         }
+
         if (user.IsActive is false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
@@ -115,14 +113,23 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
             return result;
         }
 
-        if (loggedInUser.Id != user.IdentityId) {
+        var appointment = await _context.Appointments.FindAsync(request.AppointmentId);
+        if (appointment == null) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
+                                                     ErrorTypes.NotFound,
+                                                     ErrorMessages.NotFound + $"this Appointment in System.");
+            return result;
+        }
+
+        if(appointment.CreatorId != user.Id){
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     "Do not have permission to perform this.");
+                                                     $"You are not creator of this appointment so you not allowed to add question!");
             return result;
         }
 
         var model = _mapper.Map<Core.Entities.Question>(request);
+        model.CreatorId = user.Id;
         await _context.Questions.AddAsync(model);
 
         if ((await _context.SaveChangesAsync() >= 0)) {
@@ -144,7 +151,9 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
 
         var loggedInUser = await _userManager.GetUserAsync(principal);
         if (loggedInUser is null) {
-            result.Error = ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, ErrorMessages.NotAllowModify);
+            result.Error = ErrorHelper.PopulateError(400,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotAllowModify);
             return result;
         }
 
@@ -171,7 +180,9 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
         }
 
         if (loggedInUser.Id != user.IdentityId) {
-            result.Error = ErrorHelper.PopulateError(400, ErrorTypes.BadRequest, "Do not have permission to perform this.");
+            result.Error = ErrorHelper.PopulateError(400,
+                                                     ErrorTypes.BadRequest,
+                                                     "Do not have permission to perform this.");
             return result;
         }
         question.IsActive = false;
@@ -202,9 +213,23 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
         var questions = await _context.Questions.Where(x => x.AppointmentId == appointmentId).ToListAsync();
         var query = questions.AsQueryable();
         FilterActive(ref query, param.IsActive);
+        FilterNewQuestion(ref query, param.IsNew);
         questions = query.ToList();
         var response = _mapper.Map<List<QuestionResponse>>(questions);
         return PagedResult<QuestionResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+    }
+
+    private void FilterNewQuestion(ref IQueryable<Core.Entities.Question> query, bool? isNew)
+    {
+        if (!query.Any() || isNew is null) {
+            return;
+        }
+        if (isNew is true) {
+            query = query.OrderByDescending(x => x.CreateDate);
+        }
+        else {
+            query = query.OrderBy(x => x.CreateDate);
+        }
     }
 
     private void FilterActive(ref IQueryable<Core.Entities.Question> query, bool? isActive)

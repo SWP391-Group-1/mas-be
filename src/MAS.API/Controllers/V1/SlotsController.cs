@@ -6,6 +6,7 @@ using MAS.Core.Interfaces.Services.Slot;
 using MAS.Core.Parameters.Slot;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace MAS.API.Controllers.V1;
@@ -32,7 +33,7 @@ public class SlotsController : BaseController
     [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
     public async Task<ActionResult<PagedResult<SlotResponse>>> GetAllAvailableSlots([FromQuery] SlotParameters param)
     {
-        var response = await _slotService.GetAllAvailableSlotsAsync(param);
+        var response = await _slotService.GetAllAvailableSlotsAsync(param);        
         return Ok(response);
     }
 
@@ -100,6 +101,29 @@ public class SlotsController : BaseController
     public async Task<ActionResult> DeleteSlot(string slotId)
     {
         var response = await _slotService.DeleteAvailableSlotAsync(HttpContext.User, slotId);
+        if (!response.IsSuccess) {
+            if (response.Error.Code == 404) {
+                return NotFound(response);
+            }
+            else {
+                return BadRequest(response);
+            }
+        }
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Check which slot is passed
+    /// </summary>
+    /// <returns></returns>
+    /// <remarks>
+    /// Roles Access: Admin, User
+    /// </remarks>
+    [HttpPut]
+    [Authorize(Roles = RoleConstants.User + "," + RoleConstants.Admin)]
+    public async Task<ActionResult> CheckPassedSlot()
+    {
+        var response = await _slotService.CheckPassedSlotAsync();
         if (!response.IsSuccess) {
             if (response.Error.Code == 404) {
                 return NotFound(response);

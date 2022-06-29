@@ -3,10 +3,12 @@ using MAS.Core.Dtos.Incoming.MasUser;
 using MAS.Core.Dtos.Outcoming.Appointment;
 using MAS.Core.Dtos.Outcoming.Generic;
 using MAS.Core.Dtos.Outcoming.MasUser;
+using MAS.Core.Interfaces.Services;
 using MAS.Core.Interfaces.Services.Appointment;
 using MAS.Core.Interfaces.Services.MasUser;
 using MAS.Core.Parameters.Appointment;
 using MAS.Core.Parameters.MasUser;
+using MAS.Core.Parameters.Rating;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -19,13 +21,16 @@ public class UsersController : BaseController
 {
     private readonly IMasUserService _masUserService;
     private readonly IAppointmentService _appointmentService;
+    private readonly IRatingService _ratingService;
 
     public UsersController(
         IMasUserService masUserService,
-        IAppointmentService appointmentService)
+        IAppointmentService appointmentService,
+        IRatingService ratingService)
     {
         _masUserService = masUserService;
         _appointmentService = appointmentService;
+        _ratingService = ratingService;
     }
 
     /*
@@ -142,17 +147,6 @@ public class UsersController : BaseController
                 return BadRequest(response);
             }
         }
-
-        var metaData = new {
-            response.TotalCount,
-            response.PageSize,
-            response.CurrentPage,
-            response.HasNext,
-            response.HasPrevious
-        };
-
-        Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metaData));
-
         return Ok(response);
     }
 
@@ -177,17 +171,6 @@ public class UsersController : BaseController
                 return BadRequest(response);
             }
         }
-
-        var metaData = new {
-            response.TotalCount,
-            response.PageSize,
-            response.CurrentPage,
-            response.HasNext,
-            response.HasPrevious
-        };
-
-        Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metaData));
-
         return Ok(response);
     }
 
@@ -399,5 +382,28 @@ public class UsersController : BaseController
         return Ok(response);
     }
 
-
+    /// <summary>
+    /// Get all rating of a specific mentor
+    /// </summary>
+    /// <param name="mentorId"></param>
+    /// <param name="param"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// Roles Access: Admin, User
+    /// </remarks>
+    [HttpGet, Route("{mentorId}/ratings")]
+    [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
+    public async Task<ActionResult> GetAllRatings(string mentorId, [FromQuery] RatingParameters param)
+    {
+        var response = await _ratingService.GetAllRatingsAsync(mentorId, param);
+        if (!response.IsSuccess) {
+            if (response.Error.Code == 404) {
+                return NotFound(response);
+            }
+            else {
+                return BadRequest(response);
+            }
+        }
+        return Ok(response);
+    }
 }

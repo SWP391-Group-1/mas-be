@@ -159,13 +159,13 @@
 >   ***Description***: Get a appointment received (mentor)  
 >   ***Role Access***: User (Mentor)  
 >
+> - ``GET /api/mas/v1/users/{mentorId}/ratings ``  
+>   ***Description***: Get a all rating of a specific mentor   
+>   ***Role Access***: Admin, User  
+>
+
 <h2 id="question">Question  <a href="#table-of-contents" target="_self">🔙</a></h2>   
 
-> - ``GET /api/mas/v1/questions/{appointmentId} ``  
->   ***Description***: Get all Questions of specific appointment   
->   ***Role Access***: Admin, User  
->   ***Extension***: Paging 
->
 > - ``POST /api/mas/v1/questions ``  
 >   ***Description***: Create a Question   
 >   ***Role Access***: User  
@@ -192,6 +192,10 @@
 > - ``POST /api/mas/v1/slots ``  
 >   ***Description***: Create a Slot   
 >   ***Role Access***: User  
+>
+> - ``PUT /api/mas/v1/slots ``  
+>   ***Description***: Check and update IsPassed if Slot is passed time   
+>   ***Role Access***: User, Admin  
 >
 > - ``GET /api/mas/v1/slots/{slotId} ``  
 >   ***Description***: Get Slot by Id   
@@ -222,7 +226,12 @@
 > - ``PUT /api/mas/v1/appointments/update/{appointmentId} ``  
 >   ***Description***: Mentor add time start, time finish, and description of the appointment    
 >   ***Role Access***: User (Mentor)  
-
+>
+> - ``GET /api/mas/v1/appointments/{appointmentId}/questions ``  
+>   ***Description***: Get all Questions of specific appointment   
+>   ***Role Access***: Admin, User  
+>   ***Extension***: Paging, Filter Active, Order new question   
+>
 <h2 id="email">Email  <a href="#table-of-contents" target="_self">🔙</a></h2>  
 
 > - ``POST /api/mas/v1/email/send ``  
@@ -232,10 +241,6 @@
 
 <h2 id="rating">Rating  <a href="#table-of-contents" target="_self">🔙</a></h2>   
 
-> - ``GET /api/mas/v1/ratings/{mentorId} ``  
->   ***Description***: Get a all rating of a specific mentor   
->   ***Role Access***: Admin, User  
->
 > - ``GET /api/mas/v1/ratings``  
 >   ***Description***: Get all ratings   
 >   ***Role Access***: Admin  

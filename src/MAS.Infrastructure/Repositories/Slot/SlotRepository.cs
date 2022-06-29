@@ -123,6 +123,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
 
         var model = _mapper.Map<Core.Entities.Slot>(request);
         model.MentorId = user.Id;
+        model.IsPassed = false;
         await _context.Slots.AddAsync(model);
 
         if ((await _context.SaveChangesAsync() >= 0)) {
@@ -167,6 +168,13 @@ public class SlotRepository : BaseRepository, ISlotRepository
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      ErrorMessages.NotFound + "this information!");
+            return result;
+        }
+
+        if (slot.IsPassed is true) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     "This Slot is passed!");
             return result;
         }
 
@@ -219,12 +227,21 @@ public class SlotRepository : BaseRepository, ISlotRepository
         var query = slots.AsQueryable();
         FilterSlotByMentorId(ref query, param.MentorId);
         FilterByRange(ref query, param.From, param.To);
-        SortByAsc(ref query, param.IsAsc);
         FilterActive(ref query, param.IsActive);
+        FilterPassedSlots(ref query, param.IsPassed);
+        SortByAsc(ref query, param.IsAsc);
 
         slots = query.ToList();
         var response = _mapper.Map<List<SlotResponse>>(slots);
         return PagedResult<SlotResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+    }
+
+    private void FilterPassedSlots(ref IQueryable<Core.Entities.Slot> query, bool? isPassed)
+    {
+        if (!query.Any() || isPassed is null) {
+            return;
+        }
+        query = query.Where(x => x.IsPassed == isPassed);
     }
 
     private void FilterActive(ref IQueryable<Core.Entities.Slot> query, bool? isActive)
@@ -283,6 +300,28 @@ public class SlotRepository : BaseRepository, ISlotRepository
         await _context.Entry(slot).Reference(x => x.Mentor).LoadAsync();
         var response = _mapper.Map<SlotDetailResponse>(slot);
         result.Content = response;
+        return result;
+    }
+
+    public async Task<Result<bool>> CheckPassedSlotAsync()
+    {
+        var result = new Result<bool>();
+        var now = DateTime.UtcNow.AddHours(7);
+
+        var slots = await _context.Slots.ToListAsync();
+        foreach (var item in slots) {
+            if (now > item.FinishTime) {
+                item.IsPassed = true;
+            }
+        }
+
+        if ((await _context.SaveChangesAsync() >= 0)) {
+            result.Content = true;
+            return result;
+        }
+        result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
+                                                 ErrorTypes.SaveFail,
+                                                 ErrorMessages.SaveFail);
         return result;
     }
 }
