@@ -6,6 +6,7 @@ using MAS.Core.Interfaces.Services.Slot;
 using MAS.Core.Parameters.Slot;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace MAS.API.Controllers.V1;
@@ -33,6 +34,14 @@ public class SlotsController : BaseController
     public async Task<ActionResult<PagedResult<SlotResponse>>> GetAllAvailableSlots([FromQuery] SlotParameters param)
     {
         var response = await _slotService.GetAllAvailableSlotsAsync(param);
+        var metaData = new {
+            response.TotalCount,
+            response.PageSize,
+            response.CurrentPage,
+            response.HasNext,
+            response.HasPrevious
+        };
+        Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metaData));
         return Ok(response);
     }
 

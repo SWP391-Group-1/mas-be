@@ -8,6 +8,7 @@ using MAS.Core.Interfaces.Services.Question;
 using MAS.Core.Parameters.Question;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace MAS.API.Controllers.V1;
@@ -164,6 +165,22 @@ public class AppointmentsController : BaseController
         [FromQuery] QuestionParameters param)
     {
         var response = await _questionService.GetAllQuestionAsync(appointmentId, param);
+        if (!response.IsSuccess) {
+            if (response.Error.Code == 404) {
+                return NotFound(response);
+            }
+            else {
+                return BadRequest(response);
+            }
+        }
+        var metaData = new {
+            response.TotalCount,
+            response.PageSize,
+            response.CurrentPage,
+            response.HasNext,
+            response.HasPrevious
+        };
+        Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metaData));
         return Ok(response);
     }
 }

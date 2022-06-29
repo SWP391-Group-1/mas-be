@@ -6,6 +6,7 @@ using MAS.Core.Interfaces.Services.Major;
 using MAS.Core.Parameters.Major;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace MAS.API.Controllers.V1;
@@ -33,6 +34,14 @@ public class MajorsController : BaseController
         [FromQuery] MajorParameters param)
     {
         var response = await _majorService.GetAllMajorsAsync(param);
+        var metaData = new {
+            response.TotalCount,
+            response.PageSize,
+            response.CurrentPage,
+            response.HasNext,
+            response.HasPrevious
+        };
+        Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metaData));
         return Ok(response);
     }
 

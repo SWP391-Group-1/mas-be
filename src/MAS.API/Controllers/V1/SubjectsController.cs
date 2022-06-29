@@ -6,6 +6,7 @@ using MAS.Core.Interfaces.Services.Subject;
 using MAS.Core.Parameters.Subject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace MAS.API.Controllers.V1;
@@ -33,6 +34,14 @@ public class SubjectsController : BaseController
         [FromQuery] SubjectParameters param)
     {
         var response = await _subjectService.GetAllSubjectsAsync(param);
+        var metaData = new {
+            response.TotalCount,
+            response.PageSize,
+            response.CurrentPage,
+            response.HasNext,
+            response.HasPrevious
+        };
+        Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metaData));
         return Ok(response);
     }
 

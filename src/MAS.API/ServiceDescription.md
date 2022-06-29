@@ -159,6 +159,11 @@
 >   ***Description***: Get a appointment received (mentor)  
 >   ***Role Access***: User (Mentor)  
 >
+> - ``GET /api/mas/v1/users/{mentorId}/ratings ``  
+>   ***Description***: Get a all rating of a specific mentor   
+>   ***Role Access***: Admin, User  
+>
+
 <h2 id="question">Question  <a href="#table-of-contents" target="_self">🔙</a></h2>   
 
 > - ``POST /api/mas/v1/questions ``  
@@ -236,10 +241,6 @@
 
 <h2 id="rating">Rating  <a href="#table-of-contents" target="_self">🔙</a></h2>   
 
-> - ``GET /api/mas/v1/ratings/{mentorId} ``  
->   ***Description***: Get a all rating of a specific mentor   
->   ***Role Access***: Admin, User  
->
 > - ``GET /api/mas/v1/ratings``  
 >   ***Description***: Get all ratings   
 >   ***Role Access***: Admin  

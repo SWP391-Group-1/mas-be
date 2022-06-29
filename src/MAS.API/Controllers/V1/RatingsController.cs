@@ -131,39 +131,4 @@ public class RatingsController : BaseController
         }
         return NoContent();
     }
-
-    /// <summary>
-    /// Get all rating of a specific mentor
-    /// </summary>
-    /// <param name="mentorId"></param>
-    /// <param name="param"></param>
-    /// <returns></returns>
-    /// <remarks>
-    /// Roles Access: Admin, User
-    /// </remarks>
-    [HttpGet("/{mentorId}")]
-    [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
-    public async Task<ActionResult> GetAllRatings(string mentorId, [FromQuery] RatingParameters param)
-    {
-        var response = await _ratingService.GetAllRatingsAsync(mentorId, param);
-        if (!response.IsSuccess) {
-            if (response.Error.Code == 404) {
-                return NotFound(response);
-            }
-            else {
-                return BadRequest(response);
-            }
-        }
-        var metaData = new {
-            response.TotalCount,
-            response.PageSize,
-            response.CurrentPage,
-            response.HasNext,
-            response.HasPrevious
-        };
-
-        Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metaData));
-
-        return Ok(response);
-    }
 }
