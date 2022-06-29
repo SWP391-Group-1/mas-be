@@ -34,14 +34,6 @@ public class MajorsController : BaseController
         [FromQuery] MajorParameters param)
     {
         var response = await _majorService.GetAllMajorsAsync(param);
-        var metaData = new {
-            response.TotalCount,
-            response.PageSize,
-            response.CurrentPage,
-            response.HasNext,
-            response.HasPrevious
-        };
-        Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metaData));
         return Ok(response);
     }
 

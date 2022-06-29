@@ -173,14 +173,6 @@ public class AppointmentsController : BaseController
                 return BadRequest(response);
             }
         }
-        var metaData = new {
-            response.TotalCount,
-            response.PageSize,
-            response.CurrentPage,
-            response.HasNext,
-            response.HasPrevious
-        };
-        Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metaData));
         return Ok(response);
     }
 }

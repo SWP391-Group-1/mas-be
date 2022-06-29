@@ -33,15 +33,7 @@ public class SlotsController : BaseController
     [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
     public async Task<ActionResult<PagedResult<SlotResponse>>> GetAllAvailableSlots([FromQuery] SlotParameters param)
     {
-        var response = await _slotService.GetAllAvailableSlotsAsync(param);
-        var metaData = new {
-            response.TotalCount,
-            response.PageSize,
-            response.CurrentPage,
-            response.HasNext,
-            response.HasPrevious
-        };
-        Response.Headers.Add("Pagination", JsonConvert.SerializeObject(metaData));
+        var response = await _slotService.GetAllAvailableSlotsAsync(param);        
         return Ok(response);
     }
 
