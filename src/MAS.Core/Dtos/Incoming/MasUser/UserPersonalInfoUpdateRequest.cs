@@ -1,6 +1,8 @@
-﻿namespace MAS.Core.Dtos.Incoming.MasUser;
+﻿using MAS.Core.Dtos.Incoming.Generic;
 
-public class UserPersonalInfoUpdateRequest
+namespace MAS.Core.Dtos.Incoming.MasUser;
+
+public class UserPersonalInfoUpdateRequest : BaseUpdateRequest
 {
     public string Name { get; set; }
     public string Avatar { get; set; }
