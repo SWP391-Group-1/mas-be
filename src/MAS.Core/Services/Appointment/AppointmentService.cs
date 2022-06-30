@@ -207,4 +207,15 @@ public class AppointmentService : IAppointmentService
             throw;
         }
     }
+
+    public async Task<Result<bool>> CheckPassedAppointmentAsync()
+    {
+        try {
+            return await _appointmentRepository.CheckPassedAppointmentAsync();
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call CheckPassedAppointmentAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
 }

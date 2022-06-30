@@ -24,4 +24,7 @@ public interface IAppointmentRepository
     /* Admin view all appointments of mentor, and can view appointment in detail */
     Task<PagedResult<AppointmentAdminResponse>> GetAllAppointmentsOfUserForAdminAsync(string userId, AppointmentAdminParameters param);
     Task<Result<AppointmentAdminDetailResponse>> GetAppointmentByIdForAdminAsync(string appointmentId);
+
+    /*Extend*/
+    Task<Result<bool>> CheckPassedAppointmentAsync();
 }

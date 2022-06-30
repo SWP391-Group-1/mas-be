@@ -175,4 +175,27 @@ public class AppointmentsController : BaseController
         }
         return Ok(response);
     }
+
+    /// <summary>
+    /// Check pass appointment
+    /// </summary>
+    /// <returns></returns>
+    /// <remarks>
+    /// Roles Access: Admin, User
+    /// </remarks>
+    [HttpPut]
+    [Authorize(Roles = RoleConstants.User + "," + RoleConstants.Admin)]
+    public async Task<ActionResult> CheckPassedAppointment()
+    {
+        var response = await _appointmentService.CheckPassedAppointmentAsync();
+        if (!response.IsSuccess) {
+            if (response.Error.Code == 404) {
+                return NotFound(response);
+            }
+            else {
+                return BadRequest(response);
+            }
+        }
+        return NoContent();
+    }
 }

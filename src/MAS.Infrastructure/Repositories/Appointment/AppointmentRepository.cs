@@ -690,4 +690,26 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             return result;
         }
     }
+
+    public async Task<Result<bool>> CheckPassedAppointmentAsync()
+    {
+        var result = new Result<bool>();
+        var now = DateTime.UtcNow.AddHours(7);
+
+        var apps = await _context.Appointments.ToListAsync();
+        foreach (var item in apps) {
+            if (now > item.FinishTime) {
+                item.IsPassed = true;
+            }
+        }
+
+        if ((await _context.SaveChangesAsync() >= 0)) {
+            result.Content = true;
+            return result;
+        }
+        result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
+                                                 ErrorTypes.SaveFail,
+                                                 ErrorMessages.SaveFail);
+        return result;
+    }
 }
