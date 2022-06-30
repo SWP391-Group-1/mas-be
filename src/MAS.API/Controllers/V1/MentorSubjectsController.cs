@@ -61,7 +61,7 @@ public class MentorSubjectsController : BaseController
     /// </remarks>
     [HttpPost]
     [Authorize(Roles = RoleConstants.User)]
-    public async Task<ActionResult<Result<bool>>> RegisterSubjectAsync(MentorSubjectRegisterRequest request)
+    public async Task<ActionResult<Result<bool>>> RegisterSubject(MentorSubjectRegisterRequest request)
     {
         if (!ModelState.IsValid) {
             return BadRequest();
