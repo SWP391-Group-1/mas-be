@@ -294,7 +294,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
         if (slot == null || slot.IsActive == false) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
-                                                     ErrorMessages.NotFound + "subject.");
+                                                     ErrorMessages.NotFound + "slot.");
             return result;
         }
         await _context.Entry(slot).Reference(x => x.Mentor).LoadAsync();
