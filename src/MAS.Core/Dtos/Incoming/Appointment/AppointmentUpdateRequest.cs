@@ -13,7 +13,7 @@ public class AppointmentUpdateRequest : BaseUpdateRequest
     public DateTime FinishTime { get; set; }
 
     [Required]
-    public bool IsPassed = true;
+    public bool IsPassed { get; set; }
 
     [Required]
     [MaxLength(1000)]
