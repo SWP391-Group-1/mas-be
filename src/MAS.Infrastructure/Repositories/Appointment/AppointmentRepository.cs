@@ -136,6 +136,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
                 StartTime = slot.StartTime,
                 FinishTime = slot.FinishTime,
                 MentorDescription = "",
+                IsPassed = false,
                 IsActive = true
             }
         );
@@ -274,6 +275,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         FilterBySlot(ref query, param.SlotId);
         SortNewAppointment(ref query, param.IsNew);
         FilterActive(ref query, param.IsActive);
+        FilterIsPassed(ref query, param.IsPassed);
         FilterApprove(ref query, param.IsApprove, param.IsAll);
 
         apps = query.ToList();
@@ -334,6 +336,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         FilterBySlot(ref query, param.SlotId);
         SortNewAppointment(ref query, param.IsNew);
         FilterActive(ref query, param.IsActive);
+        FilterIsPassed(ref query, param.IsPassed);
 
         apps = query.ToList();
         foreach (var item in apps) {
@@ -383,6 +386,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         FilterBySlot(ref query, param.SlotId);
         SortNewAppointment(ref query, param.IsNew);
         FilterActive(ref query, param.IsActive);
+        FilterIsPassed(ref query, param.IsPassed);
         FilterApprove(ref query, param.IsApprove, param.IsAll);
 
         apps = query.ToList();
@@ -394,6 +398,14 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             item.Mentor = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(item.MentorId));
         }
         return PagedResult<AppointmentUserResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+    }
+
+    private void FilterIsPassed(ref IQueryable<Core.Entities.Appointment> query, bool? isPassed)
+    {
+        if (!query.Any() || isPassed is null) {
+            return;
+        }
+        query = query.Where(x => x.IsPassed == isPassed);
     }
 
     public async Task<Result<AppointmentAdminDetailResponse>> GetAppointmentByIdForAdminAsync(string appointmentId)
@@ -471,8 +483,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         await _context.Entry(app).Reference(x => x.Slot).LoadAsync();
         await _context.Entry(app).Collection(x => x.Questions).LoadAsync();
         await _context.Entry(app).Collection(x => x.AppointmentSubjects).LoadAsync();
-        foreach (var item in app.AppointmentSubjects)
-        {
+        foreach (var item in app.AppointmentSubjects) {
             await _context.Entry(item).Reference(x => x.Subject).LoadAsync();
         }
 
@@ -529,8 +540,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         await _context.Entry(app).Reference(x => x.Slot).LoadAsync();
         await _context.Entry(app).Collection(x => x.Questions).LoadAsync();
         await _context.Entry(app).Collection(x => x.AppointmentSubjects).LoadAsync();
-        foreach (var item in app.AppointmentSubjects)
-        {
+        foreach (var item in app.AppointmentSubjects) {
             await _context.Entry(item).Reference(x => x.Subject).LoadAsync();
         }
 

@@ -7,4 +7,5 @@ public class AppointmentMentorParameters : QueryStringParameters
     public bool? IsActive { get; set; }
     public bool? IsAll { get; set; }
     public bool? IsApprove { get; set; }
+    public bool? IsPassed { get; set; }
 }

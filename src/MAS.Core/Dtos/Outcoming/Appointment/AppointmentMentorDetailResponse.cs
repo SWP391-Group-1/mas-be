@@ -18,4 +18,5 @@ public class AppointmentMentorDetailResponse
 
     public bool? IsApprove { get; set; }
     public bool IsActive { get; set; }
+    public bool? IsPassed { get; set; }
 }

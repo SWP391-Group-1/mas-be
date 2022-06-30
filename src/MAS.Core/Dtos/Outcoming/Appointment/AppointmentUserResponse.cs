@@ -16,4 +16,5 @@ public class AppointmentUserResponse
     public bool? IsApprove { get; set; }
     public DateTime CreateDate { get; set; }
     public bool IsActive { get; set; }
+    public bool? IsPassed { get; set; }
 }

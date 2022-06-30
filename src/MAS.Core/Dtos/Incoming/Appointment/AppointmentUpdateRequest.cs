@@ -13,6 +13,9 @@ public class AppointmentUpdateRequest : BaseUpdateRequest
     public DateTime FinishTime { get; set; }
 
     [Required]
+    public bool IsPassed = true;
+
+    [Required]
     [MaxLength(1000)]
     public string MentorDescription { get; set; }
 }
