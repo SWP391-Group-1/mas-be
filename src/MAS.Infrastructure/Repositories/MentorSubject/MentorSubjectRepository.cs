@@ -82,7 +82,7 @@ public class MentorSubjectRepository : BaseRepository, IMentorSubjectRepository
         return result;
     }
 
-    public async Task<PagedResult<MentorSubjectResponse>> GetAllsSubjectOfMentorAsync(
+    public async Task<PagedResult<MentorSubjectResponse>> GetAllSubjectsOfMentorAsync(
         string mentorId,
         MentorSubjectParameters param)
     {

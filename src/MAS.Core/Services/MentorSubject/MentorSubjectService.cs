@@ -42,7 +42,7 @@ public class MentorSubjectService : IMentorSubjectService
         }
     }
 
-    public async Task<PagedResult<MentorSubjectResponse>> GetAllsSubjectOfMentorAsync(
+    public async Task<PagedResult<MentorSubjectResponse>> GetAllSubjectsOfMentorAsync(
         string mentorId,
         MentorSubjectParameters param)
     {
@@ -50,7 +50,7 @@ public class MentorSubjectService : IMentorSubjectService
             if (String.IsNullOrEmpty(mentorId) || String.IsNullOrWhiteSpace(mentorId)) {
                 throw new ArgumentNullException(nameof(mentorId));
             }
-            return await _mentorSubjectRepository.GetAllsSubjectOfMentorAsync(mentorId, param);
+            return await _mentorSubjectRepository.GetAllSubjectsOfMentorAsync(mentorId, param);
         }
         catch (Exception ex) {
             _logger.LogError($"Error while trying to call GetAllsSubjectOfMentorAsync in service class, Error Message: {ex}.");

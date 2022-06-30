@@ -39,7 +39,7 @@ public class MentorSubjectsController : BaseController
         string mentorId,
         [FromQuery] MentorSubjectParameters param)
     {
-        var response = await _mentorSubjectService.GetAllsSubjectOfMentorAsync(mentorId, param);
+        var response = await _mentorSubjectService.GetAllSubjectsOfMentorAsync(mentorId, param);
         if (!response.IsSuccess) {
             if (response.Error.Code == 404) {
                 return NotFound(response);
