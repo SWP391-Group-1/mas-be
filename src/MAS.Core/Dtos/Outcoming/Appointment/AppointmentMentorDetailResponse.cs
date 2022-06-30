@@ -1,5 +1,6 @@
 using MAS.Core.Dtos.Outcoming.MasUser;
 using MAS.Core.Dtos.Outcoming.Slot;
+using System;
 using System.Collections.Generic;
 
 namespace MAS.Core.Dtos.Outcoming.Appointment;
@@ -15,6 +16,9 @@ public class AppointmentMentorDetailResponse
 
     public ICollection<AppointmentSubjectResponse> AppointmentSubjects { get; set; }
     public ICollection<QuestionAppointmentResponse> Questions { get; set; }
+
+    public DateTime StartTime { get; set; }
+    public DateTime FinishTime { get; set; }
 
     public bool? IsApprove { get; set; }
     public bool IsActive { get; set; }

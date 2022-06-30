@@ -13,6 +13,9 @@ public class AppointmentMentorResponse
     public string SlotId { get; set; }
     public SlotResponse Slot { get; set; }
 
+    public DateTime StartTime { get; set; }
+    public DateTime FinishTime { get; set; }
+
     public bool? IsApprove { get; set; }
     public DateTime CreateDate { get; set; }
     public bool IsActive { get; set; }

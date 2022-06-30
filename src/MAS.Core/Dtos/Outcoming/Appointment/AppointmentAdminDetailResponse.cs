@@ -20,8 +20,8 @@ public class AppointmentAdminDetailResponse
     public ICollection<AppointmentSubjectResponse> AppointmentSubjects { get; set; }
     public ICollection<QuestionAppointmentResponse> Questions { get; set; }
 
-    public DateTime? StartTime { get; set; }
-    public DateTime? FinishTime { get; set; }
+    public DateTime StartTime { get; set; }
+    public DateTime FinishTime { get; set; }
     public string MentorDescription { get; set; }
 
     public bool? IsApprove { get; set; }
