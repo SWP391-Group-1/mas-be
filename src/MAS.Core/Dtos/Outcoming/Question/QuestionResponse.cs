@@ -1,6 +1,4 @@
-﻿using MAS.Core.Entities;
-
-namespace MAS.Core.Dtos.Outcoming.Question;
+﻿namespace MAS.Core.Dtos.Outcoming.Question;
 
 public class QuestionResponse
 {
@@ -10,6 +8,7 @@ public class QuestionResponse
     //public MasUser Creator { get; set; }
 
     public string QuestionContent { get; set; }
+    public string AppointmentId { get; set; }
     public string Answer { get; set; }
     public bool IsActive { get; set; }
 }

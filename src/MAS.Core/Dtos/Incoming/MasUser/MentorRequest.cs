@@ -1,6 +1,8 @@
-﻿namespace MAS.Core.Dtos.Incoming.MasUser;
+﻿using MAS.Core.Dtos.Incoming.Generic;
 
-public class MentorRequest
+namespace MAS.Core.Dtos.Incoming.MasUser;
+
+public class MentorRequest : BaseUpdateRequest
 {
     public bool? IsMentor { get; set; }
 }
