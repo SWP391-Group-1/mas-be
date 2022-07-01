@@ -260,18 +260,18 @@ public class UsersController : BaseController
     *================================================
     */
     /// <summary>
-    /// Get all own appointments
+    /// Get all send appointments
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
     /// <remarks>
     /// Roles Access: User
     /// </remarks>
-    [HttpGet, Route("own/appointments")]
+    [HttpGet, Route("send/appointments")]
     [Authorize(Roles = RoleConstants.User)]
-    public async Task<ActionResult<PagedResult<AppointmentUserResponse>>> GetAllAppointmentsOfOwn([FromQuery] AppointmentUserParameters param)
+    public async Task<ActionResult<PagedResult<AppointmentUserResponse>>> GetAllSendAppointments([FromQuery] AppointmentUserParameters param)
     {
-        var response = await _appointmentService.GetAllAppointmentsOfOwnAsync(HttpContext.User, param);
+        var response = await _appointmentService.GetAllSendAppointmentsAsync(HttpContext.User, param);
         if (!response.IsSuccess) {
             if (response.Error.Code == 404) {
                 return NotFound(response);
@@ -284,18 +284,18 @@ public class UsersController : BaseController
     }
 
     /// <summary>
-    /// Get all appointments for mentor
+    /// Get all receive appointments
     /// </summary>
     /// <param name="param"></param>
     /// <returns></returns>
     /// <remarks>
     /// Roles Access: User
     /// </remarks>
-    [HttpGet, Route("mentor/appointments")]
+    [HttpGet, Route("receive/appointments")]
     [Authorize(Roles = RoleConstants.User)]
-    public async Task<ActionResult<PagedResult<AppointmentMentorResponse>>> GetAllAppointmentsOfMentor([FromQuery] AppointmentMentorParameters param)
+    public async Task<ActionResult<PagedResult<AppointmentMentorResponse>>> GetAllReceiveAppointments([FromQuery] AppointmentMentorParameters param)
     {
-        var response = await _appointmentService.GetAllAppointmentsOfMentorAsync(HttpContext.User, param);
+        var response = await _appointmentService.GetAllReceiveAppointmentsAsync(HttpContext.User, param);
         if (!response.IsSuccess) {
             if (response.Error.Code == 404) {
                 return NotFound(response);
@@ -318,7 +318,7 @@ public class UsersController : BaseController
     /// </remarks>
     [HttpGet, Route("{userId}/appointments")]
     [Authorize(Roles = RoleConstants.Admin)]
-    public async Task<ActionResult<PagedResult<AppointmentAdminResponse>>> GetAllAppointmentsOfMentorForAdmin(
+    public async Task<ActionResult<PagedResult<AppointmentAdminResponse>>> GetAllAppointmentsOfUserForAdmin(
         string userId,
         [FromQuery] AppointmentAdminParameters param)
     {
@@ -335,18 +335,18 @@ public class UsersController : BaseController
     }
 
     /// <summary>
-    /// Get a specific appointment create by self
+    /// Get a specific appointment sended
     /// </summary>
     /// <param name="appointmentId"></param>
     /// <returns></returns>
     /// <remarks>
     /// Roles Access: User (normal User)
     /// </remarks>
-    [HttpGet, Route("own/appointments/{appointmentId}")]
+    [HttpGet, Route("send/appointments/{appointmentId}")]
     [Authorize(Roles = RoleConstants.User)]
-    public async Task<ActionResult<Result<AppointmentUserDetailResponse>>> GetAppointmentOfOwnById(string appointmentId)
+    public async Task<ActionResult<Result<AppointmentUserDetailResponse>>> GetAppointmentSendedById(string appointmentId)
     {
-        var response = await _appointmentService.GetAppointmentOfOwnByIdAsync(HttpContext.User, appointmentId);
+        var response = await _appointmentService.GetAppointmentSendedByIdAsync(HttpContext.User, appointmentId);
         if (!response.IsSuccess) {
             if (response.Error.Code == 404) {
                 return NotFound(response);
@@ -366,11 +366,11 @@ public class UsersController : BaseController
     /// <remarks>
     /// Roles Access: User (Mentor)
     /// </remarks>
-    [HttpGet, Route("mentor/appointments/{appointmentId}")]
+    [HttpGet, Route("receive/appointments/{appointmentId}")]
     [Authorize(Roles = RoleConstants.User)]
-    public async Task<ActionResult<Result<AppointmentMentorDetailResponse>>> GetAppointmentOfMentorById(string appointmentId)
+    public async Task<ActionResult<Result<AppointmentMentorDetailResponse>>> GetAppointmentReceiveById(string appointmentId)
     {
-        var response = await _appointmentService.GetAppointmentOfMentorByIdAsync(HttpContext.User, appointmentId);
+        var response = await _appointmentService.GetAppointmentReceiveByIdAsync(HttpContext.User, appointmentId);
         if (!response.IsSuccess) {
             if (response.Error.Code == 404) {
                 return NotFound(response);

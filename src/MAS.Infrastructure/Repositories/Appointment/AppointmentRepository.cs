@@ -233,7 +233,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         return result;
     }
 
-    public async Task<PagedResult<AppointmentMentorResponse>> GetAllAppointmentsOfMentorAsync(
+    public async Task<PagedResult<AppointmentMentorResponse>> GetAllReceiveAppointmentsAsync(
         ClaimsPrincipal principal,
         AppointmentMentorParameters param)
     {
@@ -350,7 +350,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         return PagedResult<AppointmentAdminResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
     }
 
-    public async Task<PagedResult<AppointmentUserResponse>> GetAllAppointmentsOfOwnAsync(
+    public async Task<PagedResult<AppointmentUserResponse>> GetAllSendAppointmentsAsync(
         ClaimsPrincipal principal,
         AppointmentUserParameters param)
     {
@@ -432,7 +432,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         return result;
     }
 
-    public async Task<Result<AppointmentMentorDetailResponse>> GetAppointmentOfMentorByIdAsync(
+    public async Task<Result<AppointmentMentorDetailResponse>> GetAppointmentReceiveByIdAsync(
         ClaimsPrincipal principal,
         string appointmentId)
     {
@@ -495,7 +495,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         return result;
     }
 
-    public async Task<Result<AppointmentUserDetailResponse>> GetAppointmentOfOwnByIdAsync(
+    public async Task<Result<AppointmentUserDetailResponse>> GetAppointmentSendedByIdAsync(
         ClaimsPrincipal principal,
         string appointmentId)
     {

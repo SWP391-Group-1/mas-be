@@ -136,12 +136,12 @@
 >   ***Description***: Accept/deny mentor request  
 >   ***Role Access***: Admin  
 >
-> - ``GET /api/mas/v1/users/own/appointments ``  
->   ***Description***: Get all appointments create by self (student)  
->   ***Role Access***: User (Student)  
+> - ``GET /api/mas/v1/users/send/appointments ``  
+>   ***Description***: Get all appointments sended (student or Mentor)  
+>   ***Role Access***: User (Student or Mentor)  
 >   ***Extension***: Paging, filter by slot, order by new appointment 
 >
-> - ``GET /api/mas/v1/users/mentor/appointments ``  
+> - ``GET /api/mas/v1/users/receive/appointments ``  
 >   ***Description***: Get all appointments received (mentor)  
 >   ***Role Access***: User (Mentor)  
 >   ***Extension***: Paging, filter by slot, order by new appointment 
@@ -151,11 +151,11 @@
 >   ***Role Access***: Admin  
 >   ***Extension***: Paging, filter by slot, order by new appointment 
 >
-> - ``GET /api/mas/v1/users/own/appointments/{appointmentId} ``  
->   ***Description***: Get a appointment create by self (student)  
->   ***Role Access***: User (Student)  
+> - ``GET /api/mas/v1/users/send/appointments/{appointmentId} ``  
+>   ***Description***: Get a appointment sended (student or Mentor)  
+>   ***Role Access***: User (Student or Mentor)  
 >
-> - ``GET /api/mas/v1/users/mentor/appointments/{appointmentId} ``  
+> - ``GET /api/mas/v1/users/receive/appointments/{appointmentId} ``  
 >   ***Description***: Get a appointment received (mentor)  
 >   ***Role Access***: User (Mentor)  
 >

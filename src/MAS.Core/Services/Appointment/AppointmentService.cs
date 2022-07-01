@@ -62,7 +62,7 @@ public class AppointmentService : IAppointmentService
         }
     }
 
-    public async Task<PagedResult<AppointmentMentorResponse>> GetAllAppointmentsOfMentorAsync(
+    public async Task<PagedResult<AppointmentMentorResponse>> GetAllReceiveAppointmentsAsync(
         ClaimsPrincipal principal,
         AppointmentMentorParameters param)
     {
@@ -70,10 +70,10 @@ public class AppointmentService : IAppointmentService
             if (principal is null) {
                 throw new ArgumentNullException(nameof(principal));
             }
-            return await _appointmentRepository.GetAllAppointmentsOfMentorAsync(principal, param);
+            return await _appointmentRepository.GetAllReceiveAppointmentsAsync(principal, param);
         }
         catch (Exception ex) {
-            _logger.LogError($"Error while trying to call GetAllAppointmentsOfMentorAsync in service class, Error Message: {ex}.");
+            _logger.LogError($"Error while trying to call GetAllReceiveAppointmentsAsync in service class, Error Message: {ex}.");
             throw;
         }
     }
@@ -94,7 +94,7 @@ public class AppointmentService : IAppointmentService
         }
     }
 
-    public async Task<PagedResult<AppointmentUserResponse>> GetAllAppointmentsOfOwnAsync(
+    public async Task<PagedResult<AppointmentUserResponse>> GetAllSendAppointmentsAsync(
         ClaimsPrincipal principal,
         AppointmentUserParameters param)
     {
@@ -102,10 +102,10 @@ public class AppointmentService : IAppointmentService
             if (principal is null) {
                 throw new ArgumentNullException(nameof(principal));
             }
-            return await _appointmentRepository.GetAllAppointmentsOfOwnAsync(principal, param);
+            return await _appointmentRepository.GetAllSendAppointmentsAsync(principal, param);
         }
         catch (Exception ex) {
-            _logger.LogError($"Error while trying to call GetAllAppointmentsOfOwnAsync in service class, Error Message: {ex}.");
+            _logger.LogError($"Error while trying to call GetAllSendAppointmentsAsync in service class, Error Message: {ex}.");
             throw;
         }
     }
@@ -124,7 +124,7 @@ public class AppointmentService : IAppointmentService
         }
     }
 
-    public async Task<Result<AppointmentMentorDetailResponse>> GetAppointmentOfMentorByIdAsync(
+    public async Task<Result<AppointmentMentorDetailResponse>> GetAppointmentReceiveByIdAsync(
         ClaimsPrincipal principal,
         string appointmentId)
     {
@@ -135,15 +135,15 @@ public class AppointmentService : IAppointmentService
             if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
                 throw new ArgumentNullException(nameof(appointmentId));
             }
-            return await _appointmentRepository.GetAppointmentOfMentorByIdAsync(principal, appointmentId);
+            return await _appointmentRepository.GetAppointmentReceiveByIdAsync(principal, appointmentId);
         }
         catch (Exception ex) {
-            _logger.LogError($"Error while trying to call GetAppointmentOfMentorByIdAsync in service class, Error Message: {ex}.");
+            _logger.LogError($"Error while trying to call GetAppointmentReceiveByIdAsync in service class, Error Message: {ex}.");
             throw;
         }
     }
 
-    public async Task<Result<AppointmentUserDetailResponse>> GetAppointmentOfOwnByIdAsync(
+    public async Task<Result<AppointmentUserDetailResponse>> GetAppointmentSendedByIdAsync(
         ClaimsPrincipal principal,
         string appointmentId)
     {
@@ -154,10 +154,10 @@ public class AppointmentService : IAppointmentService
             if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
                 throw new ArgumentNullException(nameof(appointmentId));
             }
-            return await _appointmentRepository.GetAppointmentOfOwnByIdAsync(principal, appointmentId);
+            return await _appointmentRepository.GetAppointmentSendedByIdAsync(principal, appointmentId);
         }
         catch (Exception ex) {
-            _logger.LogError($"Error while trying to call GetAppointmentOfMentorByIdAsync in service class, Error Message: {ex}.");
+            _logger.LogError($"Error while trying to call GetAppointmentSendedByIdAsync in service class, Error Message: {ex}.");
             throw;
         }
     }
