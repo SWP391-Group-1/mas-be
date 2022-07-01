@@ -219,6 +219,10 @@
 >   ***Description***: Create a appointment   
 >   ***Role Access***: User  
 >
+> - ``PUT /api/mas/v1/appointments ``  
+>   ***Description***: Check passed appointment   
+>   ***Role Access***: User, Admin  
+>
 > - ``PUT /api/mas/v1/appointments/process/{appointmentId} ``  
 >   ***Description***: Mentor process an appointment, decide to approve or deny.   
 >   ***Role Access***: User (Mentor)  
