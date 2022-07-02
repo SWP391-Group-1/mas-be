@@ -27,6 +27,9 @@ namespace MAS.Infrastructure.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<string>("BriefProblem")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreateDate")
                         .HasColumnType("datetime");
 
@@ -68,41 +71,6 @@ namespace MAS.Infrastructure.Migrations
                     b.HasIndex("SlotId");
 
                     b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("MAS.Core.Entities.AppointmentSubject", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("AppointmentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("BriefProblem")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("CreateDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SubjectId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("UpdateDate")
-                        .HasColumnType("datetime");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppointmentId");
-
-                    b.HasIndex("SubjectId");
-
-                    b.ToTable("AppointmentSubjects");
                 });
 
             modelBuilder.Entity("MAS.Core.Entities.Major", b =>
@@ -333,6 +301,40 @@ namespace MAS.Infrastructure.Migrations
                     b.HasIndex("MentorId");
 
                     b.ToTable("Slots");
+                });
+
+            modelBuilder.Entity("MAS.Core.Entities.SlotSubject", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SlotId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("SubjectId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SlotId");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("SlotSubjects");
                 });
 
             modelBuilder.Entity("MAS.Core.Entities.Subject", b =>
@@ -580,25 +582,6 @@ namespace MAS.Infrastructure.Migrations
                     b.Navigation("Slot");
                 });
 
-            modelBuilder.Entity("MAS.Core.Entities.AppointmentSubject", b =>
-                {
-                    b.HasOne("MAS.Core.Entities.Appointment", "Appointment")
-                        .WithMany("AppointmentSubjects")
-                        .HasForeignKey("AppointmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MAS.Core.Entities.Subject", "Subject")
-                        .WithMany()
-                        .HasForeignKey("SubjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Appointment");
-
-                    b.Navigation("Subject");
-                });
-
             modelBuilder.Entity("MAS.Core.Entities.MentorSubject", b =>
                 {
                     b.HasOne("MAS.Core.Entities.MasUser", "Mentor")
@@ -649,6 +632,25 @@ namespace MAS.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Mentor");
+                });
+
+            modelBuilder.Entity("MAS.Core.Entities.SlotSubject", b =>
+                {
+                    b.HasOne("MAS.Core.Entities.Slot", "Slot")
+                        .WithMany("SlotSubjects")
+                        .HasForeignKey("SlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MAS.Core.Entities.Subject", "Subject")
+                        .WithMany()
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Slot");
+
+                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("MAS.Core.Entities.Subject", b =>
@@ -715,8 +717,6 @@ namespace MAS.Infrastructure.Migrations
 
             modelBuilder.Entity("MAS.Core.Entities.Appointment", b =>
                 {
-                    b.Navigation("AppointmentSubjects");
-
                     b.Navigation("Questions");
 
                     b.Navigation("Ratings");
@@ -737,6 +737,8 @@ namespace MAS.Infrastructure.Migrations
             modelBuilder.Entity("MAS.Core.Entities.Slot", b =>
                 {
                     b.Navigation("Appointments");
+
+                    b.Navigation("SlotSubjects");
                 });
 
             modelBuilder.Entity("MAS.Core.Entities.Subject", b =>

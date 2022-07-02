@@ -14,7 +14,8 @@ public class AppointmentMentorDetailResponse
     public string SlotId { get; set; }
     public SlotResponse Slot { get; set; }
 
-    public ICollection<AppointmentSubjectResponse> AppointmentSubjects { get; set; }
+    public string BriefProblem { get; set; }
+
     public ICollection<QuestionAppointmentResponse> Questions { get; set; }
 
     public DateTime StartTime { get; set; }

@@ -57,7 +57,8 @@ public partial class Initial : Migration
                 Title = table.Column<string>(type: "nvarchar(200)", nullable: false),
                 Description = table.Column<string>(type: "nvarchar(1000)", nullable: true),
                 CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -79,9 +80,9 @@ public partial class Initial : Migration
                 NumOfAppointment = table.Column<int>(type: "int", nullable: false),
                 IsMentor = table.Column<bool>(type: "bit", nullable: true),
                 MeetUrl = table.Column<string>(type: "nvarchar(200)", nullable: true),
-                IsActive = table.Column<bool>(type: "bit", nullable: false),
                 CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -204,7 +205,8 @@ public partial class Initial : Migration
                 Title = table.Column<string>(type: "nvarchar(200)", nullable: false),
                 Description = table.Column<string>(type: "nvarchar(1000)", nullable: true),
                 CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -225,8 +227,10 @@ public partial class Initial : Migration
                 MentorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                 StartTime = table.Column<DateTime>(type: "datetime", nullable: false),
                 FinishTime = table.Column<DateTime>(type: "datetime", nullable: false),
+                IsPassed = table.Column<bool>(type: "bit", nullable: true),
                 CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -248,7 +252,8 @@ public partial class Initial : Migration
                 SubjectId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                 BriefInfo = table.Column<string>(type: "nvarchar(500)", nullable: false),
                 CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -275,12 +280,15 @@ public partial class Initial : Migration
                 CreatorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                 MentorId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                 SlotId = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                IsApprove = table.Column<bool>(type: "bit", nullable: false),
+                BriefProblem = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                IsApprove = table.Column<bool>(type: "bit", nullable: true),
                 StartTime = table.Column<DateTime>(type: "datetime", nullable: true),
                 MentorDescription = table.Column<string>(type: "nvarchar(1000)", nullable: true),
                 FinishTime = table.Column<DateTime>(type: "datetime", nullable: true),
+                IsPassed = table.Column<bool>(type: "bit", nullable: true),
                 CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -294,27 +302,28 @@ public partial class Initial : Migration
             });
 
         migrationBuilder.CreateTable(
-            name: "AppointmentSubjects",
+            name: "SlotSubjects",
             columns: table => new
             {
                 Id = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                AppointmentId = table.Column<string>(type: "nvarchar(100)", nullable: false),
+                SlotId = table.Column<string>(type: "nvarchar(100)", nullable: false),
                 SubjectId = table.Column<string>(type: "nvarchar(100)", nullable: false),
-                BriefProblem = table.Column<string>(type: "nvarchar(500)", nullable: false),
+                Description = table.Column<string>(type: "nvarchar(500)", nullable: true),
                 CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
-                table.PrimaryKey("PK_AppointmentSubjects", x => x.Id);
+                table.PrimaryKey("PK_SlotSubjects", x => x.Id);
                 table.ForeignKey(
-                    name: "FK_AppointmentSubjects_Appointments_AppointmentId",
-                    column: x => x.AppointmentId,
-                    principalTable: "Appointments",
+                    name: "FK_SlotSubjects_Slots_SlotId",
+                    column: x => x.SlotId,
+                    principalTable: "Slots",
                     principalColumn: "Id",
                     onDelete: ReferentialAction.Cascade);
                 table.ForeignKey(
-                    name: "FK_AppointmentSubjects_Subjects_SubjectId",
+                    name: "FK_SlotSubjects_Subjects_SubjectId",
                     column: x => x.SubjectId,
                     principalTable: "Subjects",
                     principalColumn: "Id",
@@ -331,7 +340,8 @@ public partial class Initial : Migration
                 QuestionContent = table.Column<string>(type: "nvarchar(500)", nullable: false),
                 Answer = table.Column<string>(type: "nvarchar(MAX)", nullable: true),
                 CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -355,9 +365,9 @@ public partial class Initial : Migration
                 Vote = table.Column<int>(type: "int", nullable: false),
                 Comment = table.Column<string>(type: "nvarchar(500)", nullable: true),
                 IsApprove = table.Column<bool>(type: "bit", nullable: true),
-                IsActive = table.Column<bool>(type: "bit", nullable: false),
                 CreateDate = table.Column<DateTime>(type: "datetime", nullable: false),
-                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true)
+                UpdateDate = table.Column<DateTime>(type: "datetime", nullable: true),
+                IsActive = table.Column<bool>(type: "bit", nullable: false)
             },
             constraints: table =>
             {
@@ -374,16 +384,6 @@ public partial class Initial : Migration
             name: "IX_Appointments_SlotId",
             table: "Appointments",
             column: "SlotId");
-
-        migrationBuilder.CreateIndex(
-            name: "IX_AppointmentSubjects_AppointmentId",
-            table: "AppointmentSubjects",
-            column: "AppointmentId");
-
-        migrationBuilder.CreateIndex(
-            name: "IX_AppointmentSubjects_SubjectId",
-            table: "AppointmentSubjects",
-            column: "SubjectId");
 
         migrationBuilder.CreateIndex(
             name: "IX_AspNetRoleClaims_RoleId",
@@ -450,6 +450,16 @@ public partial class Initial : Migration
             column: "MentorId");
 
         migrationBuilder.CreateIndex(
+            name: "IX_SlotSubjects_SlotId",
+            table: "SlotSubjects",
+            column: "SlotId");
+
+        migrationBuilder.CreateIndex(
+            name: "IX_SlotSubjects_SubjectId",
+            table: "SlotSubjects",
+            column: "SubjectId");
+
+        migrationBuilder.CreateIndex(
             name: "IX_Subjects_MajorId",
             table: "Subjects",
             column: "MajorId");
@@ -457,9 +467,6 @@ public partial class Initial : Migration
 
     protected override void Down(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.DropTable(
-            name: "AppointmentSubjects");
-
         migrationBuilder.DropTable(
             name: "AspNetRoleClaims");
 
@@ -485,22 +492,25 @@ public partial class Initial : Migration
             name: "Ratings");
 
         migrationBuilder.DropTable(
+            name: "SlotSubjects");
+
+        migrationBuilder.DropTable(
             name: "AspNetRoles");
 
         migrationBuilder.DropTable(
             name: "AspNetUsers");
 
         migrationBuilder.DropTable(
-            name: "Subjects");
-
-        migrationBuilder.DropTable(
             name: "Appointments");
 
         migrationBuilder.DropTable(
-            name: "Majors");
+            name: "Subjects");
 
         migrationBuilder.DropTable(
             name: "Slots");
+
+        migrationBuilder.DropTable(
+            name: "Majors");
 
         migrationBuilder.DropTable(
             name: "MasUsers");

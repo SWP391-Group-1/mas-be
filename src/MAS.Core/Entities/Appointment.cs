@@ -12,7 +12,8 @@ public class Appointment : BaseEntity
     public string SlotId { get; set; }
     public Slot Slot { get; set; }
 
-    public ICollection<AppointmentSubject> AppointmentSubjects { get; set; }
+    public string BriefProblem { get; set; }
+
     public ICollection<Question> Questions { get; set; }
     public ICollection<Rating> Ratings { get; set; }
 

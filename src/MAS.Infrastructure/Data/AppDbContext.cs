@@ -18,7 +18,7 @@ public class AppDbContext : IdentityDbContext
     public DbSet<Rating> Ratings { get; set; }
     public DbSet<Major> Majors { get; set; }
     public DbSet<Subject> Subjects { get; set; }
-    public DbSet<AppointmentSubject> AppointmentSubjects { get; set; }
+    public DbSet<SlotSubject> SlotSubjects { get; set; }
     public DbSet<MentorSubject> MentorSubjects { get; set; }
     public DbSet<Question> Questions { get; set; }
 
@@ -31,7 +31,7 @@ public class AppDbContext : IdentityDbContext
         builder.ApplyConfigurationsFromAssembly(typeof(RatingConfiguration).Assembly);
         builder.ApplyConfigurationsFromAssembly(typeof(MajorConfiguration).Assembly);
         builder.ApplyConfigurationsFromAssembly(typeof(SubjectConfiguration).Assembly);
-        builder.ApplyConfigurationsFromAssembly(typeof(AppointmentSubjectConfiguration).Assembly);
+        builder.ApplyConfigurationsFromAssembly(typeof(SlotSubjectConfiguration).Assembly);
         builder.ApplyConfigurationsFromAssembly(typeof(MentorSubjectConfiguration).Assembly);
         builder.ApplyConfigurationsFromAssembly(typeof(QuestionConfiguration).Assembly);
     }

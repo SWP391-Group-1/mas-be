@@ -13,6 +13,8 @@ public class AppointmentUserResponse
     public string SlotId { get; set; }
     public SlotResponse Slot { get; set; }
 
+    public string BriefProblem { get; set; }
+
     public DateTime StartTime { get; set; }
     public DateTime FinishTime { get; set; }
 

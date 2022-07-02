@@ -107,23 +107,6 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             }
         }
 
-        foreach (var item in request.AppointmentSubjects) {
-            var subject = await _context.Subjects.FindAsync(item.SubjectId);
-            if (subject is null || subject.IsActive is false) {
-                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
-                                                     ErrorTypes.NotFound,
-                                                     ErrorMessages.NotFound + "Subject");
-                return result;
-            }
-            var existSubjectMentor = await _context.MentorSubjects.AnyAsync(x => x.MentorId == slot.MentorId && x.SubjectId == subject.Id);
-            if (existSubjectMentor is false) {
-                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
-                                                     ErrorTypes.BadRequest,
-                                                     $"Your mentor doesn't support subject {subject.Title}");
-                return result;
-            }
-        }
-
         await _context.Appointments.AddAsync(
             new Core.Entities.Appointment {
                 Id = request.Id,
@@ -132,6 +115,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
                 CreatorId = user.Id,
                 MentorId = slot.MentorId,
                 SlotId = request.SlotId,
+                BriefProblem = request.BriefProblem,
                 IsApprove = null,
                 StartTime = slot.StartTime,
                 FinishTime = slot.FinishTime,
@@ -141,25 +125,6 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             }
         );
         if ((await _context.SaveChangesAsync() >= 0)) {
-            foreach (var item in request.AppointmentSubjects) {
-                await _context.AppointmentSubjects.AddAsync(
-                    new Core.Entities.AppointmentSubject {
-                        Id = item.Id,
-                        CreateDate = item.CreateDate,
-                        UpdateDate = null,
-                        AppointmentId = request.Id,
-                        SubjectId = item.SubjectId,
-                        BriefProblem = item.BriefProblem,
-                        IsActive = true
-                    }
-                );
-                if ((await _context.SaveChangesAsync() < 0)) {
-                    result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
-                                                 ErrorTypes.SaveFail,
-                                                 ErrorMessages.SaveFail);
-                    return result;
-                }
-            }
             result.Content = true;
             return result;
         }
@@ -421,7 +386,6 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         }
         await _context.Entry(app).Reference(x => x.Slot).LoadAsync();
         await _context.Entry(app).Collection(x => x.Questions).LoadAsync();
-        await _context.Entry(app).Collection(x => x.AppointmentSubjects).LoadAsync();
 
         var response = _mapper.Map<AppointmentAdminDetailResponse>(app);
 
@@ -482,10 +446,6 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         }
         await _context.Entry(app).Reference(x => x.Slot).LoadAsync();
         await _context.Entry(app).Collection(x => x.Questions).LoadAsync();
-        await _context.Entry(app).Collection(x => x.AppointmentSubjects).LoadAsync();
-        foreach (var item in app.AppointmentSubjects) {
-            await _context.Entry(item).Reference(x => x.Subject).LoadAsync();
-        }
 
         var response = _mapper.Map<AppointmentMentorDetailResponse>(app);
 
@@ -539,10 +499,6 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         }
         await _context.Entry(app).Reference(x => x.Slot).LoadAsync();
         await _context.Entry(app).Collection(x => x.Questions).LoadAsync();
-        await _context.Entry(app).Collection(x => x.AppointmentSubjects).LoadAsync();
-        foreach (var item in app.AppointmentSubjects) {
-            await _context.Entry(item).Reference(x => x.Subject).LoadAsync();
-        }
 
         var response = _mapper.Map<AppointmentUserDetailResponse>(app);
 

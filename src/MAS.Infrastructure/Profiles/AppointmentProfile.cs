@@ -12,8 +12,7 @@ public class AppointmentProfile : Profile
         // src => target
         CreateMap<AppointmentCreateRequest, Appointment>();
         CreateMap<AppointmentProcessRequest, Appointment>();
-        CreateMap<AppointmentUpdateRequest, Appointment>();
-        CreateMap<AppointmentSubjectCreateRequest, AppointmentSubject>();
+        CreateMap<AppointmentUpdateRequest, Appointment>();        
 
         CreateMap<Appointment, AppointmentUserResponse>();
         CreateMap<Appointment, AppointmentUserDetailResponse>();
@@ -22,6 +21,6 @@ public class AppointmentProfile : Profile
         CreateMap<Appointment, AppointmentAdminResponse>();
         CreateMap<Appointment, AppointmentAdminDetailResponse>();
 
-        CreateMap<AppointmentSubject, AppointmentSubjectResponse>();
+        
     }
 }

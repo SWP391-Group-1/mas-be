@@ -1,9 +1,9 @@
 using MAS.Core.Dtos.Incoming.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace MAS.Core.Dtos.Incoming.Appointment;
+namespace MAS.Core.Dtos.Incoming.Slot;
 
-public class AppointmentSubjectCreateRequest : BaseCreateRequest
+public class SlotSubjectCreateRequest : BaseCreateRequest
 {
     [Required]
     [MaxLength(100)]
@@ -11,5 +11,5 @@ public class AppointmentSubjectCreateRequest : BaseCreateRequest
 
     [Required]
     [MaxLength(500)]
-    public string BriefProblem { get; set; }
+    public string Description { get; set; }
 }

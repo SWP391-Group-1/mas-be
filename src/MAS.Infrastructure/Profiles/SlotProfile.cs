@@ -11,8 +11,10 @@ public class SlotProfile : Profile
     {
         // src => target
         CreateMap<SlotCreateRequest, Slot>();
+        CreateMap<SlotSubjectCreateRequest, SlotSubject>();
 
         CreateMap<Slot, SlotResponse>();
         CreateMap<Slot, SlotDetailResponse>();
+        CreateMap<SlotSubject, SlotSubjectResponse>();
     }
 }

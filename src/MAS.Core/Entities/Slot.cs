@@ -12,4 +12,5 @@ public class Slot : BaseEntity
     public DateTime FinishTime { get; set; }
     public bool? IsPassed { get; set; }
     public ICollection<Appointment> Appointments { get; set; }
+    public ICollection<SlotSubject> SlotSubjects { get; set; }
 }

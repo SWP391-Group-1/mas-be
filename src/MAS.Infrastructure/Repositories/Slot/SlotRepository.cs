@@ -124,11 +124,27 @@ public class SlotRepository : BaseRepository, ISlotRepository
         var model = _mapper.Map<Core.Entities.Slot>(request);
         model.MentorId = user.Id;
         model.IsPassed = false;
+
+        foreach (var item in request.SlotSubjects) {
+            if (!await _context.Subjects.AnyAsync(x => x.Id == item.Id)) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     $"Not found subject with id {item.Id}");
+                return result;
+            }
+        }
+
+        var slotSubjects = _mapper.Map<List<Core.Entities.SlotSubject>>(request.SlotSubjects);
+        slotSubjects.Single(x => x.SlotId == model.Id);
+
         await _context.Slots.AddAsync(model);
 
         if ((await _context.SaveChangesAsync() >= 0)) {
-            result.Content = true;
-            return result;
+            await _context.SlotSubjects.AddRangeAsync(slotSubjects);
+            if ((await _context.SaveChangesAsync() >= 0)) {
+                result.Content = true;
+                return result;
+            }
         }
         result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
                                                  ErrorTypes.SaveFail,
@@ -233,6 +249,13 @@ public class SlotRepository : BaseRepository, ISlotRepository
 
         slots = query.ToList();
         var response = _mapper.Map<List<SlotResponse>>(slots);
+        foreach (var item in response)
+        {
+            item.NumOfAppointments = await _context.Appointments
+                                                        .Where(x => x.SlotId == item.Id 
+                                                                    && x.IsApprove == true)
+                                                        .CountAsync();
+        }
         return PagedResult<SlotResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
     }
 
@@ -298,7 +321,12 @@ public class SlotRepository : BaseRepository, ISlotRepository
             return result;
         }
         await _context.Entry(slot).Reference(x => x.Mentor).LoadAsync();
+        await _context.Entry(slot).Collection(x => x.SlotSubjects).LoadAsync();
         var response = _mapper.Map<SlotDetailResponse>(slot);
+        response.NumOfAppointments = await _context.Appointments
+                                                        .Where(x => x.SlotId == slot.Id 
+                                                                    && x.IsApprove == true)
+                                                        .CountAsync();
         result.Content = response;
         return result;
     }
