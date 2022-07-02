@@ -13,7 +13,7 @@ POST {{baseUrl}}/api/mas/v1/accounts/login-user
 content-type: {{contentType}}
 
 {
-  "email": "user@fpt.edu.vn",
+  "email": "student01@fpt.edu.vn",
   "password": "Pa55w0rd!"
 }
 ###

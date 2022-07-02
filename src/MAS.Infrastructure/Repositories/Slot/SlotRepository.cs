@@ -126,16 +126,27 @@ public class SlotRepository : BaseRepository, ISlotRepository
         model.IsPassed = false;
 
         foreach (var item in request.SlotSubjects) {
-            if (!await _context.Subjects.AnyAsync(x => x.Id == item.Id)) {
+            if (!await _context.Subjects.AnyAsync(x => x.Id == item.SubjectId && x.IsActive == true)) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      $"Not found subject with id {item.Id}");
                 return result;
             }
+            if (!await _context.MentorSubjects.AnyAsync(x => x.MentorId == user.Id
+                                                             && x.SubjectId == item.SubjectId
+                                                             && x.IsActive == true)) {
+                result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     $"You don't register this subject in your profile!");
+                return result;
+            }
         }
 
         var slotSubjects = _mapper.Map<List<Core.Entities.SlotSubject>>(request.SlotSubjects);
-        slotSubjects.Single(x => x.SlotId == model.Id);
+        foreach (var item in slotSubjects)
+        {
+            item.SlotId = model.Id;
+        }
 
         await _context.Slots.AddAsync(model);
 
@@ -249,10 +260,9 @@ public class SlotRepository : BaseRepository, ISlotRepository
 
         slots = query.ToList();
         var response = _mapper.Map<List<SlotResponse>>(slots);
-        foreach (var item in response)
-        {
+        foreach (var item in response) {
             item.NumOfAppointments = await _context.Appointments
-                                                        .Where(x => x.SlotId == item.Id 
+                                                        .Where(x => x.SlotId == item.Id
                                                                     && x.IsApprove == true)
                                                         .CountAsync();
         }
@@ -324,7 +334,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
         await _context.Entry(slot).Collection(x => x.SlotSubjects).LoadAsync();
         var response = _mapper.Map<SlotDetailResponse>(slot);
         response.NumOfAppointments = await _context.Appointments
-                                                        .Where(x => x.SlotId == slot.Id 
+                                                        .Where(x => x.SlotId == slot.Id
                                                                     && x.IsApprove == true)
                                                         .CountAsync();
         result.Content = response;

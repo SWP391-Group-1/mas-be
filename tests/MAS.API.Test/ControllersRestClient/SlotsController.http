@@ -13,7 +13,7 @@ POST {{baseUrl}}/api/mas/v1/accounts/login-user
 content-type: {{contentType}}
 
 {
-  "email": "user@fe.edu.vn",
+  "email": "testMentor01@fe.edu.vn",
   "password": "Pa55w0rd!"
 }
 ###
@@ -27,7 +27,7 @@ Authorization: {{authToken}}
 
 # Get all slot of mentor 02
 GET {{baseUrl}}/api/mas/v1/slots
-?mentorId=a7c2258b-e2d1-457f-87f8-268dbadbe1ac
+?mentorId=
 &isAsc=true
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
@@ -36,8 +36,22 @@ Authorization: {{authToken}}
 
 # Get all slot of mentor 01
 GET {{baseUrl}}/api/mas/v1/slots
-?mentorId=aaf445eb-c5c6-4a7e-8ae4-d15f40cd1df9
+?mentorId=
 &isAsc=true
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Get all subjects
+GET {{baseUrl}}/api/mas/v1/subjects
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Get a subject
+GET {{baseUrl}}/api/mas/v1/subjects/4248deaa-294c-4637-85fb-eebfd578ee5f
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
@@ -49,8 +63,14 @@ Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
 {
-  "startTime": "2022-06-26T08:00:02.989Z",
-  "finishTime": "2022-06-26T10:00:02.989Z"
+  "startTime": "2022-07-09T07:23:58.276Z",
+  "finishTime": "2022-07-09T08:23:58.276Z",
+  "slotSubjects": [
+    {
+      "subjectId": "637a18c2-4323-4d43-9791-98577fa65d60",
+      "description": "Q & A with me about present project"
+    }
+  ]
 }
 
 ###
