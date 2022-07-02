@@ -27,7 +27,7 @@ Authorization: {{authToken}}
 
 # Get all slot of mentor 02
 GET {{baseUrl}}/api/mas/v1/slots
-?mentorId=
+?mentorId=a3ef5dc6-5ddd-4467-ab71-f4fa2242997f
 &isAsc=true
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
@@ -63,12 +63,12 @@ Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
 {
-  "startTime": "2022-07-09T07:23:58.276Z",
-  "finishTime": "2022-07-09T08:23:58.276Z",
+  "startTime": "2022-07-18T07:23:58.276Z",
+  "finishTime": "2022-07-18T08:23:58.276Z",
   "slotSubjects": [
     {
       "subjectId": "637a18c2-4323-4d43-9791-98577fa65d60",
-      "description": "Q & A with me about present project"
+      "description": "Sample project with me v8"
     }
   ]
 }

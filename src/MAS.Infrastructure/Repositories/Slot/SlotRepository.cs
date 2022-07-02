@@ -142,20 +142,25 @@ public class SlotRepository : BaseRepository, ISlotRepository
             }
         }
 
-        var slotSubjects = _mapper.Map<List<Core.Entities.SlotSubject>>(request.SlotSubjects);
-        foreach (var item in slotSubjects)
+        foreach (var item in model.SlotSubjects)
         {
             item.SlotId = model.Id;
         }
 
-        await _context.Slots.AddAsync(model);
+        // var slotSubjects = _mapper.Map<ICollection<Core.Entities.SlotSubject>>(request.SlotSubjects);
+        // foreach (var item in slotSubjects)
+        // {
+        //     item.SlotId = model.Id;
+        // }
+
+        await _context.AddAsync(model);
 
         if ((await _context.SaveChangesAsync() >= 0)) {
-            await _context.SlotSubjects.AddRangeAsync(slotSubjects);
-            if ((await _context.SaveChangesAsync() >= 0)) {
+            // await _context.SlotSubjects.AddRangeAsync(slotSubjects);
+            // if ((await _context.SaveChangesAsync() >= 0)) {
                 result.Content = true;
                 return result;
-            }
+            // }
         }
         result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
                                                  ErrorTypes.SaveFail,
