@@ -13,7 +13,7 @@ POST {{baseUrl}}/api/mas/v1/accounts/login-user
 content-type: {{contentType}}
 
 {
-  "email": "student01@fpt.edu.vn",
+  "email": "testMentor01@fe.edu.vn",
   "password": "Pa55w0rd!"
 }
 ###
@@ -28,6 +28,7 @@ Authorization: {{authToken}}
 # Get all slot
 GET {{baseUrl}}/api/mas/v1/slots
 ?isAsc=true
+&mentorId=a3ef5dc6-5ddd-4467-ab71-f4fa2242997f
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
@@ -39,28 +40,21 @@ Content-Type: {{contentType}}
 Authorization: {{authToken}}
 ###
 
-# Create Appointment
-POST {{baseUrl}}/api/mas/v1/appointments
+# Get receive appointment
+GET {{baseUrl}}/api/mas/v1/users/receive/appointments
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Process appointment
+PUT {{baseUrl}}/api/mas/v1/appointments/process/40aeb217-9814-4f30-8c9f-3bee4bdd3102
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
 {
-  "slotId": "f540f061-8a86-4ef7-a551-b8a1b952975e",
-  "briefProblem": "Em ko bit phan tich la gì...."
+  "isApprove": true,
+  "mentorDescription": ""
 }
-
-###
-
-# Get own appointment
-GET {{baseUrl}}/api/mas/v1/users/send/appointments
-Content-Type: {{contentType}}
-Authorization: {{authToken}}
-
-###
-
-# Get own appointment
-GET {{baseUrl}}/api/mas/v1/users/send/appointments/40aeb217-9814-4f30-8c9f-3bee4bdd3102
-Content-Type: {{contentType}}
-Authorization: {{authToken}}
 
 ###

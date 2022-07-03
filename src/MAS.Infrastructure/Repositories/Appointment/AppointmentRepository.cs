@@ -250,6 +250,10 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         var response = _mapper.Map<List<AppointmentMentorResponse>>(apps);
         foreach (var item in response) {
             item.Creator = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(item.CreatorId));
+            item.Slot.NumOfAppointments = await _context.Appointments
+                                                        .Where(x => x.SlotId == item.SlotId
+                                                                    && x.IsApprove == true)
+                                                        .CountAsync();
         }
         return PagedResult<AppointmentMentorResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
     }
@@ -311,6 +315,10 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         foreach (var item in response) {
             item.Creator = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(item.CreatorId));
             item.Mentor = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(item.MentorId));
+            item.Slot.NumOfAppointments = await _context.Appointments
+                                                        .Where(x => x.SlotId == item.SlotId
+                                                                    && x.IsApprove == true)
+                                                        .CountAsync();
         }
         return PagedResult<AppointmentAdminResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
     }
@@ -361,6 +369,10 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         var response = _mapper.Map<List<AppointmentUserResponse>>(apps);
         foreach (var item in response) {
             item.Mentor = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(item.MentorId));
+            item.Slot.NumOfAppointments = await _context.Appointments
+                                                        .Where(x => x.SlotId == item.SlotId
+                                                                    && x.IsApprove == true)
+                                                        .CountAsync();
         }
         return PagedResult<AppointmentUserResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
     }
@@ -391,6 +403,10 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
 
         response.Creator = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(response.CreatorId));
         response.Mentor = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(response.MentorId));
+        response.Slot.NumOfAppointments = await _context.Appointments
+                                                        .Where(x => x.SlotId == app.SlotId
+                                                                    && x.IsApprove == true)
+                                                        .CountAsync();
 
         result.Content = response;
         return result;
@@ -450,6 +466,10 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         var response = _mapper.Map<AppointmentMentorDetailResponse>(app);
 
         response.Creator = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(response.CreatorId));
+        response.Slot.NumOfAppointments = await _context.Appointments
+                                                        .Where(x => x.SlotId == app.SlotId
+                                                                    && x.IsApprove == true)
+                                                        .CountAsync();
 
         result.Content = response;
         return result;
@@ -503,6 +523,10 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
         var response = _mapper.Map<AppointmentUserDetailResponse>(app);
 
         response.Mentor = UserHelper.PopulateUser(await _context.MasUsers.FindAsync(response.MentorId));
+        response.Slot.NumOfAppointments = await _context.Appointments
+                                                        .Where(x => x.SlotId == app.SlotId
+                                                                    && x.IsApprove == true)
+                                                        .CountAsync();
 
         result.Content = response;
         return result;
