@@ -336,7 +336,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
             return result;
         }
         await _context.Entry(slot).Reference(x => x.Mentor).LoadAsync();
-        await _context.Entry(slot).Collection(x => x.SlotSubjects).LoadAsync();
+        await _context.Entry(slot).Collection(x => x.SlotSubjects).Query().Include(x => x.Subject).LoadAsync();
         var response = _mapper.Map<SlotDetailResponse>(slot);
         response.NumOfAppointments = await _context.Appointments
                                                         .Where(x => x.SlotId == slot.Id

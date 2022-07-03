@@ -25,6 +25,20 @@ Authorization: {{authToken}}
 
 ###
 
+# Get all slot
+GET {{baseUrl}}/api/mas/v1/slots
+?isAsc=true
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Get a slot
+GET {{baseUrl}}/api/mas/v1/slots/f540f061-8a86-4ef7-a551-b8a1b952975e
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+###
+
 # Create Appointment
 POST {{baseUrl}}/api/mas/v1/appointments
 Content-Type: {{contentType}}
