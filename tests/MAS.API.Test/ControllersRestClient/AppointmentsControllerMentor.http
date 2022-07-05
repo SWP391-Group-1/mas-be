@@ -47,6 +47,13 @@ Authorization: {{authToken}}
 
 ###
 
+# Get recieve appointment
+GET {{baseUrl}}/api/mas/v1/users/receive/appointments/40aeb217-9814-4f30-8c9f-3bee4bdd3102
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
 # Process appointment
 PUT {{baseUrl}}/api/mas/v1/appointments/process/40aeb217-9814-4f30-8c9f-3bee4bdd3102
 Content-Type: {{contentType}}

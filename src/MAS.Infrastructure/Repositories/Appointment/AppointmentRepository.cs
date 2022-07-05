@@ -396,7 +396,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
                                                      ErrorMessages.NotFound + "subject.");
             return result;
         }
-        await _context.Entry(app).Reference(x => x.Slot).Query().Include(x => x.SlotSubjects).LoadAsync();
+        await _context.Entry(app).Reference(x => x.Slot).Query().Include(x => x.SlotSubjects).ThenInclude(x => x.Subject).LoadAsync();
         await _context.Entry(app).Collection(x => x.Questions).LoadAsync();
 
         var response = _mapper.Map<AppointmentAdminDetailResponse>(app);
@@ -460,7 +460,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
                                                      "This is not your appointment!");
             return result;
         }
-        await _context.Entry(app).Reference(x => x.Slot).Query().Include(x => x.SlotSubjects).LoadAsync();
+        await _context.Entry(app).Reference(x => x.Slot).Query().Include(x => x.SlotSubjects).ThenInclude(x => x.Subject).LoadAsync();
         await _context.Entry(app).Collection(x => x.Questions).LoadAsync();
 
         var response = _mapper.Map<AppointmentMentorDetailResponse>(app);
@@ -517,7 +517,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
                                                      "This is not your appointment!");
             return result;
         }
-        await _context.Entry(app).Reference(x => x.Slot).Query().Include(x => x.SlotSubjects).LoadAsync();
+        await _context.Entry(app).Reference(x => x.Slot).Query().Include(x => x.SlotSubjects).ThenInclude(x => x.Subject).LoadAsync();
         await _context.Entry(app).Collection(x => x.Questions).LoadAsync();
 
         var response = _mapper.Map<AppointmentUserDetailResponse>(app);
