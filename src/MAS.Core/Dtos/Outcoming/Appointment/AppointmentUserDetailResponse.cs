@@ -12,7 +12,7 @@ public class AppointmentUserDetailResponse
     public UserGetBasicInfoResponse Mentor { get; set; }
 
     public string SlotId { get; set; }
-    public SlotResponse Slot { get; set; }
+    public SlotDetailResponse Slot { get; set; }
 
     public string BriefProblem { get; set; }
     public ICollection<QuestionAppointmentResponse> Questions { get; set; }
