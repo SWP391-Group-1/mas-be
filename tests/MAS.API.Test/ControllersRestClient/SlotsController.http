@@ -27,7 +27,9 @@ Authorization: {{authToken}}
 
 # Get all slot of mentor 02
 GET {{baseUrl}}/api/mas/v1/slots
-?mentorId=a3ef5dc6-5ddd-4467-ab71-f4fa2242997f
+?mentorId=
+&from=2022-07-03T07:23:58.277
+&to=2022-07-05T07:23:58.277
 &isAsc=true
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
