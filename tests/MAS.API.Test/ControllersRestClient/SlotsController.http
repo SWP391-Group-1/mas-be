@@ -78,7 +78,7 @@ Authorization: {{authToken}}
 ###
 
 # Get a slot by Id
-GET {{baseUrl}}/api/mas/v1/slots/032c1774-8a9e-4a79-8e61-84f3eb3f7f99
+GET {{baseUrl}}/api/mas/v1/slots/f540f061-8a86-4ef7-a551-b8a1b952975e
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
