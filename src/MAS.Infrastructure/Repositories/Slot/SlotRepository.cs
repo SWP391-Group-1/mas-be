@@ -142,8 +142,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
             }
         }
 
-        foreach (var item in model.SlotSubjects)
-        {
+        foreach (var item in model.SlotSubjects) {
             item.SlotId = model.Id;
         }
 
@@ -158,8 +157,8 @@ public class SlotRepository : BaseRepository, ISlotRepository
         if ((await _context.SaveChangesAsync() >= 0)) {
             // await _context.SlotSubjects.AddRangeAsync(slotSubjects);
             // if ((await _context.SaveChangesAsync() >= 0)) {
-                result.Content = true;
-                return result;
+            result.Content = true;
+            return result;
             // }
         }
         result.Error = ErrorHelper.PopulateError((int)ErrorCodes.Else,
@@ -292,7 +291,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
 
     private void FilterByRange(ref IQueryable<Core.Entities.Slot> query, DateTime? from, DateTime? to)
     {
-        if (!query.Any() || from is null || to is null) {
+        if (!query.Any() || (from is null && to is null)) {
             return;
         }
 
@@ -300,7 +299,13 @@ public class SlotRepository : BaseRepository, ISlotRepository
             return;
         }
 
-        query = query.Where(x => x.StartTime >= from && x.StartTime <= to);
+        if (from is not null && to is not null) {
+            query = query.Where(x => x.StartTime >= from && x.StartTime <= to);
+        }else if (from is null && to is not null) {
+            query = query.Where(x => x.StartTime <= to);
+        }else if (from is not null && to is null) {
+            query = query.Where(x => x.StartTime >= from);
+        }
     }
 
     private void SortByAsc(ref IQueryable<Core.Entities.Slot> query, bool? isAsc)
