@@ -6,6 +6,8 @@
         public string AppointmentId { get; set; }
 
         public string CreatorId { get; set; }
+        public string CreatorName { get; set; }
+        public string CreatorMail { get; set; }
 
         public string MentorId { get; set; }
 

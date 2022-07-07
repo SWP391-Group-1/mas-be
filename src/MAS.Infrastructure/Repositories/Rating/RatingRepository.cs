@@ -115,6 +115,11 @@ public class RatingRepository : BaseRepository, IRatingRepository
         ratings = query.ToList();
 
         var response = _mapper.Map<List<RatingResponse>>(ratings);
+        foreach (var item in response) {
+            var creator = await _context.MasUsers.FindAsync(item.CreatorId);
+            item.CreatorName = creator.Name;
+            item.CreatorMail = creator.Email;
+        }
         return PagedResult<RatingResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
     }
 
@@ -163,6 +168,11 @@ public class RatingRepository : BaseRepository, IRatingRepository
         ratings = query.ToList();
 
         var response = _mapper.Map<List<RatingResponse>>(ratings);
+        foreach (var item in response) {
+            var creator = await _context.MasUsers.FindAsync(item.CreatorId);
+            item.CreatorName = creator.Name;
+            item.CreatorMail = creator.Email;
+        }
         return PagedResult<RatingResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
     }
 
@@ -175,6 +185,9 @@ public class RatingRepository : BaseRepository, IRatingRepository
             return result;
         }
         var response = _mapper.Map<RatingResponse>(rating);
+        var creator = await _context.MasUsers.FindAsync(response.CreatorId);
+        response.CreatorName = creator.Name;
+        response.CreatorMail = creator.Email;
         result.Content = response;
         return result;
     }
