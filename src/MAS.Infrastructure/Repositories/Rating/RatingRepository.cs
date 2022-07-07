@@ -76,14 +76,14 @@ public class RatingRepository : BaseRepository, IRatingRepository
 
 
         if ((await _context.SaveChangesAsync() >= 0)) {
-            var rateOfMentor = _context.Ratings.Where(x => x.IsActive == true && x.MentorId == appointment.MentorId).Average(x => x.Vote);
+            // var rateOfMentor = await _context.Ratings.Where(x => x.IsActive == true && x.MentorId == appointment.MentorId).AverageAsync(x => x.Vote);
 
-            user.Rate = (float)rateOfMentor;
+            // user.Rate = (float)rateOfMentor;
 
-            if ((await _context.SaveChangesAsync() < 0)) {
-                result.Error = Helpers.ErrorHelper.PopulateError(0, ErrorTypes.SaveFail, ErrorMessages.SaveFail);
-                return result;
-            }
+            // if ((await _context.SaveChangesAsync() < 0)) {
+            //     result.Error = Helpers.ErrorHelper.PopulateError(0, ErrorTypes.SaveFail, ErrorMessages.SaveFail);
+            //     return result;
+            // }
             result.Content = true;
             return result;
         }

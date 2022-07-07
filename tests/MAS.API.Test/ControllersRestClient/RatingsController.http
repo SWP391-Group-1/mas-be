@@ -1,0 +1,66 @@
+@hostname = localhost
+@port = 5001
+@azurehost = mas-api.azurewebsites.net
+@lchost = {{hostname}}:{{port}}
+@host = {{azurehost}}
+@baseUrl = https://{{lchost}}
+@contentType = application/json
+@token = {{login.response.body.$.message}}
+@authToken = bearer {{token}}
+
+# @name login
+POST {{baseUrl}}/api/mas/v1/accounts/login-user
+content-type: {{contentType}}
+
+{
+  "email": "student01@fpt.edu.vn",
+  "password": "Pa55w0rd!"
+}
+###
+
+# Get user profile
+GET {{baseUrl}}/api/mas/v1/users/personal
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Get all slot
+GET {{baseUrl}}/api/mas/v1/slots
+?isAsc=true
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Get a slot
+GET {{baseUrl}}/api/mas/v1/slots/f540f061-8a86-4ef7-a551-b8a1b952975e
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+###
+
+# Get own appointment
+GET {{baseUrl}}/api/mas/v1/users/send/appointments
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Get own appointment
+GET {{baseUrl}}/api/mas/v1/users/send/appointments/40aeb217-9814-4f30-8c9f-3bee4bdd3102
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
+
+# Create rating
+POST {{baseUrl}}/api/mas/v1/ratings/40aeb217-9814-4f30-8c9f-3bee4bdd3102
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+{
+  "vote": 5,
+  "comment": "Noi hay lam"
+}
+
+###

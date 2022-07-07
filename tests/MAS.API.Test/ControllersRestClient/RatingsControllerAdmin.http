@@ -1,0 +1,28 @@
+@hostname = localhost
+@port = 5001
+@azurehost = mas-api.azurewebsites.net
+@lchost = {{hostname}}:{{port}}
+@host = {{azurehost}}
+@baseUrl = https://{{lchost}}
+@contentType = application/json
+@token = {{login.response.body.$.message}}
+@authToken = bearer {{token}}
+
+# @name login
+POST {{baseUrl}}/api/mas/v1/accounts/login-admin
+content-type: {{contentType}}
+
+{
+  "email": "admin@example.com",
+  "password": "Pa55w0rd!"
+}
+
+###
+
+
+# GET rating
+GET {{baseUrl}}/api/mas/v1/ratings
+Content-Type: {{contentType}}
+Authorization: {{authToken}}
+
+###
