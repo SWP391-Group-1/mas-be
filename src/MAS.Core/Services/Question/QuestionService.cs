@@ -73,13 +73,27 @@ public class QuestionService : IQuestionService
     public async Task<PagedResult<QuestionResponse>> GetAllQuestionAsync(string appointmentId, QuestionParameters param)
     {
         try {
-            if (appointmentId is null) {
+            if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
                 throw new ArgumentNullException(nameof(appointmentId));
             }
             return await _questionRepository.GetAllQuestionAsync(appointmentId, param);
         }
         catch (Exception ex) {
             _logger.LogError($"Error while trying to call GetAllQuestionAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
+
+    public async Task<PagedResult<QuestionResponse>> GetAllQuestionOfSlotAsync(string slotId, QuestionParameters param)
+    {
+        try {
+            if (String.IsNullOrEmpty(slotId) || String.IsNullOrWhiteSpace(slotId)) {
+                throw new ArgumentNullException(nameof(slotId));
+            }
+            return await _questionRepository.GetAllQuestionOfSlotAsync(slotId, param);
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call GetAllQuestionOfSlotAsync in service class, Error Message: {ex}.");
             throw;
         }
     }

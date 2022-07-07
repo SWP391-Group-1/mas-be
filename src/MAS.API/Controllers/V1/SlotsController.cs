@@ -1,8 +1,11 @@
 using MAS.Core.Dtos.Incoming.Account;
 using MAS.Core.Dtos.Incoming.Slot;
 using MAS.Core.Dtos.Outcoming.Generic;
+using MAS.Core.Dtos.Outcoming.Question;
 using MAS.Core.Dtos.Outcoming.Slot;
+using MAS.Core.Interfaces.Services.Question;
 using MAS.Core.Interfaces.Services.Slot;
+using MAS.Core.Parameters.Question;
 using MAS.Core.Parameters.Slot;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +18,12 @@ namespace MAS.API.Controllers.V1;
 public class SlotsController : BaseController
 {
     private readonly ISlotService _slotService;
+    private readonly IQuestionService _questionService;
 
-    public SlotsController(ISlotService slotService)
+    public SlotsController(ISlotService slotService, IQuestionService questionService)
     {
         _slotService = slotService;
+        _questionService = questionService;
     }
 
     /// <summary>
@@ -133,5 +138,32 @@ public class SlotsController : BaseController
             }
         }
         return NoContent();
+    }
+
+    /// <summary>
+    /// Get all Questions of specific slot
+    /// </summary>
+    /// <param name="slotId"></param>
+    /// <param name="param"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// Roles Access: Admin, User
+    /// </remarks>
+    [HttpGet, Route("{slotId}/questions")]
+    [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
+    public async Task<ActionResult<PagedResult<QuestionResponse>>> GetAllQuestions(
+        string slotId,
+        [FromQuery] QuestionParameters param)
+    {
+        var response = await _questionService.GetAllQuestionOfSlotAsync(slotId, param);
+        if (!response.IsSuccess) {
+            if (response.Error.Code == 404) {
+                return NotFound(response);
+            }
+            else {
+                return BadRequest(response);
+            }
+        }
+        return Ok(response);
     }
 }

@@ -204,6 +204,11 @@
 > - ``DELETE /api/mas/v1/slots/{slotId} ``  
 >   ***Description***: Delete Slot by Id   
 >   ***Role Access***: User   
+>
+> - ``GET /api/mas/v1/slots/{slotId}/questions ``  
+>   ***Description***: Get Slot Questions   
+>   ***Role Access***: Admin, User  
+>
 
 <h2 id="appointment">Appointment  <a href="#table-of-contents" target="_self">🔙</a></h2>   
 

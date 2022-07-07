@@ -255,4 +255,25 @@ public class QuestionRepository : BaseRepository, IQuestionRepository
         result.Content = response;
         return result;
     }
+
+    public async Task<PagedResult<QuestionResponse>> GetAllQuestionOfSlotAsync(string slotId, QuestionParameters param)
+    {
+        var result = new PagedResult<QuestionResponse>();
+
+        var slot = await _context.Slots.FindAsync(slotId);
+        if (slot == null || slot.IsActive is false) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotFound + "slot!");
+            return result;
+        }
+
+        var questions = await _context.Questions.Where(x => x.Appointment.SlotId == slotId).ToListAsync();
+        var query = questions.AsQueryable();
+        FilterActive(ref query, param.IsActive);
+        FilterNewQuestion(ref query, param.IsNew);
+        questions = query.ToList();
+        var response = _mapper.Map<List<QuestionResponse>>(questions);
+        return PagedResult<QuestionResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+    }
 }
