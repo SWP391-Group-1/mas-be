@@ -28,7 +28,7 @@ public class RatingService : IRatingService
             if (principal is null) {
                 throw new ArgumentNullException(nameof(principal));
             }
-            if (String.IsNullOrEmpty(appointmentId)) {
+            if (String.IsNullOrEmpty(appointmentId) || String.IsNullOrWhiteSpace(appointmentId)) {
                 throw new ArgumentNullException(nameof(appointmentId));
             }
             if (request is null) {
