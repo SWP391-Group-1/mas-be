@@ -7,7 +7,6 @@ using MAS.Core.Interfaces.Services.MentorSubject;
 using MAS.Core.Parameters.MentorSubject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace MAS.API.Controllers.V1;

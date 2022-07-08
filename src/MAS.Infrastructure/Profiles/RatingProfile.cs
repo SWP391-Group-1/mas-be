@@ -14,7 +14,6 @@ public class RatingProfile : Profile
 
         //response
         CreateMap<Rating, RatingResponse>();
-        CreateMap<MasUser, UserRateResponse>();
     }
 
 }

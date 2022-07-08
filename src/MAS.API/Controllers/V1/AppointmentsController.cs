@@ -8,7 +8,6 @@ using MAS.Core.Interfaces.Services.Question;
 using MAS.Core.Parameters.Question;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace MAS.API.Controllers.V1;

@@ -6,7 +6,6 @@ using MAS.Core.Interfaces.Services.Major;
 using MAS.Core.Parameters.Major;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Threading.Tasks;
 
 namespace MAS.API.Controllers.V1;
