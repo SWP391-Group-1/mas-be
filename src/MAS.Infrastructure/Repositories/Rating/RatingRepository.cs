@@ -216,15 +216,15 @@ public class RatingRepository : BaseRepository, IRatingRepository
             mentor.NumOfRate += 1;
 
             if ((await _context.SaveChangesAsync() >= 0)) {
-                var rateOfMentor = _context.Ratings.Where(x => x.IsActive == true && x.MentorId == rating.MentorId).Average(x => x.Vote);
-                mentor.Rate = (float)rateOfMentor;
-
+                if (await _context.Ratings.AnyAsync(x => x.IsActive == true && x.MentorId == rating.MentorId)) {
+                    var rateOfMentor = _context.Ratings.Where(x => x.IsActive == true && x.MentorId == rating.MentorId).Average(x => x.Vote);
+                    mentor.Rate = (float)rateOfMentor;
+                }
+                if (await _context.SaveChangesAsync() >= 0) {
+                    result.Content = true;
+                    return result;
+                }
             }
-
-        }
-        if (await _context.SaveChangesAsync() >= 0) {
-            result.Content = true;
-            return result;
         }
         result.Error = Helpers.ErrorHelper.PopulateError(0, ErrorTypes.SaveFail, ErrorMessages.SaveFail);
         return result;
