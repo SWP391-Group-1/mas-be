@@ -68,7 +68,7 @@ public class SlotService : ISlotService
         }
     }
 
-    public async Task<PagedResult<SlotResponse>> GetAllAvailableSlotsAsync(SlotParameters param)
+    public async Task<PagedResult<SlotDetailResponse>> GetAllAvailableSlotsAsync(SlotParameters param)
     {
         try {
             return await _slotRepository.GetAllAvailableSlotsAsync(param);

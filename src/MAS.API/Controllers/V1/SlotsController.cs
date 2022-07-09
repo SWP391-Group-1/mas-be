@@ -35,7 +35,7 @@ public class SlotsController : BaseController
     /// </remarks>
     [HttpGet]
     [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
-    public async Task<ActionResult<PagedResult<SlotResponse>>> GetAllAvailableSlots([FromQuery] SlotParameters param)
+    public async Task<ActionResult<PagedResult<SlotDetailResponse>>> GetAllAvailableSlots([FromQuery] SlotParameters param)
     {
         var response = await _slotService.GetAllAvailableSlotsAsync(param);        
         return Ok(response);
