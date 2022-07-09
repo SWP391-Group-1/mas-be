@@ -250,9 +250,9 @@ public class SlotRepository : BaseRepository, ISlotRepository
         return result;
     }
 
-    public async Task<PagedResult<SlotResponse>> GetAllAvailableSlotsAsync(SlotParameters param)
+    public async Task<PagedResult<SlotDetailResponse>> GetAllAvailableSlotsAsync(SlotParameters param)
     {
-        var result = new PagedResult<SlotResponse>();
+        var result = new PagedResult<SlotDetailResponse>();
 
         var slots = await _context.Slots.ToListAsync();
         var query = slots.AsQueryable();
@@ -263,14 +263,17 @@ public class SlotRepository : BaseRepository, ISlotRepository
         SortByAsc(ref query, param.IsAsc);
 
         slots = query.ToList();
-        var response = _mapper.Map<List<SlotResponse>>(slots);
+        var response = _mapper.Map<List<SlotDetailResponse>>(slots);
         foreach (var item in response) {
+            await _context.Entry(item).Reference(x => x.Mentor).LoadAsync();
+            await _context.Entry(item).Collection(x => x.SlotSubjects).Query().Include(x => x.Subject).LoadAsync();
             item.NumOfAppointments = await _context.Appointments
                                                         .Where(x => x.SlotId == item.Id
                                                                     && x.IsApprove == true)
                                                         .CountAsync();
+
         }
-        return PagedResult<SlotResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+        return PagedResult<SlotDetailResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
     }
 
     private void FilterPassedSlots(ref IQueryable<Core.Entities.Slot> query, bool? isPassed)
@@ -301,9 +304,11 @@ public class SlotRepository : BaseRepository, ISlotRepository
 
         if (from is not null && to is not null) {
             query = query.Where(x => x.StartTime >= from && x.StartTime <= to);
-        }else if (from is null && to is not null) {
+        }
+        else if (from is null && to is not null) {
             query = query.Where(x => x.StartTime <= to);
-        }else if (from is not null && to is null) {
+        }
+        else if (from is not null && to is null) {
             query = query.Where(x => x.StartTime >= from);
         }
     }
