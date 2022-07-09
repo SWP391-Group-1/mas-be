@@ -263,10 +263,13 @@ public class SlotRepository : BaseRepository, ISlotRepository
         SortByAsc(ref query, param.IsAsc);
 
         slots = query.ToList();
-        var response = _mapper.Map<List<SlotDetailResponse>>(slots);
-        foreach (var item in response) {
+        foreach (var item in slots)
+        {
             await _context.Entry(item).Reference(x => x.Mentor).LoadAsync();
             await _context.Entry(item).Collection(x => x.SlotSubjects).Query().Include(x => x.Subject).LoadAsync();
+        }
+        var response = _mapper.Map<List<SlotDetailResponse>>(slots);
+        foreach (var item in response) {            
             item.NumOfAppointments = await _context.Appointments
                                                         .Where(x => x.SlotId == item.Id
                                                                     && x.IsApprove == true)
