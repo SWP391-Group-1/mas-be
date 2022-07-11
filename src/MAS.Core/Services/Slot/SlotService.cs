@@ -68,10 +68,10 @@ public class SlotService : ISlotService
         }
     }
 
-    public async Task<PagedResult<SlotDetailResponse>> GetAllAvailableSlotsAsync(SlotParameters param)
+    public async Task<PagedResult<SlotResponse>> GetAllAvailableSlotsAsync(ClaimsPrincipal principal, SlotParameters param)
     {
         try {
-            return await _slotRepository.GetAllAvailableSlotsAsync(param);
+            return await _slotRepository.GetAllAvailableSlotsAsync(principal, param);
         }
         catch (Exception ex) {
             _logger.LogError($"Error while trying to call GetAllAvailableSlotsAsync in service class, Error Message: {ex}.");

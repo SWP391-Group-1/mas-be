@@ -1,3 +1,4 @@
+using System.Net;
 using MAS.Core.Dtos.Incoming.Account;
 using MAS.Core.Dtos.Incoming.Slot;
 using MAS.Core.Dtos.Outcoming.Generic;
@@ -35,9 +36,9 @@ public class SlotsController : BaseController
     /// </remarks>
     [HttpGet]
     [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
-    public async Task<ActionResult<PagedResult<SlotDetailResponse>>> GetAllAvailableSlots([FromQuery] SlotParameters param)
+    public async Task<ActionResult<PagedResult<SlotResponse>>> GetAllAvailableSlots([FromQuery] SlotParameters param)
     {
-        var response = await _slotService.GetAllAvailableSlotsAsync(param);        
+        var response = await _slotService.GetAllAvailableSlotsAsync(HttpContext.User, param);        
         return Ok(response);
     }
 

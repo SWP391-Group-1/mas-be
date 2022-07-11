@@ -250,33 +250,64 @@ public class SlotRepository : BaseRepository, ISlotRepository
         return result;
     }
 
-    public async Task<PagedResult<SlotDetailResponse>> GetAllAvailableSlotsAsync(SlotParameters param)
+    public async Task<PagedResult<SlotResponse>> GetAllAvailableSlotsAsync(
+        ClaimsPrincipal principal,
+        SlotParameters param)
     {
-        var result = new PagedResult<SlotDetailResponse>();
+        var result = new PagedResult<SlotResponse>();
+
+        var loggedInUser = await _userManager.GetUserAsync(principal);
+        if (loggedInUser is null) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotLogIn);
+            return result;
+        }
+        var identityId = loggedInUser.Id; //new Guid(loggedInUser.Id).ToString()
+
+        var user = await _context.MasUsers.FirstOrDefaultAsync(x => x.IdentityId == identityId);
+        if (user is null) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.NotLogIn);
+            return result;
+        }
+
+        if (user.IsActive is false) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     ErrorMessages.AccountDisable);
+            return result;
+        }
 
         var slots = await _context.Slots.ToListAsync();
         var query = slots.AsQueryable();
         FilterSlotByMentorId(ref query, param.MentorId);
         FilterByRange(ref query, param.From, param.To);
-        FilterActive(ref query, param.IsActive);
         FilterPassedSlots(ref query, param.IsPassed);
+        FilterActive(ref query, param.IsActive);
         SortByAsc(ref query, param.IsAsc);
 
         slots = query.ToList();
-        foreach (var item in slots)
-        {
+        foreach (var item in slots) {
             await _context.Entry(item).Reference(x => x.Mentor).LoadAsync();
             await _context.Entry(item).Collection(x => x.SlotSubjects).Query().Include(x => x.Subject).LoadAsync();
         }
-        var response = _mapper.Map<List<SlotDetailResponse>>(slots);
-        foreach (var item in response) {            
+        var response = _mapper.Map<List<SlotResponse>>(slots);
+        foreach (var item in response) {
             item.NumOfAppointments = await _context.Appointments
                                                         .Where(x => x.SlotId == item.Id
                                                                     && x.IsApprove == true)
                                                         .CountAsync();
+            item.IsIn = await _context.Appointments
+                                            .Where(x => x.SlotId == item.Id
+                                                        && x.IsActive == true
+                                                        && x.CreatorId == user.Id)
+                                            .AnyAsync();
+            item.IsOwn = (item.MentorId == user.Id);
 
         }
-        return PagedResult<SlotDetailResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+        return PagedResult<SlotResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
     }
 
     private void FilterPassedSlots(ref IQueryable<Core.Entities.Slot> query, bool? isPassed)

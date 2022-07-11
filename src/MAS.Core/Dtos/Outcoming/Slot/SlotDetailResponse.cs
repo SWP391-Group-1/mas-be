@@ -12,6 +12,7 @@ public class SlotDetailResponse
     public int NumOfAppointments { get; set; }
 
     public ICollection<SlotSubjectResponse> SlotSubjects { get; set; }
+    public string MentorId { get; set; }
     public UserGetBasicInfoResponse Mentor { get; set; }
     public bool? IsPassed { get; set; }
     public bool IsActive { get; set; }

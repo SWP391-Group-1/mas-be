@@ -11,7 +11,7 @@ public interface ISlotRepository
 {
     Task<Result<bool>> CreateAvailableSlotAsync(ClaimsPrincipal principal, SlotCreateRequest request);
     Task<Result<bool>> DeleteAvailableSlotAsync(ClaimsPrincipal principal, string slotId);
-    Task<PagedResult<SlotDetailResponse>> GetAllAvailableSlotsAsync(SlotParameters param);
+    Task<PagedResult<SlotResponse>> GetAllAvailableSlotsAsync(ClaimsPrincipal principal, SlotParameters param);
     Task<Result<SlotDetailResponse>> GetSlotByIdAsync(string slotId);
     Task<Result<bool>> CheckPassedSlotAsync();
 }
