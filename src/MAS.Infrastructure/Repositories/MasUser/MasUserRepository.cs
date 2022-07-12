@@ -218,7 +218,7 @@ public class MasUserRepository : BaseRepository, IMasUserRepository
         //}
         //else {
         List<Core.Entities.MasUser> result = new();
-        var subjectsOfUser = _context.MentorSubjects.Where(x => x.SubjectId == subjectId);
+        var subjectsOfUser = _context.MentorSubjects.Where(x => x.SubjectId == subjectId && x.IsActive == true);
         foreach (var item in subjectsOfUser) {
             result.Add(item.Mentor);
         }
