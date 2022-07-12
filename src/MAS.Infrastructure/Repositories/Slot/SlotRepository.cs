@@ -76,6 +76,13 @@ public class SlotRepository : BaseRepository, ISlotRepository
             return result;
         }
 
+        if (request.StartTime < request.CreateDate) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     "Start time must be greater than create time");
+            return result;
+        }
+
         if (request.StartTime >= request.FinishTime) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
