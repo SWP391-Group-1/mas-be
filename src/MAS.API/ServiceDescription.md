@@ -262,6 +262,10 @@
 >   ***Description***: Get rating by Id  
 >   ***Role Access***: Admin, User  
 >
+> - ``GET /api/mas/v1/ratings/get-by-appointmentid/{ratingId} ``  
+>   ***Description***: Get rating by Appointmentid Id  
+>   ***Role Access***: Admin, User  
+>
 > - ``PUT /api/mas/v1/ratings/process/{rateId} ``  
 >   ***Description***: Process rating   
 >   ***Role Access***: Admin 
