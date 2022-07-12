@@ -229,4 +229,20 @@ public class RatingRepository : BaseRepository, IRatingRepository
         result.Error = Helpers.ErrorHelper.PopulateError(0, ErrorTypes.SaveFail, ErrorMessages.SaveFail);
         return result;
     }
+
+    public async Task<Result<RatingResponse>> GetRatingByAppointmentIdAsync(string appointmentId)
+    {
+        var result = new Result<RatingResponse>();
+        var rating = await _context.Ratings.FirstOrDefaultAsync(x => x.AppointmentId == appointmentId);
+        if (rating is null || (rating.IsActive is false && rating.IsApprove is not null)) {
+            result.Error = Helpers.ErrorHelper.PopulateError(404, ErrorTypes.NotFound, ErrorMessages.NotFound);
+            return result;
+        }
+        var response = _mapper.Map<RatingResponse>(rating);
+        var creator = await _context.MasUsers.FindAsync(response.CreatorId);
+        response.CreatorName = creator.Name;
+        response.CreatorMail = creator.Email;
+        result.Content = response;
+        return result;
+    }
 }

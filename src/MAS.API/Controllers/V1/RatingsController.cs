@@ -73,6 +73,30 @@ public class RatingsController : BaseController
     }
 
     /// <summary>
+    /// Get rating by Id
+    /// </summary>
+    /// <param name="appointmentId"></param>
+    /// <returns></returns>
+    /// <remarks>
+    /// Roles Access: Admin, User
+    /// </remarks>
+    [HttpGet("get-by-appointmentId/{appointmentId}")]
+    [Authorize(Roles = RoleConstants.Admin + "," + RoleConstants.User)]
+    public async Task<ActionResult> GetRatingByAppointmentId(string appointmentId)
+    {
+        var response = await _ratingService.GetRatingByAppointmentIdAsync(appointmentId);
+        if (!response.IsSuccess) {
+            if (response.Error.Code == 404) {
+                return NotFound(response);
+            }
+            else {
+                return BadRequest(response);
+            }
+        }
+        return Ok(response);
+    }
+
+    /// <summary>
     /// Get all unapproved ratings
     /// </summary>
     /// <param name="param"></param>

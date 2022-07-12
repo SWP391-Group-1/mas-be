@@ -67,6 +67,20 @@ public class RatingService : IRatingService
         }
     }
 
+    public async Task<Result<RatingResponse>> GetRatingByAppointmentIdAsync(string appointmentId)
+    {
+        try {
+            if (String.IsNullOrEmpty(appointmentId)) {
+                throw new ArgumentNullException(nameof(appointmentId));
+            }
+            return await _ratingRepository.GetRatingByAppointmentIdAsync(appointmentId);
+        }
+        catch (Exception ex) {
+            _logger.LogError($"Error while trying to call GetRatingByAppointmentIdAsync in service class, Error Message: {ex}.");
+            throw;
+        }
+    }
+
     public async Task<Result<RatingResponse>> GetRatingByIdAsync(string ratingId)
     {
         try {
