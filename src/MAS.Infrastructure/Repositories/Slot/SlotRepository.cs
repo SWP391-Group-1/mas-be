@@ -104,7 +104,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
             return result;
         }
 
-        if (request.StartTime.AddHours(24) > request.FinishTime) {
+        if (request.StartTime.AddHours(24) < request.FinishTime) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      "A Slot not more than 24 hours!");
