@@ -12,6 +12,7 @@ public interface IRatingRepository
     Task<Result<bool>> CreateRatingFeedbackAsync(ClaimsPrincipal principal, string appointmentId, CreateRatingRequest request);
     Task<PagedResult<RatingResponse>> GetAllRatingsAsync(string mentorId, RatingParameters param);
     Task<Result<RatingResponse>> GetRatingByIdAsync(string ratingId);
+    Task<Result<RatingResponse>> GetRatingByAppointmentIdAsync(string appointmentId);
     Task<PagedResult<RatingResponse>> GetAllRatingsForAdminAsync(RatingParametersAdmin param);
     Task<Result<bool>> ProcessRatingAsync(string ratingId, ProcessRatingRequest request);
 }
