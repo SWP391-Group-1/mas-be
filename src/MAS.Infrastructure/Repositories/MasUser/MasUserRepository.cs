@@ -194,36 +194,36 @@ public class MasUserRepository : BaseRepository, IMasUserRepository
         if (!query.Any() || String.IsNullOrEmpty(subjectId) || String.IsNullOrWhiteSpace(subjectId)) {
             return;
         }
-        if (subjectId.Contains(" ")) {
-            var seperatringSubjectId = subjectId.Split(" ");
-            List<Core.Entities.MasUser> result = new();
-            foreach (var sprId in seperatringSubjectId) {
-                var subjectsOfUser = _context.MentorSubjects.Where(x => x.SubjectId == sprId);
-                foreach (var item in subjectsOfUser) {
-                    result.Add(item.Mentor);
-                }
-            }
-            query = result.Distinct().AsQueryable();
+        //if (subjectId.Contains(" ")) {
+        //    var seperatringSubjectId = subjectId.Split(" ");
+        //    List<Core.Entities.MasUser> result = new();
+        //    foreach (var sprId in seperatringSubjectId) {
+        //        var subjectsOfUser = _context.MentorSubjects.Where(x => x.SubjectId == sprId);
+        //        foreach (var item in subjectsOfUser) {
+        //            result.Add(item.Mentor);
+        //        }
+        //    }
+        //    query = result.Distinct().AsQueryable();
+        //}
+        //else if (subjectId.Contains(",")) {
+        //    var seperatringSubjectId = subjectId.Split(",");
+        //    List<Core.Entities.MasUser> result = new();
+        //    foreach (var sprId in seperatringSubjectId) {
+        //        var subjectsOfUser = _context.MentorSubjects.Where(x => x.SubjectId == sprId);
+        //        foreach (var item in subjectsOfUser) {
+        //            result.Add(item.Mentor);
+        //        }
+        //    }
+        //    query = result.Distinct().AsQueryable();
+        //}
+        //else {
+        List<Core.Entities.MasUser> result = new();
+        var subjectsOfUser = _context.MentorSubjects.Where(x => x.SubjectId == subjectId);
+        foreach (var item in subjectsOfUser) {
+            result.Add(item.Mentor);
         }
-        else if (subjectId.Contains(",")) {
-            var seperatringSubjectId = subjectId.Split(",");
-            List<Core.Entities.MasUser> result = new();
-            foreach (var sprId in seperatringSubjectId) {
-                var subjectsOfUser = _context.MentorSubjects.Where(x => x.SubjectId == sprId);
-                foreach (var item in subjectsOfUser) {
-                    result.Add(item.Mentor);
-                }
-            }
-            query = result.Distinct().AsQueryable();
-        }
-        else {
-            List<Core.Entities.MasUser> result = new();
-            var subjectsOfUser = _context.MentorSubjects.Where(x => x.SubjectId == subjectId);
-            foreach (var item in subjectsOfUser) {
-                result.Add(item.Mentor);
-            }
-            query = result.AsQueryable();
-        }
+        query = result.Distinct().AsQueryable();
+        // }
 
     }
     private void FilterUserByNameVsEmail(
