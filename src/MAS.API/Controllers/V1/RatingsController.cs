@@ -73,7 +73,7 @@ public class RatingsController : BaseController
     }
 
     /// <summary>
-    /// Get rating by Id
+    /// Get rating by Appointment Id
     /// </summary>
     /// <param name="appointmentId"></param>
     /// <returns></returns>
