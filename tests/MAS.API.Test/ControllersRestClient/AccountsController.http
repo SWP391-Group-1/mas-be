@@ -2,7 +2,7 @@
 @port = 5001
 @azurehost = mas-api.azurewebsites.net
 @lchost = {{hostname}}:{{port}}
-@baseUrl = https://{{lchost}}
+@baseUrl = https://{{azurehost}}
 @contentType = application/json
 @token = {{login.response.body.$.message}}
 @authToken = bearer {{token}}
@@ -53,12 +53,33 @@ Authorization: {{authToken}}
 POST {{baseUrl}}/api/mas/v1/accounts/register-user
 content-type: {{contentType}}
 
-{
-  "email": "student01@fpt.edu.vn",
-  "password": "Pa55w0rd!",
-  "confirmPassword": "Pa55w0rd!",
-  "name" : "student 01"
-}
+# {
+#   "email": "MinhMentor@fe.edu.vn",
+#   "password": "Pa55w0rd!",
+#   "confirmPassword": "Pa55w0rd!",
+#   "name" : "Nhat Minh"
+# }
+
+# {
+#   "email": "DuongMentor@fe.edu.vn",
+#   "password": "Pa55w0rd!",
+#   "confirmPassword": "Pa55w0rd!",
+#   "name" : "Minh Duong"
+# }
+
+# {
+#   "email": "nnhaodev14102000@gmail.com",
+#   "password": "Pa55w0rd!",
+#   "confirmPassword": "Pa55w0rd!",
+#   "name" : "Nhut Hao"
+# }
+
+# {
+#   "email": "signinmail14102000@gmail.com",
+#   "password": "Pa55w0rd!",
+#   "confirmPassword": "Pa55w0rd!",
+#   "name" : "Huynh Lam"
+# }
 
 ###
 

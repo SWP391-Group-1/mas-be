@@ -3,7 +3,7 @@
 @azurehost = mas-api.azurewebsites.net
 @lchost = {{hostname}}:{{port}}
 @host = {{azurehost}}
-@baseUrl = https://{{lchost}}
+@baseUrl = https://{{azurehost}}
 @contentType = application/json
 @token = {{login.response.body.$.message}}
 @authToken = bearer {{token}}
@@ -13,7 +13,7 @@ POST {{baseUrl}}/api/mas/v1/accounts/login-user
 content-type: {{contentType}}
 
 {
-  "email": "testMentor01@fe.edu.vn",
+  "email": "MinhMentor@fe.edu.vn",
   "password": "Pa55w0rd!"
 }
 ###

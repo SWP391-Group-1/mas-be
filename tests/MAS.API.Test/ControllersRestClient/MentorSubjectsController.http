@@ -3,7 +3,7 @@
 @azurehost = mas-api.azurewebsites.net
 @lchost = {{hostname}}:{{port}}
 @host = {{azurehost}}
-@baseUrl = https://{{lchost}}
+@baseUrl = https://{{azurehost}}
 @contentType = application/json
 @token = {{login.response.body.$.message}}
 @authToken = bearer {{token}}
@@ -13,7 +13,7 @@ POST {{baseUrl}}/api/mas/v1/accounts/login-user
 content-type: {{contentType}}
 
 {
-  "email": "testMentor01@fe.edu.vn",
+  "email": "MinhMentor@fe.edu.vn",
   "password": "Pa55w0rd!"
 }
 ###
@@ -47,7 +47,7 @@ Authorization: {{authToken}}
 ###
 
 # Get mentor subject 
-GET {{baseUrl}}/api/mas/v1/mentor-subjects/a3ef5dc6-5ddd-4467-ab71-f4fa2242997f
+GET {{baseUrl}}/api/mas/v1/mentor-subjects/8face6ee-16a7-4f66-9277-53637e428715
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
@@ -59,8 +59,8 @@ Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
 {
-  "subjectId": "637a18c2-4323-4d43-9791-98577fa65d60",
-  "briefInfo": "Help you know how to dev a true project, and how to make a good team",
+  "subjectId": "fbf78f2f-30d8-4426-a0c0-574d636b34b6",
+  "briefInfo": "5 years experience in tech this in FPT University",
 }
 
 ###
