@@ -11,6 +11,6 @@ public class SlotSubjectCreateRequest : BaseCreateRequest
 
     [Required]
     [MaxLength(500)]
-    [MinLength(10)]
+    // [MinLength(50)]
     public string Description { get; set; }
 }
