@@ -646,6 +646,13 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             return result;
         }
 
+        if(app.IsApprove != null) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     "This appointment has been processed!");
+            return result;
+        }
+
         if (request.IsApprove == false) {
             if (String.IsNullOrEmpty(request.MentorDescription) || String.IsNullOrWhiteSpace(request.MentorDescription)) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
