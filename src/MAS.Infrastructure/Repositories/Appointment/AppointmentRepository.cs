@@ -79,6 +79,13 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             return result;
         }
 
+        if (slot.MentorId == user.Id) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     "This slot is your slot!");
+            return result;
+        }
+
         var existAppointments = await _context.Appointments.Where(x => x.CreatorId == user.Id
                                                                        && x.IsApprove != false).ToListAsync();
         foreach (var item in existAppointments) {
