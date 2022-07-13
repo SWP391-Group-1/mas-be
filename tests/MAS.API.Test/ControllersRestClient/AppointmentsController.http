@@ -3,7 +3,7 @@
 @azurehost = mas-api.azurewebsites.net
 @lchost = {{hostname}}:{{port}}
 @host = {{azurehost}}
-@baseUrl = https://{{lchost}}
+@baseUrl = https://{{azurehost}}
 @contentType = application/json
 @token = {{login.response.body.$.message}}
 @authToken = bearer {{token}}
@@ -13,7 +13,7 @@ POST {{baseUrl}}/api/mas/v1/accounts/login-user
 content-type: {{contentType}}
 
 {
-  "email": "student01@fpt.edu.vn",
+  "email": "nnhaodev14102000@gmail.com",
   "password": "Pa55w0rd!"
 }
 ###
@@ -59,7 +59,7 @@ Authorization: {{authToken}}
 ###
 
 # Get own appointment
-GET {{baseUrl}}/api/mas/v1/users/send/appointments/40aeb217-9814-4f30-8c9f-3bee4bdd3102
+GET {{baseUrl}}/api/mas/v1/users/send/appointments/cb05a6ef-03dc-4bc9-8d64-1b76b382062c
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 

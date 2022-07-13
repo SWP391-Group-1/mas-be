@@ -114,6 +114,17 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             }
         }
 
+        var deniedAppointments = await _context.Appointments.AnyAsync(x => x.CreatorId == user.Id
+                                                                        && x.SlotId == slot.Id
+                                                                       && x.IsApprove == false);
+
+        if (deniedAppointments) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     "You have appointment in this slot and your appointment is denied!");
+            return result;
+        }
+
         await _context.Appointments.AddAsync(
             new Core.Entities.Appointment {
                 Id = request.Id,
