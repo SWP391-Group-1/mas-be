@@ -331,6 +331,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
         var resQuery = response.AsQueryable();
         FilterIsIn(ref resQuery, param.IsIn);
         FilterIsOwn(ref resQuery, param.IsOwn);
+        response = resQuery.ToList();
         return PagedResult<SlotResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
     }
 
