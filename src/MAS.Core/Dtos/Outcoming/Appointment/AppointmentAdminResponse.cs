@@ -14,7 +14,7 @@ public interface AppointmentAdminResponse
     public UserGetBasicInfoResponse Mentor { get; set; }
 
     public string SlotId { get; set; }
-    public SlotResponse Slot { get; set; }
+    public SlotInAppointmentResponse Slot { get; set; }
 
     public string BriefProblem { get; set; }
 

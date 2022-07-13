@@ -13,7 +13,6 @@ namespace MAS.Core.Dtos.Outcoming.Appointment
         public DateTime FinishTime { get; set; }
         public int NumOfAppointments { get; set; }
         public string MentorId { get; set; }
-        public UserGetBasicInfoResponse Mentor { get; set; }
         public bool? IsPassed { get; set; }
         public bool IsActive { get; set; }
     }
