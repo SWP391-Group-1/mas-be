@@ -20,6 +20,7 @@ public class AppointmentMentorDetailResponse
 
     public DateTime StartTime { get; set; }
     public DateTime FinishTime { get; set; }
+    public string MentorDescription { get; set; }
 
     public bool? IsApprove { get; set; }
     public bool IsActive { get; set; }
