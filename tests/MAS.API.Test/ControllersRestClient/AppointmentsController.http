@@ -27,7 +27,7 @@ Authorization: {{authToken}}
 
 # Get all slot
 GET {{baseUrl}}/api/mas/v1/slots
-?isAsc=true
+?isIn=false
 Content-Type: {{contentType}}
 Authorization: {{authToken}}
 
