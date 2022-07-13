@@ -21,6 +21,8 @@ public class AppointmentProfile : Profile
         CreateMap<Appointment, AppointmentAdminResponse>();
         CreateMap<Appointment, AppointmentAdminDetailResponse>();
 
+        CreateMap<Slot, SlotInAppointmentResponse>();
+
         
     }
 }
