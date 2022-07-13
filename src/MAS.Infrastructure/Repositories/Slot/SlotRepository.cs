@@ -328,7 +328,26 @@ public class SlotRepository : BaseRepository, ISlotRepository
             item.IsOwn = (item.MentorId == user.Id);
 
         }
+        var resQuery = response.AsQueryable();
+        FilterIsIn(ref resQuery, param.IsIn);
+        FilterIsOwn(ref resQuery, param.IsOwn);
         return PagedResult<SlotResponse>.ToPagedList(response, param.PageNumber, param.PageSize);
+    }
+
+    private void FilterIsOwn(ref IQueryable<SlotResponse> resQuery, bool? isOwn)
+    {
+        if (!resQuery.Any() || isOwn is null) {
+            return;
+        }
+        resQuery = resQuery.Where(x => x.IsOwn == isOwn);
+    }
+
+    private void FilterIsIn(ref IQueryable<SlotResponse> resQuery, bool? isIn)
+    {
+        if (!resQuery.Any() || isIn is null) {
+            return;
+        }
+        resQuery = resQuery.Where(x => x.IsIn == isIn);
     }
 
     private void FilterPassedSlots(ref IQueryable<Core.Entities.Slot> query, bool? isPassed)
