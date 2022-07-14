@@ -76,21 +76,21 @@ public class SlotRepository : BaseRepository, ISlotRepository
             return result;
         }
 
-        if (request.StartTime < request.CreateDate.AddHours(-7)) {
+        if (request.StartTime.AddHours(7) < request.CreateDate) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      "Start time must be greater than now!");
             return result;
         }
 
-        if (request.CreateDate.AddHours(-7) > request.StartTime.AddHours(-2)) {
+        if (request.CreateDate > request.StartTime.AddHours(7).AddHours(-2)) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      "This slot must be started after now at least 2 hours!");
             return result;
         }
 
-        if (request.CreateDate.AddHours(-7).AddYears(1) < request.StartTime) {
+        if (request.CreateDate.AddYears(1) < request.StartTime.AddHours(7)) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      "A slot must be created within 1 year!");
