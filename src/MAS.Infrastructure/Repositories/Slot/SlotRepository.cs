@@ -72,21 +72,21 @@ public class SlotRepository : BaseRepository, ISlotRepository
         if (user.MentorSubjects.Count() == 0) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     "Please register your major Subject");
+                                                     "Please register your major Subject!");
             return result;
         }
 
         if (request.StartTime < request.CreateDate) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     "Start time must be greater than create time");
+                                                     "Start time must be greater than now!");
             return result;
         }
 
-        if (request.StartTime >= request.FinishTime) {
+        if (request.CreateDate > request.StartTime.AddHours(-2)) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     "Finish Time invalid!");
+                                                     "This slot must be started after now at least 2 hours!");
             return result;
         }
 
@@ -94,6 +94,13 @@ public class SlotRepository : BaseRepository, ISlotRepository
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      "A slot must be created within 1 year!");
+            return result;
+        }
+
+        if (request.StartTime >= request.FinishTime) {
+            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
+                                                     ErrorTypes.BadRequest,
+                                                     "Finish Time invalid!");
             return result;
         }
 
@@ -108,13 +115,6 @@ public class SlotRepository : BaseRepository, ISlotRepository
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      "A Slot not more than 24 hours!");
-            return result;
-        }
-
-        if (request.CreateDate > request.StartTime.AddHours(-2)) {
-            result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
-                                                     ErrorTypes.BadRequest,
-                                                     "This slot must be started after now at least 2 hours!");
             return result;
         }
 
