@@ -19,8 +19,8 @@ public class AppointmentConfiguration : IEntityTypeConfiguration<Appointment>
         builder.HasOne(a => a.Slot)
             .WithMany(s => s.Appointments)
             .HasForeignKey(a => a.SlotId);
-        builder.Property(x => x.StartTime).HasColumnType("datetime").IsRequired(false);
-        builder.Property(x => x.FinishTime).HasColumnType("datetime").IsRequired(false);
+        builder.Property(x => x.StartTime).HasColumnType("datetime").IsRequired();
+        builder.Property(x => x.FinishTime).HasColumnType("datetime").IsRequired();
         builder.Property(x => x.MentorDescription).HasColumnType("nvarchar(1000)").IsRequired(false);
         builder.Property(x => x.IsPassed).HasColumnType("bit").IsRequired(false);
         builder.Property(x => x.IsActive).HasColumnType("bit").IsRequired();

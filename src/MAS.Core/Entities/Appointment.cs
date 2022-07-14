@@ -18,8 +18,8 @@ public class Appointment : BaseEntity
     public ICollection<Rating> Ratings { get; set; }
 
     public bool? IsApprove { get; set; }
-    public DateTime? StartTime { get; set; }
+    public DateTime StartTime { get; set; }
     public string MentorDescription { get; set; }
-    public DateTime? FinishTime { get; set; }
+    public DateTime FinishTime { get; set; }
     public bool? IsPassed { get; set; }
 }

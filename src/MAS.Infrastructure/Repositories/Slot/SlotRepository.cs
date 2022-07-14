@@ -438,7 +438,7 @@ public class SlotRepository : BaseRepository, ISlotRepository
 
         var slots = await _context.Slots.ToListAsync();
         foreach (var item in slots) {
-            if (now > item.FinishTime) {
+            if (now > item.FinishTime.AddHours(7)) {
                 item.IsPassed = true;
             }
         }

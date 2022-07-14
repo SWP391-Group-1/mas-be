@@ -703,7 +703,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
 
         var apps = await _context.Appointments.ToListAsync();
         foreach (var item in apps) {
-            if (now > item.FinishTime) {
+            if (now > item.FinishTime.AddHours(7)) {
                 item.IsPassed = true;
             }
         }
