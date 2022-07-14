@@ -123,21 +123,21 @@ public class SlotRepository : BaseRepository, ISlotRepository
             if (slot.StartTime <= request.StartTime && slot.FinishTime >= request.StartTime) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     $"Existing slot from {slot.StartTime} to {slot.FinishTime}.");
+                                                     $"Existing slot from {slot.StartTime.AddHours(7)} to {slot.FinishTime.AddHours(7)}.");
                 return result;
             }
 
             if (slot.StartTime <= request.FinishTime && slot.FinishTime >= request.FinishTime) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     $"Existing slot from {slot.StartTime} to {slot.FinishTime}.");
+                                                     $"Existing slot from {slot.StartTime.AddHours(7)} to {slot.FinishTime.AddHours(7)}.");
                 return result;
             }
 
             if (request.StartTime <= slot.StartTime && request.FinishTime >= slot.FinishTime) {
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
-                                                     $"Existing slot from {slot.StartTime} to {slot.FinishTime}.");
+                                                     $"Existing slot from {slot.StartTime.AddHours(7)} to {slot.FinishTime.AddHours(7)}.");
                 return result;
             }
         }

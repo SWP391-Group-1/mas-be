@@ -65,14 +65,14 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
             return result;
         }
 
-        if (slot.StartTime < DateTime.UtcNow.AddHours(7)) {
+        if (slot.StartTime.AddHours(7) < DateTime.UtcNow.AddHours(7)) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      "Slot is passed");
             return result;
         }
 
-        if (slot.StartTime.AddHours(-(int)AppointmentTime.TimeProcess) < request.CreateDate) {
+        if (slot.StartTime.AddHours(7).AddHours(-(int)AppointmentTime.TimeProcess) < request.CreateDate) {
             result.Error = ErrorHelper.PopulateError((int)ErrorCodes.NotFound,
                                                      ErrorTypes.NotFound,
                                                      "Not allow to register appointment in this slot!. You can register a slot before it start at least 1 hour!");
@@ -93,7 +93,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      ErrorMessages.Exist
-                                                     + $"appointment at {slot.StartTime} to {slot.FinishTime}.");
+                                                     + $"appointment at {slot.StartTime.AddHours(7)} to {slot.FinishTime.AddHours(7)}.");
                 return result;
             }
 
@@ -101,7 +101,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      ErrorMessages.Exist
-                                                     + $"appointment at {slot.StartTime} to {slot.FinishTime}.");
+                                                     + $"appointment at {slot.StartTime.AddHours(7)} to {slot.FinishTime.AddHours(7)}.");
                 return result;
             }
 
@@ -109,7 +109,7 @@ public class AppointmentRepository : BaseRepository, IAppointmentRepository
                 result.Error = ErrorHelper.PopulateError((int)ErrorCodes.BadRequest,
                                                      ErrorTypes.BadRequest,
                                                      ErrorMessages.Exist
-                                                     + $"appointment at {slot.StartTime} to {slot.FinishTime}.");
+                                                     + $"appointment at {slot.StartTime.AddHours(7)} to {slot.FinishTime.AddHours(7)}.");
                 return result;
             }
         }
